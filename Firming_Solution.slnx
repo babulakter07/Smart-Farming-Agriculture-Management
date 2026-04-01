@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Firming_Solution.Application/Firming_Solution.Application.csproj" />
+    <Project Path="src/Firming_Solution.Domain/Firming_Solution.Domain.csproj" />
+    <Project Path="src/Firming_Solution.Infrastructure/Firming_Solution.Infrastructure.csproj" />
+    <Project Path="src/Firming_Solution.Web/Firming_Solution.Web.csproj" />
+  </Folder>
+</Solution>

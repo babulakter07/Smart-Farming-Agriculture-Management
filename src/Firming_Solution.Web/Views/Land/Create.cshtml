@@ -1,0 +1,70 @@
+@model Firming_Solution.Domain.Entities.LandParcel
+@{
+    ViewData["Title"] = "Add Land Parcel";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="caw-card">
+            <div class="caw-section-title"><i class="fas fa-map me-2"></i>Add Land Parcel</div>
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3"></div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="FarmId" class="caw-form-label">Farm <span class="text-danger">*</span></label>
+                        <select asp-for="FarmId" asp-items="ViewBag.Farms" class="form-select">
+                            <option value="">-- Select Farm --</option>
+                        </select>
+                        <span asp-validation-for="FarmId" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="LandName" class="caw-form-label">Land Name <span class="text-danger">*</span></label>
+                        <input asp-for="LandName" class="form-control" placeholder="North Field, Plot A-1..." />
+                        <span asp-validation-for="LandName" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="Area_Decimal" class="caw-form-label">Area (Decimal) <span class="text-danger">*</span></label>
+                        <input asp-for="Area_Decimal" class="form-control" type="number" step="0.01" min="0.01" placeholder="10.00" />
+                        <span asp-validation-for="Area_Decimal" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="OwnershipType" class="caw-form-label">Ownership Type</label>
+                        <select asp-for="OwnershipType" asp-items="Html.GetEnumSelectList<Firming_Solution.Domain.Enums.OwnershipType>()" class="form-select"></select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="LeaseCostPerSeason" class="caw-form-label">Lease Cost/Season (৳)</label>
+                        <input asp-for="LeaseCostPerSeason" class="form-control" type="number" step="0.01" placeholder="0.00" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="SoilType" class="caw-form-label">Soil Type</label>
+                        <input asp-for="SoilType" class="form-control" placeholder="Sandy loam, Clay, Alluvial..." />
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <label asp-for="LastTestedDate" class="caw-form-label">Last Soil Test Date</label>
+                        <input asp-for="LastTestedDate" class="form-control" type="date" />
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-caw-primary flex-fill">
+                        <i class="fas fa-save me-2"></i>Save Parcel
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary flex-fill">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

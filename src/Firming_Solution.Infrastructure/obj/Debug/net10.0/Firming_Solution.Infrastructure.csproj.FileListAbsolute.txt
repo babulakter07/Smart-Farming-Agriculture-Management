@@ -1,0 +1,17 @@
+D:\MyProject\Firming_Solution\src\Firming_Solution.Infrastructure\obj\Debug\net10.0\Firming_Solution.Infrastructure.csproj.AssemblyReference.cache
+D:\MyProject\Firming_Solution\src\Firming_Solution.Infrastructure\obj\Debug\net10.0\Firming_Solution.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\MyProject\Firming_Solution\src\Firming_Solution.Infrastructure\obj\Debug\net10.0\Firming_Solution.Infrastructure.AssemblyInfoInputs.cache
+D:\MyProject\Firming_Solution\src\Firming_Solution.Infrastructure\obj\Debug\net10.0\Firming_Solution.Infrastructure.AssemblyInfo.cs
+D:\MyProject\Firming_Solution\src\Firming_Solution.Infrastructure\obj\Debug\net10.0\Firming_Solution.Infrastructure.csproj.CoreCompileInputs.cache
+D:\MyProject\Firming_Solution\src\Firming_Solution.Infrastructure\bin\Debug\net10.0\Firming_Solution.Infrastructure.deps.json
+D:\MyProject\Firming_Solution\src\Firming_Solution.Infrastructure\bin\Debug\net10.0\Firming_Solution.Infrastructure.runtimeconfig.json
+D:\MyProject\Firming_Solution\src\Firming_Solution.Infrastructure\bin\Debug\net10.0\Firming_Solution.Infrastructure.dll
+D:\MyProject\Firming_Solution\src\Firming_Solution.Infrastructure\bin\Debug\net10.0\Firming_Solution.Infrastructure.pdb
+D:\MyProject\Firming_Solution\src\Firming_Solution.Infrastructure\bin\Debug\net10.0\Firming_Solution.Domain.dll
+D:\MyProject\Firming_Solution\src\Firming_Solution.Infrastructure\bin\Debug\net10.0\Firming_Solution.Domain.pdb
+D:\MyProject\Firming_Solution\src\Firming_Solution.Infrastructure\obj\Debug\net10.0\Firming_.B25D2C02.Up2Date
+D:\MyProject\Firming_Solution\src\Firming_Solution.Infrastructure\obj\Debug\net10.0\Firming_Solution.Infrastructure.dll
+D:\MyProject\Firming_Solution\src\Firming_Solution.Infrastructure\obj\Debug\net10.0\refint\Firming_Solution.Infrastructure.dll
+D:\MyProject\Firming_Solution\src\Firming_Solution.Infrastructure\obj\Debug\net10.0\Firming_Solution.Infrastructure.pdb
+D:\MyProject\Firming_Solution\src\Firming_Solution.Infrastructure\obj\Debug\net10.0\Firming_Solution.Infrastructure.genruntimeconfig.cache
+D:\MyProject\Firming_Solution\src\Firming_Solution.Infrastructure\obj\Debug\net10.0\ref\Firming_Solution.Infrastructure.dll

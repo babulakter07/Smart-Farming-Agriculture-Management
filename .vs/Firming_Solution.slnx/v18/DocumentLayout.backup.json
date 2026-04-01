@@ -1,0 +1,140 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\MyProject\\Firming_Solution\\",
+<<<<<<< HEAD
+  "Documents": [],
+=======
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{19A8331C-1A8A-AF3A-CB13-7000FF093824}|src\\Firming_Solution.Web\\Firming_Solution.Web.csproj|d:\\myproject\\firming_solution\\src\\firming_solution.web\\views\\batch\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{19A8331C-1A8A-AF3A-CB13-7000FF093824}|src\\Firming_Solution.Web\\Firming_Solution.Web.csproj|solutionrelative:src\\firming_solution.web\\views\\batch\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{19A8331C-1A8A-AF3A-CB13-7000FF093824}|src\\Firming_Solution.Web\\Firming_Solution.Web.csproj|d:\\myproject\\firming_solution\\src\\firming_solution.web\\views\\mortalitylog\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{19A8331C-1A8A-AF3A-CB13-7000FF093824}|src\\Firming_Solution.Web\\Firming_Solution.Web.csproj|solutionrelative:src\\firming_solution.web\\views\\mortalitylog\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{19A8331C-1A8A-AF3A-CB13-7000FF093824}|src\\Firming_Solution.Web\\Firming_Solution.Web.csproj|d:\\myproject\\firming_solution\\src\\firming_solution.web\\views\\admin\\users.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{19A8331C-1A8A-AF3A-CB13-7000FF093824}|src\\Firming_Solution.Web\\Firming_Solution.Web.csproj|solutionrelative:src\\firming_solution.web\\views\\admin\\users.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A9AC2F15-775E-5AD7-387F-2D53AFEABAA0}|src\\Firming_Solution.Application\\Firming_Solution.Application.csproj|d:\\myproject\\firming_solution\\src\\firming_solution.application\\services\\dashboardservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A9AC2F15-775E-5AD7-387F-2D53AFEABAA0}|src\\Firming_Solution.Application\\Firming_Solution.Application.csproj|solutionrelative:src\\firming_solution.application\\services\\dashboardservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72A42FD3-3A88-13DA-0209-C033D90CD983}|src\\Firming_Solution.Domain\\Firming_Solution.Domain.csproj|d:\\myproject\\firming_solution\\src\\firming_solution.domain\\entities\\dailytask.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72A42FD3-3A88-13DA-0209-C033D90CD983}|src\\Firming_Solution.Domain\\Firming_Solution.Domain.csproj|solutionrelative:src\\firming_solution.domain\\entities\\dailytask.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+>>>>>>> 0661c52a060c67414933cde7c9255d85e5f0b2bf
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+<<<<<<< HEAD
+          "SelectedChildIndex": -1,
+=======
+          "SelectedChildIndex": 8,
+>>>>>>> 0661c52a060c67414933cde7c9255d85e5f0b2bf
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:132:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:131:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{13b12e3e-c1b4-4539-9371-4fe9a0d523fc}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:133:0:{13b12e3e-c1b4-4539-9371-4fe9a0d523fc}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{13b12e3e-c1b4-4539-9371-4fe9a0d523fc}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+<<<<<<< HEAD
+=======
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\MyProject\\Firming_Solution\\src\\Firming_Solution.Web\\Views\\MortalityLog\\Index.cshtml",
+              "RelativeDocumentMoniker": "src\\Firming_Solution.Web\\Views\\MortalityLog\\Index.cshtml",
+              "ToolTip": "D:\\MyProject\\Firming_Solution\\src\\Firming_Solution.Web\\Views\\MortalityLog\\Index.cshtml",
+              "RelativeToolTip": "src\\Firming_Solution.Web\\Views\\MortalityLog\\Index.cshtml",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAqwA8AAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-01T04:50:12.322Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\MyProject\\Firming_Solution\\src\\Firming_Solution.Web\\Views\\Batch\\Index.cshtml",
+              "RelativeDocumentMoniker": "src\\Firming_Solution.Web\\Views\\Batch\\Index.cshtml",
+              "ToolTip": "D:\\MyProject\\Firming_Solution\\src\\Firming_Solution.Web\\Views\\Batch\\Index.cshtml",
+              "RelativeToolTip": "src\\Firming_Solution.Web\\Views\\Batch\\Index.cshtml",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAqwCQAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-01T04:46:22.368Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Users.cshtml",
+              "DocumentMoniker": "D:\\MyProject\\Firming_Solution\\src\\Firming_Solution.Web\\Views\\Admin\\Users.cshtml",
+              "RelativeDocumentMoniker": "src\\Firming_Solution.Web\\Views\\Admin\\Users.cshtml",
+              "ToolTip": "D:\\MyProject\\Firming_Solution\\src\\Firming_Solution.Web\\Views\\Admin\\Users.cshtml",
+              "RelativeToolTip": "src\\Firming_Solution.Web\\Views\\Admin\\Users.cshtml",
+              "ViewState": "AgIAADoAAAAAAAAAAAD4vz8AAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-01T04:46:20.533Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DailyTask.cs",
+              "DocumentMoniker": "D:\\MyProject\\Firming_Solution\\src\\Firming_Solution.Domain\\Entities\\DailyTask.cs",
+              "RelativeDocumentMoniker": "src\\Firming_Solution.Domain\\Entities\\DailyTask.cs",
+              "ToolTip": "D:\\MyProject\\Firming_Solution\\src\\Firming_Solution.Domain\\Entities\\DailyTask.cs",
+              "RelativeToolTip": "src\\Firming_Solution.Domain\\Entities\\DailyTask.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-31T20:17:59.934Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DashboardService.cs",
+              "DocumentMoniker": "D:\\MyProject\\Firming_Solution\\src\\Firming_Solution.Application\\Services\\DashboardService.cs",
+              "RelativeDocumentMoniker": "src\\Firming_Solution.Application\\Services\\DashboardService.cs",
+              "ToolTip": "D:\\MyProject\\Firming_Solution\\src\\Firming_Solution.Application\\Services\\DashboardService.cs",
+              "RelativeToolTip": "src\\Firming_Solution.Application\\Services\\DashboardService.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAA6wCUAAAB8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-31T20:05:38.545Z"
+>>>>>>> 0661c52a060c67414933cde7c9255d85e5f0b2bf
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

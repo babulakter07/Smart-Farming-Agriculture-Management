@@ -1,0 +1,78 @@
+@model List<Firming_Solution.Domain.Entities.MortalityLog>
+@{
+    ViewData["Title"] = "Mortality Logs";
+    var batches = ViewBag.Batches as List<Firming_Solution.Domain.Entities.Batch>;
+    int? selectedBatchId = ViewBag.SelectedBatchId;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <form method="get" class="d-flex gap-2">
+        <select name="batchId" class="form-select form-select-sm" style="width:220px;" onchange="this.form.submit()">
+            <option value="">All Batches</option>
+            @if (batches != null)
+            {
+                foreach (var b in batches)
+                {
+                    if (selectedBatchId == b.Id)
+                    {
+                        <option value="@b.Id" selected="selected">@b.BatchName</option>
+                    }
+                    else
+                    {
+                        <option value="@b.Id">@b.BatchName</option>
+                    }
+                }
+            }
+        </select>
+    </form>
+    @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager") || User.IsInRole("Worker"))
+    {
+        <a asp-action="Create" class="btn btn-danger btn-sm">
+            <i class="fas fa-plus me-1"></i>Log Mortality
+        </a>
+    }
+</div>
+
+<div class="caw-card" style="border-left: 4px solid var(--caw-danger);">
+    <div class="caw-section-title"><i class="fas fa-skull-crossbones me-2 text-danger"></i>Mortality Logs — @Model.Sum(m => m.Count) total deaths</div>
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="caw-table">
+                <thead>
+                    <tr><th>Date</th><th>Batch</th><th>Count</th><th>Reason</th><th>Est. Loss (৳)</th><th></th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var ml in Model)
+                    {
+                        <tr>
+                            <td style="color:var(--caw-text-muted)">@ml.LogDate.ToString("dd MMM yyyy")</td>
+                            <td>
+                                <a asp-controller="Batch" asp-action="Details" asp-route-id="@ml.BatchId" class="text-gold">
+                                    @ml.Batch?.BatchName
+                                </a>
+                            </td>
+                            <td class="profit-negative fw-bold">@ml.Count</td>
+                            <td style="color:var(--caw-text-muted)">@(ml.Reason ?? "—")</td>
+                            <td style="color:var(--caw-text-muted)">@(ml.EstimatedLoss.HasValue ? $"৳ {ml.EstimatedLoss.Value:N0}" : "—")</td>
+                            <td>
+                                @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
+                                {
+                                    <form asp-action="Delete" asp-route-id="@ml.Id" method="post" class="d-inline"
+                                          onsubmit="return confirm('Delete this mortality log?')">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="small text-center py-3" style="color:var(--caw-text-muted)">No mortality logs found.</p>
+    }
+</div>

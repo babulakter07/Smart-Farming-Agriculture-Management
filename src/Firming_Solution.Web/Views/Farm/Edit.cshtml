@@ -1,0 +1,66 @@
+@model Firming_Solution.Domain.Entities.Farm
+@{
+    ViewData["Title"] = "Edit Farm";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="caw-card">
+            <div class="caw-section-title"><i class="fas fa-edit me-2"></i>Edit Farm — @Model.FarmName</div>
+            <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="FarmName" class="caw-form-label">Farm Name <span class="text-danger">*</span></label>
+                    <input asp-for="FarmName" class="form-control" />
+                    <span asp-validation-for="FarmName" class="text-danger small"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="FarmType" class="caw-form-label">Farm Type</label>
+                        <select asp-for="FarmType" asp-items="Html.GetEnumSelectList<Firming_Solution.Domain.Enums.FarmType>()" class="form-select"></select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="TotalArea" class="caw-form-label">Total Area (Ha)</label>
+                        <input asp-for="TotalArea" class="form-control" type="number" step="0.01" />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Location" class="caw-form-label">Location</label>
+                    <input asp-for="Location" class="form-control" />
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Latitude" class="caw-form-label">Latitude</label>
+                        <input asp-for="Latitude" class="form-control" type="number" step="0.000001" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Longitude" class="caw-form-label">Longitude</label>
+                        <input asp-for="Longitude" class="form-control" type="number" step="0.000001" />
+                    </div>
+                </div>
+
+                <div class="mb-4 form-check">
+                    <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                    <label asp-for="IsActive" class="form-check-label" style="color:var(--caw-text)">Farm is Active</label>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-caw-primary flex-fill">
+                        <i class="fas fa-save me-2"></i>Save Changes
+                    </button>
+                    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary flex-fill">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

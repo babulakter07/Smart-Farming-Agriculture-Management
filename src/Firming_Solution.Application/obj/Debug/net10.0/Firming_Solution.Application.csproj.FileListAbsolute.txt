@@ -1,0 +1,17 @@
+D:\MyProject\Firming_Solution\src\Firming_Solution.Application\obj\Debug\net10.0\Firming_Solution.Application.csproj.AssemblyReference.cache
+D:\MyProject\Firming_Solution\src\Firming_Solution.Application\obj\Debug\net10.0\Firming_Solution.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\MyProject\Firming_Solution\src\Firming_Solution.Application\obj\Debug\net10.0\Firming_Solution.Application.AssemblyInfoInputs.cache
+D:\MyProject\Firming_Solution\src\Firming_Solution.Application\obj\Debug\net10.0\Firming_Solution.Application.AssemblyInfo.cs
+D:\MyProject\Firming_Solution\src\Firming_Solution.Application\obj\Debug\net10.0\Firming_Solution.Application.csproj.CoreCompileInputs.cache
+D:\MyProject\Firming_Solution\src\Firming_Solution.Application\bin\Debug\net10.0\Firming_Solution.Application.deps.json
+D:\MyProject\Firming_Solution\src\Firming_Solution.Application\bin\Debug\net10.0\Firming_Solution.Application.dll
+D:\MyProject\Firming_Solution\src\Firming_Solution.Application\bin\Debug\net10.0\Firming_Solution.Application.pdb
+D:\MyProject\Firming_Solution\src\Firming_Solution.Application\bin\Debug\net10.0\Firming_Solution.Domain.dll
+D:\MyProject\Firming_Solution\src\Firming_Solution.Application\bin\Debug\net10.0\Firming_Solution.Infrastructure.dll
+D:\MyProject\Firming_Solution\src\Firming_Solution.Application\bin\Debug\net10.0\Firming_Solution.Domain.pdb
+D:\MyProject\Firming_Solution\src\Firming_Solution.Application\bin\Debug\net10.0\Firming_Solution.Infrastructure.pdb
+D:\MyProject\Firming_Solution\src\Firming_Solution.Application\obj\Debug\net10.0\Firming_.57E1F04C.Up2Date
+D:\MyProject\Firming_Solution\src\Firming_Solution.Application\obj\Debug\net10.0\Firming_Solution.Application.dll
+D:\MyProject\Firming_Solution\src\Firming_Solution.Application\obj\Debug\net10.0\refint\Firming_Solution.Application.dll
+D:\MyProject\Firming_Solution\src\Firming_Solution.Application\obj\Debug\net10.0\Firming_Solution.Application.pdb
+D:\MyProject\Firming_Solution\src\Firming_Solution.Application\obj\Debug\net10.0\ref\Firming_Solution.Application.dll
