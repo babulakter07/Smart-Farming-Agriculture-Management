@@ -1,0 +1,72 @@
+@model List<Firming_Solution.Domain.Entities.Investment>
+@{
+    ViewData["Title"] = "Investments";
+    decimal totalInvestment = ViewBag.TotalInvestment ?? 0m;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div></div>
+    @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager") || User.IsInRole("Accountant"))
+    {
+        <a asp-action="Create" class="btn btn-caw-primary btn-sm">
+            <i class="fas fa-plus me-1"></i>Log Investment
+        </a>
+    }
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="caw-card caw-stat-card text-center">
+            <div class="caw-card-title">Total Investment</div>
+            <div class="caw-card-value" style="font-size:1.5rem;">৳ @totalInvestment.ToString("N0")</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="caw-card caw-stat-card info text-center">
+            <div class="caw-card-title">Records</div>
+            <div class="caw-card-value">@Model.Count</div>
+        </div>
+    </div>
+</div>
+
+<div class="caw-card">
+    <div class="caw-section-title"><i class="fas fa-piggy-bank me-2"></i>Investment Records</div>
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="caw-table">
+                <thead>
+                    <tr><th>Date</th><th>Farm</th><th>Category</th><th>Source</th><th>Amount</th><th>Description</th><th>Recorded By</th><th></th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var i in Model)
+                    {
+                        <tr>
+                            <td style="color:var(--caw-text-muted)">@i.InvestDate.ToString("dd MMM yyyy")</td>
+                            <td style="color:var(--caw-text)">@i.Farm?.FarmName</td>
+                            <td style="color:var(--caw-text-muted)">@i.Category</td>
+                            <td style="color:var(--caw-text-muted)">@i.Source</td>
+                            <td class="profit-positive fw-bold">৳ @i.Amount.ToString("N0")</td>
+                            <td style="color:var(--caw-text-muted)">@(i.Description ?? "—")</td>
+                            <td style="color:var(--caw-text-muted)">@(i.RecordedBy?.FullName ?? i.RecordedBy?.UserName ?? "—")</td>
+                            <td>
+                                @if (User.IsInRole("SuperAdmin"))
+                                {
+                                    <form asp-action="Delete" asp-route-id="@i.Id" method="post" class="d-inline"
+                                          onsubmit="return confirm('Delete this investment record?')">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="small text-center py-3" style="color:var(--caw-text-muted)">No investment records found.</p>
+    }
+</div>

@@ -1,0 +1,77 @@
+@model List<Firming_Solution.Domain.Entities.Cost>
+@{
+    ViewData["Title"] = "Costs";
+    decimal totalCosts = ViewBag.TotalCosts ?? 0m;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div></div>
+    @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager") || User.IsInRole("Accountant"))
+    {
+        <a asp-action="Create" class="btn btn-caw-primary btn-sm">
+            <i class="fas fa-plus me-1"></i>Record Cost
+        </a>
+    }
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="caw-card caw-stat-card danger text-center">
+            <div class="caw-card-title">Total Costs (Shown)</div>
+            <div class="caw-card-value profit-negative" style="font-size:1.4rem;">৳ @totalCosts.ToString("N0")</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="caw-card caw-stat-card text-center">
+            <div class="caw-card-title">Records</div>
+            <div class="caw-card-value">@Model.Count</div>
+        </div>
+    </div>
+</div>
+
+<div class="caw-card">
+    <div class="caw-section-title"><i class="fas fa-receipt me-2"></i>Cost Records</div>
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="caw-table">
+                <thead>
+                    <tr><th>Date</th><th>Farm</th><th>Batch</th><th>Category</th><th>Amount</th><th>Description</th><th></th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var c in Model)
+                    {
+                        <tr>
+                            <td style="color:var(--caw-text-muted)">@c.CostDate.ToString("dd MMM yyyy")</td>
+                            <td style="color:var(--caw-text)">@c.Farm?.FarmName</td>
+                            <td>
+                                @if (c.Batch != null)
+                                {
+                                    <a asp-controller="Batch" asp-action="Details" asp-route-id="@c.BatchId" class="text-gold">@c.Batch.BatchName</a>
+                                }
+                                else { <span style="color:var(--caw-text-muted)">—</span> }
+                            </td>
+                            <td style="color:var(--caw-text-muted)">@c.CostCategory</td>
+                            <td class="profit-negative fw-bold">৳ @c.Amount.ToString("N0")</td>
+                            <td style="color:var(--caw-text-muted)">@(c.Description ?? "—")</td>
+                            <td>
+                                @if (User.IsInRole("SuperAdmin"))
+                                {
+                                    <form asp-action="Delete" asp-route-id="@c.Id" method="post" class="d-inline"
+                                          onsubmit="return confirm('Delete this cost record?')">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="small text-center py-3" style="color:var(--caw-text-muted)">No cost records found.</p>
+    }
+</div>

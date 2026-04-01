@@ -1,0 +1,79 @@
+@model Firming_Solution.Domain.Entities.EidBazarPlan
+@{
+    ViewData["Title"] = "New Eid Bazar Plan";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="caw-card">
+            <div class="caw-section-title"><i class="fas fa-moon text-gold me-2"></i>New Eid Bazar Plan</div>
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3"></div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="FarmId" class="caw-form-label">Farm <span class="text-danger">*</span></label>
+                        <select asp-for="FarmId" asp-items="ViewBag.Farms" class="form-select">
+                            <option value="">-- Select Farm --</option>
+                        </select>
+                        <span asp-validation-for="FarmId" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="EidType" class="caw-form-label">Eid Type <span class="text-danger">*</span></label>
+                        <select asp-for="EidType" asp-items="Html.GetEnumSelectList<Firming_Solution.Domain.Enums.EidType>()" class="form-select"></select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="EidDate" class="caw-form-label">Eid Date <span class="text-danger">*</span></label>
+                        <input asp-for="EidDate" class="form-control" type="date" />
+                        <span asp-validation-for="EidDate" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="LinkedBatchId" class="caw-form-label">Linked Batch (Eid Target)</label>
+                        <select asp-for="LinkedBatchId" asp-items="ViewBag.Batches" class="form-select">
+                            <option value="">-- None --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="TargetAnimals" class="caw-form-label">Target Animals</label>
+                        <input asp-for="TargetAnimals" class="form-control" type="number" min="1" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="TargetWeightPerAnimal" class="caw-form-label">Target Weight/Animal (kg)</label>
+                        <input asp-for="TargetWeightPerAnimal" class="form-control" type="number" step="0.1" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="ExpectedPricePerKg" class="caw-form-label">Exp. Price/kg (৳)</label>
+                        <input asp-for="ExpectedPricePerKg" class="form-control" type="number" step="0.01" />
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="ExpectedRevenue" class="caw-form-label">Expected Revenue (৳)</label>
+                    <input asp-for="ExpectedRevenue" class="form-control" type="number" step="0.01" />
+                    <div class="small mt-1" style="color:var(--caw-text-muted)">
+                        = Target Animals × Target Weight/Animal × Expected Price/kg
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-caw-gold flex-fill">
+                        <i class="fas fa-save me-2"></i>Create Plan
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary flex-fill">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

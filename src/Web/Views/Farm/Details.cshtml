@@ -1,0 +1,52 @@
+@model FarmDetailDto
+@{
+    ViewData["Title"] = Model.FarmName;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>🏡 @Model.FarmName <span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary") fs-6">@(Model.IsActive ? "Active" : "Inactive")</span></h4>
+    <div class="d-flex gap-2">
+        <a asp-controller="Batch" asp-action="Create" asp-route-farmId="@Model.Id" class="btn btn-success btn-sm">+ Batch</a>
+        <a asp-controller="Cost" asp-action="Index" asp-route-farmId="@Model.Id" class="btn btn-outline-secondary btn-sm">Costs</a>
+        <a asp-controller="Land" asp-action="Index" asp-route-farmId="@Model.Id" class="btn btn-outline-secondary btn-sm">Land</a>
+        @if (User.IsInRole("SuperAdmin") || User.IsInRole("FarmManager"))
+        {
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning btn-sm">Edit</a>
+        }
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3"><div class="card p-3"><div class="text-muted small">Type</div><div class="fw-bold">@Model.FarmType</div></div></div>
+    <div class="col-md-3"><div class="card p-3"><div class="text-muted small">Owner</div><div class="fw-bold">@Model.OwnerName</div></div></div>
+    <div class="col-md-3"><div class="card p-3"><div class="text-muted small">Location</div><div class="fw-bold">@(Model.Location ?? "—")</div></div></div>
+    <div class="col-md-3"><div class="card p-3"><div class="text-muted small">Area</div><div class="fw-bold">@(Model.TotalArea?.ToString("N2") ?? "—") decimal</div></div></div>
+</div>
+
+<h5>🐄 Batches (@Model.Batches.Count)</h5>
+<table class="table table-hover small">
+    <thead class="table-light">
+        <tr><th>Batch</th><th>Species</th><th>Breed</th><th>Start</th><th>Count</th><th>Status</th><th>Eid</th><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (var b in Model.Batches)
+        {
+            <tr>
+                <td><a asp-controller="Batch" asp-action="Details" asp-route-id="@b.Id">@b.BatchName</a></td>
+                <td>@b.Species</td>
+                <td>@(b.Breed ?? "—")</td>
+                <td>@b.StartDate.ToString("dd MMM yy")</td>
+                <td>@b.InitialCount</td>
+                <td><span class="badge badge-status-@b.Status">@b.Status</span></td>
+                <td>@(b.IsEidTarget ? "🕌" : "")</td>
+                <td>
+                    <a asp-controller="Batch" asp-action="Details" asp-route-id="@b.Id" class="btn btn-outline-success btn-sm">View</a>
+                </td>
+            </tr>
+        }
+        @if (!Model.Batches.Any())
+        {
+            <tr><td colspan="8" class="text-muted text-center">No batches yet.</td></tr>
+        }
+    </tbody>
+</table>

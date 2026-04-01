@@ -1,0 +1,18 @@
+@{
+    ViewData["Title"] = "Access Denied";
+}
+
+<div class="caw-card text-center py-5">
+    <i class="fas fa-ban fa-4x mb-3" style="color:var(--caw-danger)"></i>
+    <h2 class="text-gold">Access Denied</h2>
+    <p style="color:var(--caw-text-muted)" class="mt-2">
+        You do not have permission to access this page.<br />
+        Please contact your administrator if you believe this is an error.
+    </p>
+    <a asp-controller="Dashboard" asp-action="Index" class="btn btn-caw-primary mt-3 me-2">
+        <i class="fas fa-home me-2"></i>Back to Dashboard
+    </a>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary mt-3">
+        <i class="fas fa-globe me-2"></i>Public Site
+    </a>
+</div>

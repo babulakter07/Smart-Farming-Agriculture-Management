@@ -1,0 +1,60 @@
+@model List<SaleListDto>
+@{
+    ViewData["Title"] = "Sales";
+    var batchId = ViewBag.BatchId as int? ?? 0;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>📈 Sales Register</h4>
+    <div class="d-flex gap-2">
+        @if (batchId > 0)
+        {
+            <a asp-controller="Batch" asp-action="Details" asp-route-id="@batchId" class="btn btn-outline-secondary btn-sm">← Batch</a>
+            <a asp-action="Create" asp-route-batchId="@batchId" class="btn btn-success btn-sm">+ Record Sale</a>
+        }
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <table class="table table-hover small mb-0">
+            <thead class="table-light">
+                <tr><th>Date</th><th>Batch</th><th>Buyer</th><th>Qty</th><th>Weight (kg)</th><th>Price/kg</th><th>Revenue (৳)</th><th>Eid</th><th></th></tr>
+            </thead>
+            <tbody>
+                @foreach (var s in Model)
+                {
+                    <tr>
+                        <td>@s.SaleDate.ToString("dd MMM yy")</td>
+                        <td>@s.BatchName</td>
+                        <td>@(s.BuyerName ?? "—")</td>
+                        <td>@(s.Quantity?.ToString() ?? "—")</td>
+                        <td>@(s.TotalWeight_kg?.ToString("N2") ?? "—")</td>
+                        <td>@s.PricePerKg.ToString("N2")</td>
+                        <td class="fw-bold text-success">@s.TotalRevenue.ToString("N2")</td>
+                        <td>@(s.IsEidSale ? "🕌" : "")</td>
+                        <td>
+                            <form asp-action="Delete" method="post" class="d-inline" onsubmit="return confirm('Delete this sale?')">
+                                <input type="hidden" name="id" value="@s.Id" />
+                                <input type="hidden" name="batchId" value="@s.BatchId" />
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Del</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Any())
+                {
+                    <tr><td colspan="9" class="text-muted text-center">No sales recorded.</td></tr>
+                }
+            </tbody>
+            <tfoot class="table-light">
+                <tr>
+                    <td colspan="6" class="fw-bold text-end">Total Revenue:</td>
+                    <td class="fw-bold text-success">৳ @Model.Sum(s => s.TotalRevenue).ToString("N2")</td>
+                    <td colspan="2"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

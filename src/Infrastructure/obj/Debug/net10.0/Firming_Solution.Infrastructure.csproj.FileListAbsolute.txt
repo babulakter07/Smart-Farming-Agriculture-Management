@@ -1,0 +1,5 @@
+D:\MyProject\Firming_Solution\src\Infrastructure\obj\Debug\net10.0\Firming_Solution.Infrastructure.csproj.AssemblyReference.cache
+D:\MyProject\Firming_Solution\src\Infrastructure\obj\Debug\net10.0\Firming_Solution.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\MyProject\Firming_Solution\src\Infrastructure\obj\Debug\net10.0\Firming_Solution.Infrastructure.AssemblyInfoInputs.cache
+D:\MyProject\Firming_Solution\src\Infrastructure\obj\Debug\net10.0\Firming_Solution.Infrastructure.AssemblyInfo.cs
+D:\MyProject\Firming_Solution\src\Infrastructure\obj\Debug\net10.0\Firming_Solution.Infrastructure.csproj.CoreCompileInputs.cache

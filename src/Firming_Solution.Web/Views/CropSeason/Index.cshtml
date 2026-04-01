@@ -1,0 +1,84 @@
+@model List<Firming_Solution.Domain.Entities.CropSeason>
+@using Firming_Solution.Domain.Enums
+@{
+    ViewData["Title"] = "Crop Seasons";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div></div>
+    @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
+    {
+        <a asp-action="Create" class="btn btn-caw-primary btn-sm">
+            <i class="fas fa-plus me-1"></i>New Crop Season
+        </a>
+    }
+</div>
+
+<div class="caw-card">
+    <div class="caw-section-title"><i class="fas fa-seedling me-2"></i>Crop Seasons (@Model.Count)</div>
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="caw-table">
+                <thead>
+                    <tr><th>Crop</th><th>Variety</th><th>Land</th><th>Farm</th><th>Sow Date</th><th>Harvest Date</th><th>Status</th><th>Yield</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var cs in Model)
+                    {
+                        var sCls = cs.Status switch {
+                            CropStatus.Planning => "badge-planning",
+                            CropStatus.Growing => "badge-active",
+                            CropStatus.Harvested => "badge-selling",
+                            CropStatus.Closed => "badge-closed",
+                            _ => ""
+                        };
+                        <tr>
+                            <td style="color:var(--caw-text)">@cs.CropName</td>
+                            <td style="color:var(--caw-text-muted)">@(cs.Variety ?? "—")</td>
+                            <td style="color:var(--caw-text-muted)">@cs.Land?.LandName</td>
+                            <td style="color:var(--caw-text-muted)">@cs.Land?.Farm?.FarmName</td>
+                            <td style="color:var(--caw-text-muted)">@(cs.SowDate.HasValue ? cs.SowDate.Value.ToString("dd MMM yyyy") : "—")</td>
+                            <td style="color:var(--caw-text-muted)">
+                                @(cs.ActualHarvestDate.HasValue ? cs.ActualHarvestDate.Value.ToString("dd MMM yyyy") :
+                                    cs.ExpectedHarvestDate.HasValue ? $"~ {cs.ExpectedHarvestDate.Value:dd MMM}" : "—")
+                            </td>
+                            <td><span class="caw-badge @sCls">@cs.Status</span></td>
+                            <td style="color:var(--caw-text-muted)">
+                                @(cs.ActualYield_kg.HasValue ? $"{cs.ActualYield_kg.Value:N1} kg" :
+                                    cs.ExpectedYield_kg.HasValue ? $"~ {cs.ExpectedYield_kg.Value:N1} kg" : "—")
+                            </td>
+                            <td>
+                                @if ((User.IsInRole("SuperAdmin") || User.IsInRole("Manager")) && cs.Status != CropStatus.Closed)
+                                {
+                                    if (cs.Status == CropStatus.Planning)
+                                    {
+                                        <form asp-action="UpdateStatus" asp-route-id="@cs.Id" method="post" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" name="status" value="@CropStatus.Growing" class="btn btn-outline-success btn-sm">
+                                                <i class="fas fa-play"></i>
+                                            </button>
+                                        </form>
+                                    }
+                                    else if (cs.Status == CropStatus.Growing)
+                                    {
+                                        <form asp-action="UpdateStatus" asp-route-id="@cs.Id" method="post" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" name="status" value="@CropStatus.Harvested" class="btn btn-outline-warning btn-sm">
+                                                <i class="fas fa-wheat-awn"></i>
+                                            </button>
+                                        </form>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="small text-center py-3" style="color:var(--caw-text-muted)">No crop seasons found.</p>
+    }
+</div>
