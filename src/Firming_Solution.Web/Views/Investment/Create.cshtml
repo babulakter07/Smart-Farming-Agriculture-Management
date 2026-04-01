@@ -1,0 +1,64 @@
+@model Firming_Solution.Domain.Entities.Investment
+@{
+    ViewData["Title"] = "Log Investment";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="caw-card">
+            <div class="caw-section-title"><i class="fas fa-piggy-bank me-2"></i>Log Investment</div>
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3"></div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="FarmId" class="caw-form-label">Farm <span class="text-danger">*</span></label>
+                        <select asp-for="FarmId" asp-items="ViewBag.Farms" class="form-select">
+                            <option value="">-- Select Farm --</option>
+                        </select>
+                        <span asp-validation-for="FarmId" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="InvestDate" class="caw-form-label">Investment Date <span class="text-danger">*</span></label>
+                        <input asp-for="InvestDate" class="form-control" type="date" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Category" class="caw-form-label">Category <span class="text-danger">*</span></label>
+                        <select asp-for="Category" asp-items="Html.GetEnumSelectList<Firming_Solution.Domain.Enums.InvestmentCategory>()" class="form-select"></select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Source" class="caw-form-label">Source <span class="text-danger">*</span></label>
+                        <select asp-for="Source" asp-items="Html.GetEnumSelectList<Firming_Solution.Domain.Enums.InvestmentSource>()" class="form-select"></select>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Amount" class="caw-form-label">Amount (৳) <span class="text-danger">*</span></label>
+                    <input asp-for="Amount" class="form-control" type="number" step="0.01" min="0.01" placeholder="0.00" />
+                    <span asp-validation-for="Amount" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Description" class="caw-form-label">Description</label>
+                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="Details about the investment..."></textarea>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-caw-primary flex-fill">
+                        <i class="fas fa-save me-2"></i>Log Investment
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary flex-fill">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,58 @@
+@model Firming_Solution.Domain.Entities.WeightLog
+@{
+    ViewData["Title"] = "Log Weight";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="caw-card">
+            <div class="caw-section-title"><i class="fas fa-weight-scale me-2"></i>Log Weight Measurement</div>
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="BatchId" class="caw-form-label">Batch <span class="text-danger">*</span></label>
+                    <select asp-for="BatchId" asp-items="ViewBag.Batches" class="form-select">
+                        <option value="">-- Select Batch --</option>
+                    </select>
+                    <span asp-validation-for="BatchId" class="text-danger small"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="LogDate" class="caw-form-label">Date <span class="text-danger">*</span></label>
+                        <input asp-for="LogDate" class="form-control" type="date" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="SampleCount" class="caw-form-label">Sample Count <span class="text-danger">*</span></label>
+                        <input asp-for="SampleCount" class="form-control" type="number" min="1" placeholder="10" />
+                        <span asp-validation-for="SampleCount" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="AvgWeight_kg" class="caw-form-label">Avg Weight (kg) <span class="text-danger">*</span></label>
+                        <input asp-for="AvgWeight_kg" class="form-control" type="number" step="0.001" placeholder="2.350" />
+                        <span asp-validation-for="AvgWeight_kg" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Notes" class="caw-form-label">Notes</label>
+                    <input asp-for="Notes" class="form-control" placeholder="FCR and estimated total weight will be auto-calculated." />
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-caw-primary flex-fill">
+                        <i class="fas fa-save me-2"></i>Save Weight Log
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary flex-fill">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

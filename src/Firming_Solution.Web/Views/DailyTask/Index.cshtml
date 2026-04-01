@@ -1,0 +1,121 @@
+@model List<Firming_Solution.Domain.Entities.DailyTask>
+@using Firming_Solution.Domain.Enums
+@using TaskStatus = Firming_Solution.Domain.Enums.TaskStatus
+@{
+    ViewData["Title"] = "Daily Tasks";
+    DateTime selectedDate = ViewBag.SelectedDate ?? DateTime.Today;
+    var prevDate = selectedDate.AddDays(-1);
+    var nextDate = selectedDate.AddDays(1);
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <div class="d-flex align-items-center gap-2">
+        <a asp-action="Index" asp-route-date="@prevDate.ToString("yyyy-MM-dd")" class="btn btn-outline-secondary btn-sm">
+            <i class="fas fa-chevron-left"></i>
+        </a>
+        <form method="get">
+            <input type="date" name="date" class="form-control form-control-sm"
+                   value="@selectedDate.ToString("yyyy-MM-dd")"
+                   onchange="this.form.submit()" style="width:160px;" />
+        </form>
+        <a asp-action="Index" asp-route-date="@nextDate.ToString("yyyy-MM-dd")" class="btn btn-outline-secondary btn-sm">
+            <i class="fas fa-chevron-right"></i>
+        </a>
+        <span class="ms-1" style="color:var(--caw-text-muted)">@selectedDate.ToString("dddd, MMMM d")</span>
+    </div>
+    @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
+    {
+        <a asp-action="Create" class="btn btn-caw-primary btn-sm">
+            <i class="fas fa-plus me-1"></i>Add Task
+        </a>
+    }
+</div>
+
+<div class="caw-card">
+    <div class="caw-section-title">
+        <i class="fas fa-tasks me-2"></i>Tasks for @selectedDate.ToString("dd MMM yyyy")
+        <span class="float-end small" style="color:var(--caw-text-muted)">
+            @Model.Count(t => t.Status == TaskStatus.Done)/@Model.Count done
+        </span>
+    </div>
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="caw-table">
+                <thead>
+                    <tr><th>Time</th><th>Task</th><th>Farm</th><th>Assigned To</th><th>Status</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var t in Model)
+                    {
+                        var tCls = t.Status switch {
+                            TaskStatus.Pending => "badge-pending",
+                            TaskStatus.Done => "badge-done",
+                            TaskStatus.InProgress => "badge-inprogress",
+                            TaskStatus.Skipped => "badge-skipped",
+                            _ => ""
+                        };
+                        <tr>
+                            <td style="color:var(--caw-text-muted)">
+                                @(t.StartTime.HasValue ? t.StartTime.Value.ToString(@"hh\:mm") : "—")
+                            </td>
+                            <td>
+                                <div style="color:var(--caw-text)">@t.TaskType</div>
+                                @if (!string.IsNullOrEmpty(t.Description))
+                                {
+                                    <div class="small" style="color:var(--caw-text-muted)">@t.Description</div>
+                                }
+                            </td>
+                            <td style="color:var(--caw-text-muted)">@t.Farm?.FarmName</td>
+                            <td style="color:var(--caw-text-muted)">@(t.AssignedTo?.FullName ?? "Unassigned")</td>
+                            <td><span class="caw-badge @tCls">@t.Status</span></td>
+                            <td>
+                                @if (t.Status != TaskStatus.Done && t.Status != TaskStatus.Skipped)
+                                {
+                                    <form asp-action="UpdateStatus" asp-route-id="@t.Id" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" name="status" value="@TaskStatus.Done"
+                                                class="btn btn-outline-success btn-sm" title="Mark Done">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                        <button type="submit" name="status" value="@TaskStatus.InProgress"
+                                                class="btn btn-outline-info btn-sm ms-1" title="Mark In Progress">
+                                            <i class="fas fa-play"></i>
+                                        </button>
+                                        <button type="submit" name="status" value="@TaskStatus.Skipped"
+                                                class="btn btn-outline-secondary btn-sm ms-1" title="Skip">
+                                            <i class="fas fa-forward"></i>
+                                        </button>
+                                    </form>
+                                }
+                                @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
+                                {
+                                    <form asp-action="Delete" asp-route-id="@t.Id" method="post" class="d-inline ms-1"
+                                          onsubmit="return confirm('Delete this task?')">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-4">
+            <i class="fas fa-check-circle fa-3x mb-3" style="color:var(--caw-green-light)"></i>
+            <p style="color:var(--caw-text-muted)">No tasks for this day.</p>
+            @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
+            {
+                <a asp-action="Create" class="btn btn-caw-primary btn-sm">
+                    <i class="fas fa-plus me-2"></i>Add Task
+                </a>
+            }
+        </div>
+    }
+</div>

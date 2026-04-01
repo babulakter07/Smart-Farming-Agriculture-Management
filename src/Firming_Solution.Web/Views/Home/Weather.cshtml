@@ -1,0 +1,76 @@
+@{
+    ViewData["Title"] = "Weather Forecast";
+    var weatherData = ViewBag.WeatherData as dynamic[];
+}
+
+<section style="padding:3rem 0; background:var(--caw-bg);">
+    <div class="container">
+        <div class="caw-section-heading">
+            <i class="fas fa-cloud-sun-rain"></i>
+            <h2>Bangladesh Agricultural Weather Forecast</h2>
+        </div>
+        <p style="color:var(--caw-text-muted)" class="mb-4">
+            Daily weather conditions for Bangladesh's key farming regions. Use these forecasts to plan
+            irrigation, harvesting, spraying, and outdoor activities.
+        </p>
+
+        <div class="row g-4 mb-5">
+            @if (weatherData != null)
+            {
+                foreach (var w in weatherData)
+                {
+                    <div class="col-sm-6 col-lg-4">
+                        <div class="caw-weather-widget">
+                            <div class="caw-weather-icon">
+                                <i class="fas @w.Icon"></i>
+                            </div>
+                            <div class="caw-weather-temp">@w.Temp°C</div>
+                            <div class="fw-bold mt-1 fs-5" style="color:var(--caw-text)">@w.City</div>
+                            <div class="caw-weather-city mb-2">@w.Condition</div>
+                            <p class="small mb-3" style="color:var(--caw-text-muted)">@w.Description</p>
+                            <div class="d-flex justify-content-center gap-3 small" style="color:var(--caw-text-muted)">
+                                <span><i class="fas fa-tint me-1 text-info"></i>@w.Humidity% Humidity</span>
+                                <span><i class="fas fa-wind me-1 text-caw"></i>@w.Wind km/h</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        <!-- Farming Tips by Weather -->
+        <div class="caw-card">
+            <div class="caw-section-title"><i class="fas fa-lightbulb me-2"></i>Farming Tips by Weather Condition</div>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="text-center p-3">
+                        <i class="fas fa-sun fa-2x mb-2" style="color:#f5a623"></i>
+                        <h6 style="color:var(--caw-gold)">Sunny Days</h6>
+                        <p class="small" style="color:var(--caw-text-muted)">Ideal for harvesting, drying grains, and outdoor farm work. Ensure animals have shade and fresh water.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="text-center p-3">
+                        <i class="fas fa-cloud fa-2x mb-2" style="color:#b0bec5"></i>
+                        <h6 style="color:var(--caw-gold)">Cloudy Days</h6>
+                        <p class="small" style="color:var(--caw-text-muted)">Good for transplanting seedlings and applying foliar sprays. Monitor for fungal disease risk.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="text-center p-3">
+                        <i class="fas fa-cloud-showers-heavy fa-2x mb-2" style="color:#81d4fa"></i>
+                        <h6 style="color:var(--caw-gold)">Rainy Days</h6>
+                        <p class="small" style="color:var(--caw-text-muted)">Protect feed and medicine stocks. Avoid chemical spray. Check drainage in animal enclosures.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="text-center p-3">
+                        <i class="fas fa-bolt fa-2x mb-2" style="color:#ffd54f"></i>
+                        <h6 style="color:var(--caw-gold)">Storm Warning</h6>
+                        <p class="small" style="color:var(--caw-text-muted)">Secure livestock in shelters. Harvest any mature crops. Check structural integrity of farm buildings.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

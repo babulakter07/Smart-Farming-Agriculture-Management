@@ -1,0 +1,77 @@
+@model Firming_Solution.Domain.Entities.FertiliserPlan
+@{
+    ViewData["Title"] = "New Fertiliser Plan";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-9 col-lg-8">
+        <div class="caw-card">
+            <div class="caw-section-title"><i class="fas fa-flask me-2"></i>New Fertiliser Application Plan</div>
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3"></div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="LandId" class="caw-form-label">Land Parcel <span class="text-danger">*</span></label>
+                        <select asp-for="LandId" asp-items="ViewBag.Lands" class="form-select">
+                            <option value="">-- Select Land --</option>
+                        </select>
+                        <span asp-validation-for="LandId" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="SeasonId" class="caw-form-label">Crop Season <span class="text-danger">*</span></label>
+                        <select asp-for="SeasonId" asp-items="ViewBag.Seasons" class="form-select">
+                            <option value="">-- Select Season --</option>
+                        </select>
+                        <span asp-validation-for="SeasonId" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="FertiliserName" class="caw-form-label">Fertiliser Name <span class="text-danger">*</span></label>
+                        <input asp-for="FertiliserName" class="form-control" placeholder="Urea, TSP, MoP..." />
+                        <span asp-validation-for="FertiliserName" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ApplyDate" class="caw-form-label">Application Date <span class="text-danger">*</span></label>
+                        <input asp-for="ApplyDate" class="form-control" type="date" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="DoseKgPerDecimal" class="caw-form-label">Dose (kg/Decimal)</label>
+                        <input asp-for="DoseKgPerDecimal" class="form-control" type="number" step="0.01" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="TotalQuantity_kg" class="caw-form-label">Total Qty (kg)</label>
+                        <input asp-for="TotalQuantity_kg" class="form-control" type="number" step="0.1" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="PricePerKg" class="caw-form-label">Price/kg (৳)</label>
+                        <input asp-for="PricePerKg" class="form-control" type="number" step="0.01" />
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="TotalCost" class="caw-form-label">Total Cost (৳)</label>
+                    <input asp-for="TotalCost" class="form-control" type="number" step="0.01" />
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-caw-primary flex-fill">
+                        <i class="fas fa-save me-2"></i>Create Plan
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary flex-fill">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

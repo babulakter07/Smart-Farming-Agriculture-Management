@@ -1,0 +1,89 @@
+@model List<Firming_Solution.Domain.Entities.AppUser>
+@using Firming_Solution.Domain.Enums
+@{
+    ViewData["Title"] = "User Management";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="small" style="color:var(--caw-text-muted)">@Model.Count total users</div>
+    <a asp-controller="Account" asp-action="Register" class="btn btn-caw-primary btn-sm">
+        <i class="fas fa-user-plus me-1"></i>Register New User
+    </a>
+</div>
+
+<div class="caw-card">
+    <div class="caw-section-title"><i class="fas fa-users-cog me-2"></i>System Users</div>
+    <div class="table-responsive">
+        <table class="caw-table">
+            <thead>
+                <tr><th>Name</th><th>Username</th><th>Email</th><th>Role</th><th>Status</th><th>Joined</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var u in Model)
+                {
+                    <tr>
+                        <td style="color:var(--caw-text)">@(u.FullName ?? "—")</td>
+                        <td style="color:var(--caw-text-muted)">@u.UserName</td>
+                        <td style="color:var(--caw-text-muted)">@u.Email</td>
+                        <td>
+                            <span class="caw-badge @(u.Role == UserRole.SuperAdmin ? "badge-active" : "badge-planning")">
+                                @u.Role
+                            </span>
+                        </td>
+                        <td>
+                            @if (u.IsActive)
+                            {
+                                <span class="caw-badge badge-active">Active</span>
+                            }
+                            else
+                            {
+                                <span class="caw-badge badge-closed">Inactive</span>
+                            }
+                        </td>
+                        <td style="color:var(--caw-text-muted)">@u.CreatedAt.ToString("dd MMM yyyy")</td>
+                        <td>
+                            <!-- Toggle Active -->
+                            <form asp-action="ToggleActive" method="post" class="d-inline"
+                                  onsubmit="return confirm('@(u.IsActive ? "Deactivate" : "Activate") user @(u.UserName)?')">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="userId" value="@u.Id" />
+                                <button type="submit" class="btn btn-sm @(u.IsActive ? "btn-outline-warning" : "btn-outline-success")" title="@(u.IsActive ? "Deactivate" : "Activate")">
+                                    <i class="fas @(u.IsActive ? "fa-user-slash" : "fa-user-check")"></i>
+                                </button>
+                            </form>
+
+                            <!-- Change Role -->
+                            <form asp-action="ChangeRole" method="post" class="d-inline ms-1">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="userId" value="@u.Id" />
+                                <select name="role" class="form-select form-select-sm d-inline-block"
+                                        style="width:120px; display:inline-block !important;"
+                                        onchange="this.form.submit()">
+                                    @foreach (var role in Enum.GetValues<UserRole>())
+                                    {
+                                        if (u.Role == role)
+                                        {
+                                            <option value="@role" selected="selected">@role</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@role">@role</option>
+                                        }
+                                    }
+                                </select>
+                            </form>
+
+                            <!-- Delete -->
+                            <form asp-action="DeleteUser" method="post" class="d-inline ms-1"
+                                  onsubmit="return confirm('Delete user @(u.UserName)? This cannot be undone.')">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="userId" value="@u.Id" />
+                                <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

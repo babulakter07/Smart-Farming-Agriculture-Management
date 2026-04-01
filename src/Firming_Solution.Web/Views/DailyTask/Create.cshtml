@@ -1,0 +1,66 @@
+@model Firming_Solution.Domain.Entities.DailyTask
+@{
+    ViewData["Title"] = "Add Task";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="caw-card">
+            <div class="caw-section-title"><i class="fas fa-plus-circle me-2"></i>Add Daily Task</div>
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3"></div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="FarmId" class="caw-form-label">Farm <span class="text-danger">*</span></label>
+                        <select asp-for="FarmId" asp-items="ViewBag.Farms" class="form-select">
+                            <option value="">-- Select Farm --</option>
+                        </select>
+                        <span asp-validation-for="FarmId" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="TaskType" class="caw-form-label">Task Type <span class="text-danger">*</span></label>
+                        <select asp-for="TaskType" asp-items="Html.GetEnumSelectList<Firming_Solution.Domain.Enums.TaskType>()" class="form-select"></select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="TaskDate" class="caw-form-label">Task Date <span class="text-danger">*</span></label>
+                        <input asp-for="TaskDate" class="form-control" type="date" />
+                        <span asp-validation-for="TaskDate" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="StartTime" class="caw-form-label">Start Time</label>
+                        <input asp-for="StartTime" class="form-control" type="time" />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="AssignedToId" class="caw-form-label">Assign To</label>
+                    <select asp-for="AssignedToId" asp-items="ViewBag.Users" class="form-select">
+                        <option value="">-- Unassigned --</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Description" class="caw-form-label">Description</label>
+                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="Task details..."></textarea>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-caw-primary flex-fill">
+                        <i class="fas fa-save me-2"></i>Create Task
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary flex-fill">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

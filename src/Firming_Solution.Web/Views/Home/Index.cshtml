@@ -1,0 +1,285 @@
+@{
+    ViewData["Title"] = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var weatherData = ViewBag.WeatherData as dynamic[];
+}
+
+<!-- Hero Section -->
+<section class="caw-hero">
+    <div class="container caw-hero-content">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <h1 class="caw-hero-title">
+                    Smart <span>Farming</span> &amp;<br />Agriculture Management
+                </h1>
+                <p class="caw-hero-subtitle mt-3">
+                    CAW Invest empowers farmers and agribusiness managers with real-time insights,
+                    livestock tracking, financial analytics, and smart planning tools.
+                </p>
+                <a href="#weather" class="caw-hero-cta me-2">
+                    <i class="fas fa-cloud-sun me-2"></i>Check Weather
+                </a>
+                <a asp-controller="Account" asp-action="Login" class="btn btn-outline-light mt-3 mt-md-0" style="border-radius:30px; padding:0.75rem 2rem;">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login to Dashboard
+                </a>
+            </div>
+            <div class="col-lg-5 text-center d-none d-lg-block mt-4 mt-lg-0">
+                <i class="fas fa-tractor" style="font-size:8rem; color: var(--caw-green-light); opacity:0.7;"></i>
+            </div>
+        </div>
+
+        <!-- Quick Stats Strip -->
+        <div class="row mt-5 g-3">
+            <div class="col-6 col-md-3">
+                <div class="caw-info-card text-center p-3">
+                    <i class="fas fa-leaf fa-2x text-caw mb-2"></i>
+                    <div class="fw-bold text-gold fs-4">500+</div>
+                    <div class="small" style="color:var(--caw-text-muted)">Farms Managed</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="caw-info-card text-center p-3">
+                    <i class="fas fa-kiwi-bird fa-2x text-caw mb-2"></i>
+                    <div class="fw-bold text-gold fs-4">50K+</div>
+                    <div class="small" style="color:var(--caw-text-muted)">Animals Tracked</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="caw-info-card text-center p-3">
+                    <i class="fas fa-chart-line fa-2x text-caw mb-2"></i>
+                    <div class="fw-bold text-gold fs-4">৳ 1Cr+</div>
+                    <div class="small" style="color:var(--caw-text-muted)">Revenue Tracked</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="caw-info-card text-center p-3">
+                    <i class="fas fa-users fa-2x text-caw mb-2"></i>
+                    <div class="fw-bold text-gold fs-4">1000+</div>
+                    <div class="small" style="color:var(--caw-text-muted)">Active Users</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Weather Section -->
+<section class="caw-public-section" id="weather">
+    <div class="container">
+        <div class="caw-section-heading">
+            <i class="fas fa-cloud-sun-rain"></i>
+            <h2>Weather Forecast</h2>
+        </div>
+        <p style="color:var(--caw-text-muted)" class="mb-4">
+            Current weather conditions across major agricultural regions in Bangladesh.
+            Plan your farming activities accordingly.
+        </p>
+        <div class="row g-3">
+            @if (weatherData != null)
+            {
+                foreach (var w in weatherData)
+                {
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="caw-weather-widget">
+                            <div class="caw-weather-icon">
+                                <i class="fas @w.Icon"></i>
+                            </div>
+                            <div class="caw-weather-temp">@w.Temp°C</div>
+                            <div class="fw-bold mt-1" style="color:var(--caw-text)">@w.City</div>
+                            <div class="caw-weather-city">@w.Condition</div>
+                            <div class="mt-2 small" style="color:var(--caw-text-muted)">
+                                <span><i class="fas fa-tint me-1"></i>@w.Humidity%</span>
+                                <span class="ms-3"><i class="fas fa-wind me-1"></i>@w.Wind km/h</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="text-center mt-3">
+            <a asp-controller="Home" asp-action="Weather" class="btn btn-outline-success">
+                <i class="fas fa-arrow-right me-2"></i>Full Weather Report
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Animal Diseases Section -->
+<section class="caw-public-section" id="diseases">
+    <div class="container">
+        <div class="caw-section-heading">
+            <i class="fas fa-virus"></i>
+            <h2>Common Animal Diseases</h2>
+        </div>
+        <p style="color:var(--caw-text-muted)" class="mb-4">
+            Early recognition of common livestock diseases can save your herd.
+            Know the symptoms and preventive measures.
+        </p>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="caw-disease-card">
+                    <h6><i class="fas fa-bug me-2"></i>Foot and Mouth Disease (FMD)</h6>
+                    <p><strong style="color:#ef9a9a">Symptoms:</strong> Fever, blisters on mouth &amp; hooves, reduced milk yield, lameness.</p>
+                    <p><strong style="color:#a5d6a7">Prevention:</strong> Regular vaccination, quarantine new animals, maintain biosecurity.</p>
+                    <p><strong style="color:#81d4fa">Affected:</strong> Cattle, Goat, Sheep</p>
+                </div>
+                <div class="caw-disease-card">
+                    <h6><i class="fas fa-bug me-2"></i>Brucellosis</h6>
+                    <p><strong style="color:#ef9a9a">Symptoms:</strong> Abortion in late pregnancy, infertility, swollen joints, fever.</p>
+                    <p><strong style="color:#a5d6a7">Prevention:</strong> Test and remove infected animals, vaccinate calves, proper milk pasteurisation.</p>
+                    <p><strong style="color:#81d4fa">Affected:</strong> Cattle, Goat</p>
+                </div>
+                <div class="caw-disease-card">
+                    <h6><i class="fas fa-bug me-2"></i>Blackleg</h6>
+                    <p><strong style="color:#ef9a9a">Symptoms:</strong> Sudden death, swelling of muscles, high fever, lameness.</p>
+                    <p><strong style="color:#a5d6a7">Prevention:</strong> Annual vaccination, proper wound care, avoid waterlogged pastures.</p>
+                    <p><strong style="color:#81d4fa">Affected:</strong> Cattle</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="caw-disease-card">
+                    <h6><i class="fas fa-bug me-2"></i>Avian Influenza (Bird Flu)</h6>
+                    <p><strong style="color:#ef9a9a">Symptoms:</strong> Sudden death, coughing, sneezing, reduced egg production, swollen head.</p>
+                    <p><strong style="color:#a5d6a7">Prevention:</strong> Strict biosecurity, no contact with wild birds, disinfect equipment regularly.</p>
+                    <p><strong style="color:#81d4fa">Affected:</strong> Poultry</p>
+                </div>
+                <div class="caw-disease-card">
+                    <h6><i class="fas fa-bug me-2"></i>Newcastle Disease</h6>
+                    <p><strong style="color:#ef9a9a">Symptoms:</strong> Respiratory distress, nervous signs, twisted neck, greenish diarrhoea.</p>
+                    <p><strong style="color:#a5d6a7">Prevention:</strong> Regular ND vaccination, separate sick birds immediately, clean water supply.</p>
+                    <p><strong style="color:#81d4fa">Affected:</strong> Poultry</p>
+                </div>
+                <div class="caw-disease-card">
+                    <h6><i class="fas fa-bug me-2"></i>Mastitis</h6>
+                    <p><strong style="color:#ef9a9a">Symptoms:</strong> Hot, swollen udder, abnormal milk, fever, reduced milk yield.</p>
+                    <p><strong style="color:#a5d6a7">Prevention:</strong> Proper milking hygiene, dry cow therapy, regular teat dipping.</p>
+                    <p><strong style="color:#81d4fa">Affected:</strong> Cattle</p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <a asp-controller="Home" asp-action="Diseases" class="btn btn-outline-danger">
+                <i class="fas fa-arrow-right me-2"></i>Full Disease Reference
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Fertilizer Section -->
+<section class="caw-public-section" id="fertilizer">
+    <div class="container">
+        <div class="caw-section-heading">
+            <i class="fas fa-flask"></i>
+            <h2>Fertilizer Guide</h2>
+        </div>
+        <p style="color:var(--caw-text-muted)" class="mb-4">
+            Choose the right fertilizer for your crop and soil type to maximise yield
+            while maintaining soil health.
+        </p>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="caw-fert-card">
+                    <h6><i class="fas fa-seedling me-2"></i>Urea (N 46%)</h6>
+                    <p><strong style="color:#a5d6a7">Best For:</strong> Rice, jute, sugarcane, leafy vegetables.</p>
+                    <p><strong style="color:#81d4fa">Dosage:</strong> 150–200 kg/hectare split in 2–3 applications.</p>
+                    <p><strong style="color:#ffcc80">Tip:</strong> Apply when soil is moist; avoid application before heavy rain.</p>
+                </div>
+                <div class="caw-fert-card">
+                    <h6><i class="fas fa-seedling me-2"></i>Triple Super Phosphate (TSP)</h6>
+                    <p><strong style="color:#a5d6a7">Best For:</strong> Legumes, oil seeds, root vegetables, wheat.</p>
+                    <p><strong style="color:#81d4fa">Dosage:</strong> 75–100 kg/hectare at planting time.</p>
+                    <p><strong style="color:#ffcc80">Tip:</strong> Mix with soil before sowing for best root development.</p>
+                </div>
+                <div class="caw-fert-card">
+                    <h6><i class="fas fa-seedling me-2"></i>Muriate of Potash (MoP)</h6>
+                    <p><strong style="color:#a5d6a7">Best For:</strong> Potato, banana, sugarcane, coconut.</p>
+                    <p><strong style="color:#81d4fa">Dosage:</strong> 100–150 kg/hectare during basal application.</p>
+                    <p><strong style="color:#ffcc80">Tip:</strong> Improves drought resistance and disease tolerance.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="caw-fert-card">
+                    <h6><i class="fas fa-seedling me-2"></i>DAP (Diammonium Phosphate)</h6>
+                    <p><strong style="color:#a5d6a7">Best For:</strong> Cereals, vegetables, fruit trees.</p>
+                    <p><strong style="color:#81d4fa">Dosage:</strong> 100–125 kg/hectare as basal dose.</p>
+                    <p><strong style="color:#ffcc80">Tip:</strong> Excellent for early plant growth and root establishment.</p>
+                </div>
+                <div class="caw-fert-card">
+                    <h6><i class="fas fa-seedling me-2"></i>Organic Compost / Manure</h6>
+                    <p><strong style="color:#a5d6a7">Best For:</strong> All crops, especially vegetables and fruit orchards.</p>
+                    <p><strong style="color:#81d4fa">Dosage:</strong> 5–10 tonnes/hectare before cultivation.</p>
+                    <p><strong style="color:#ffcc80">Tip:</strong> Improves soil structure, water retention, and microbial activity.</p>
+                </div>
+                <div class="caw-fert-card">
+                    <h6><i class="fas fa-seedling me-2"></i>Zinc Sulphate</h6>
+                    <p><strong style="color:#a5d6a7">Best For:</strong> Rice, wheat, maize — zinc-deficient soils.</p>
+                    <p><strong style="color:#81d4fa">Dosage:</strong> 10–20 kg/hectare.</p>
+                    <p><strong style="color:#ffcc80">Tip:</strong> Signs of zinc deficiency: stunted growth, yellowing of young leaves.</p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <a asp-controller="Home" asp-action="Fertilizer" class="btn btn-outline-success">
+                <i class="fas fa-arrow-right me-2"></i>Complete Fertilizer Reference
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Platform Features Section -->
+<section class="caw-public-section">
+    <div class="container">
+        <div class="caw-section-heading">
+            <i class="fas fa-star"></i>
+            <h2>Platform Features</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="caw-info-card">
+                    <div class="card-icon"><i class="fas fa-tractor"></i></div>
+                    <h5>Multi-Farm Management</h5>
+                    <p>Manage multiple farms, parcels, and livestock batches from one centralised dashboard.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="caw-info-card">
+                    <div class="card-icon"><i class="fas fa-chart-pie"></i></div>
+                    <h5>Profit &amp; Loss Analytics</h5>
+                    <p>Real-time P&amp;L summaries per batch including FCR, ROI, and cost-per-head calculations.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="caw-info-card">
+                    <div class="card-icon"><i class="fas fa-moon"></i></div>
+                    <h5>Eid Bazar Planning</h5>
+                    <p>Plan and track livestock batches targeted for Eid-ul-Adha market with countdown timers.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="caw-info-card">
+                    <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h5>Role-Based Access</h5>
+                    <p>RBAC with SuperAdmin, Manager, Accountant, Worker, and Viewer roles.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="caw-info-card">
+                    <div class="card-icon"><i class="fas fa-tasks"></i></div>
+                    <h5>Daily Task Management</h5>
+                    <p>Assign, track, and complete daily farm tasks like feeding, weighing, and medication.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="caw-info-card">
+                    <div class="card-icon"><i class="fas fa-history"></i></div>
+                    <h5>Complete Audit Trail</h5>
+                    <p>Full history of all records with soft-delete — nothing is lost, everything is traceable.</p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <a asp-controller="Account" asp-action="Login" class="caw-hero-cta">
+                <i class="fas fa-rocket me-2"></i>Get Started
+            </a>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,12 @@
+D:\MyProject\Firming_Solution\src\Firming_Solution.Domain\bin\Debug\net10.0\Firming_Solution.Domain.deps.json
+D:\MyProject\Firming_Solution\src\Firming_Solution.Domain\bin\Debug\net10.0\Firming_Solution.Domain.dll
+D:\MyProject\Firming_Solution\src\Firming_Solution.Domain\bin\Debug\net10.0\Firming_Solution.Domain.pdb
+D:\MyProject\Firming_Solution\src\Firming_Solution.Domain\obj\Debug\net10.0\Firming_Solution.Domain.csproj.AssemblyReference.cache
+D:\MyProject\Firming_Solution\src\Firming_Solution.Domain\obj\Debug\net10.0\Firming_Solution.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\MyProject\Firming_Solution\src\Firming_Solution.Domain\obj\Debug\net10.0\Firming_Solution.Domain.AssemblyInfoInputs.cache
+D:\MyProject\Firming_Solution\src\Firming_Solution.Domain\obj\Debug\net10.0\Firming_Solution.Domain.AssemblyInfo.cs
+D:\MyProject\Firming_Solution\src\Firming_Solution.Domain\obj\Debug\net10.0\Firming_Solution.Domain.csproj.CoreCompileInputs.cache
+D:\MyProject\Firming_Solution\src\Firming_Solution.Domain\obj\Debug\net10.0\Firming_Solution.Domain.dll
+D:\MyProject\Firming_Solution\src\Firming_Solution.Domain\obj\Debug\net10.0\refint\Firming_Solution.Domain.dll
+D:\MyProject\Firming_Solution\src\Firming_Solution.Domain\obj\Debug\net10.0\Firming_Solution.Domain.pdb
+D:\MyProject\Firming_Solution\src\Firming_Solution.Domain\obj\Debug\net10.0\ref\Firming_Solution.Domain.dll

@@ -1,0 +1,94 @@
+@model List<Firming_Solution.Domain.Entities.Farm>
+@{
+    ViewData["Title"] = "Farms";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div></div>
+    @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
+    {
+        <a asp-action="Create" class="btn btn-caw-primary btn-sm">
+            <i class="fas fa-plus me-1"></i>New Farm
+        </a>
+    }
+</div>
+
+<div class="caw-card">
+    <div class="caw-section-title"><i class="fas fa-tractor me-2"></i>Farm List (@Model.Count)</div>
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="caw-table">
+                <thead>
+                    <tr>
+                        <th>Farm Name</th>
+                        <th>Type</th>
+                        <th>Location</th>
+                        <th>Area (Ha)</th>
+                        <th>Owner</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var f in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@f.Id" class="text-gold fw-600">@f.FarmName</a>
+                            </td>
+                            <td style="color:var(--caw-text-muted)">@f.FarmType</td>
+                            <td style="color:var(--caw-text-muted)">@(f.Location ?? "—")</td>
+                            <td style="color:var(--caw-text-muted)">@(f.TotalArea.HasValue ? f.TotalArea.Value.ToString("N2") : "—")</td>
+                            <td style="color:var(--caw-text-muted)">@(f.Owner?.FullName ?? f.Owner?.UserName ?? "—")</td>
+                            <td>
+                                @if (f.IsActive)
+                                {
+                                    <span class="caw-badge badge-active">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="caw-badge badge-closed">Inactive</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@f.Id" class="btn btn-outline-secondary btn-sm">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
+                                {
+                                    <a asp-action="Edit" asp-route-id="@f.Id" class="btn btn-outline-warning btn-sm ms-1">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                }
+                                @if (User.IsInRole("SuperAdmin"))
+                                {
+                                    <form asp-action="Delete" asp-route-id="@f.Id" method="post" class="d-inline ms-1"
+                                          onsubmit="return confirm('Delete farm @f.FarmName? This action is reversible.')">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-4">
+            <i class="fas fa-tractor fa-3x mb-3" style="color:var(--caw-text-muted)"></i>
+            <p style="color:var(--caw-text-muted)">No farms found. Create your first farm to get started.</p>
+            @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
+            {
+                <a asp-action="Create" class="btn btn-caw-primary">
+                    <i class="fas fa-plus me-2"></i>Create Farm
+                </a>
+            }
+        </div>
+    }
+</div>

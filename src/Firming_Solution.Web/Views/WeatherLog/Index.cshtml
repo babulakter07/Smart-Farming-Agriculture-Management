@@ -1,0 +1,47 @@
+@model List<Firming_Solution.Domain.Entities.WeatherLog>
+@{
+    ViewData["Title"] = "Weather Logs";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div></div>
+    @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager") || User.IsInRole("Worker"))
+    {
+        <a asp-action="Create" class="btn btn-caw-primary btn-sm">
+            <i class="fas fa-plus me-1"></i>Log Weather
+        </a>
+    }
+</div>
+
+<div class="caw-card">
+    <div class="caw-section-title"><i class="fas fa-cloud-sun me-2"></i>Farm Weather Logs</div>
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="caw-table">
+                <thead>
+                    <tr><th>Date</th><th>Farm</th><th>Condition</th><th>Max °C</th><th>Min °C</th><th>Humidity %</th><th>Rainfall mm</th><th>Feed Index</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var w in Model)
+                    {
+                        <tr>
+                            <td style="color:var(--caw-text-muted)">@w.LogDate.ToString("dd MMM yyyy")</td>
+                            <td style="color:var(--caw-text)">@w.Farm?.FarmName</td>
+                            <td style="color:var(--caw-text-muted)">@w.WeatherCondition</td>
+                            <td style="color:var(--caw-text-muted)">@(w.TempMax_C.HasValue ? $"{w.TempMax_C.Value:N1}°" : "—")</td>
+                            <td style="color:var(--caw-text-muted)">@(w.TempMin_C.HasValue ? $"{w.TempMin_C.Value:N1}°" : "—")</td>
+                            <td style="color:var(--caw-text-muted)">@(w.Humidity_Pct.HasValue ? $"{w.Humidity_Pct.Value:N0}%" : "—")</td>
+                            <td style="color:var(--caw-text-muted)">@(w.Rainfall_mm.HasValue ? $"{w.Rainfall_mm.Value:N1}" : "—")</td>
+                            <td style="color:var(--caw-text-muted)">@(w.FeedDemandIndex.HasValue ? $"{w.FeedDemandIndex.Value:N2}" : "—")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="small text-center py-3" style="color:var(--caw-text-muted)">No weather logs recorded.</p>
+    }
+</div>

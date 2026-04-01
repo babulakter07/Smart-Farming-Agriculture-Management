@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CAW Invest</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Firming_Solution.Web.styles.css" asp-append-version="true" />
+</head>
+<body class="caw-body">
+
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <!-- Authenticated Layout: Sidebar + Top bar -->
+    <div class="caw-wrapper">
+        <!-- Sidebar -->
+        <nav class="caw-sidebar" id="sidebar">
+            <div class="caw-sidebar-brand">
+                <i class="fas fa-leaf"></i>
+                <span>CAW Invest</span>
+            </div>
+            <div class="caw-sidebar-tagline">Farming & Agriculture</div>
+
+            <ul class="caw-nav">
+                <li class="caw-nav-item">
+                    <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" ? "active" : "")"
+                       asp-controller="Dashboard" asp-action="Index">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                </li>
+                <li class="caw-nav-section">Farm Management</li>
+                <li class="caw-nav-item">
+                    <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Farm" ? "active" : "")"
+                       asp-controller="Farm" asp-action="Index">
+                        <i class="fas fa-tractor"></i> Farms
+                    </a>
+                </li>
+                <li class="caw-nav-item">
+                    <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Batch" ? "active" : "")"
+                       asp-controller="Batch" asp-action="Index">
+                        <i class="fas fa-layer-group"></i> Batches
+                    </a>
+                </li>
+                <li class="caw-nav-item">
+                    <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Land" ? "active" : "")"
+                       asp-controller="Land" asp-action="Index">
+                        <i class="fas fa-map"></i> Land Parcels
+                    </a>
+                </li>
+
+                <li class="caw-nav-section">Livestock</li>
+                <li class="caw-nav-item">
+                    <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "FeedLog" ? "active" : "")"
+                       asp-controller="FeedLog" asp-action="Index">
+                        <i class="fas fa-wheat-awn"></i> Feed Logs
+                    </a>
+                </li>
+                <li class="caw-nav-item">
+                    <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "WeightLog" ? "active" : "")"
+                       asp-controller="WeightLog" asp-action="Index">
+                        <i class="fas fa-weight-scale"></i> Weight Logs
+                    </a>
+                </li>
+                <li class="caw-nav-item">
+                    <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "MortalityLog" ? "active" : "")"
+                       asp-controller="MortalityLog" asp-action="Index">
+                        <i class="fas fa-skull-crossbones"></i> Mortality Logs
+                    </a>
+                </li>
+
+                <li class="caw-nav-section">Agriculture</li>
+                <li class="caw-nav-item">
+                    <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "CropSeason" ? "active" : "")"
+                       asp-controller="CropSeason" asp-action="Index">
+                        <i class="fas fa-seedling"></i> Crop Seasons
+                    </a>
+                </li>
+                <li class="caw-nav-item">
+                    <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "FertiliserPlan" ? "active" : "")"
+                       asp-controller="FertiliserPlan" asp-action="Index">
+                        <i class="fas fa-flask"></i> Fertiliser Plans
+                    </a>
+                </li>
+                <li class="caw-nav-item">
+                    <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "WeatherLog" ? "active" : "")"
+                       asp-controller="WeatherLog" asp-action="Index">
+                        <i class="fas fa-cloud-sun"></i> Weather Logs
+                    </a>
+                </li>
+
+                <li class="caw-nav-section">Finance</li>
+                <li class="caw-nav-item">
+                    <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Sale" ? "active" : "")"
+                       asp-controller="Sale" asp-action="Index">
+                        <i class="fas fa-cash-register"></i> Sales
+                    </a>
+                </li>
+                <li class="caw-nav-item">
+                    <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Investment" ? "active" : "")"
+                       asp-controller="Investment" asp-action="Index">
+                        <i class="fas fa-chart-line"></i> Investments
+                    </a>
+                </li>
+                <li class="caw-nav-item">
+                    <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Cost" ? "active" : "")"
+                       asp-controller="Cost" asp-action="Index">
+                        <i class="fas fa-receipt"></i> Costs
+                    </a>
+                </li>
+
+                <li class="caw-nav-section">Planning</li>
+                <li class="caw-nav-item">
+                    <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "DailyTask" ? "active" : "")"
+                       asp-controller="DailyTask" asp-action="Index">
+                        <i class="fas fa-tasks"></i> Daily Tasks
+                    </a>
+                </li>
+                <li class="caw-nav-item">
+                    <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "EidBazarPlan" ? "active" : "")"
+                       asp-controller="EidBazarPlan" asp-action="Index">
+                        <i class="fas fa-moon"></i> Eid Bazar Plans
+                    </a>
+                </li>
+
+                @if (User.IsInRole("SuperAdmin"))
+                {
+                    <li class="caw-nav-section">Administration</li>
+                    <li class="caw-nav-item">
+                        <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
+                           asp-controller="Admin" asp-action="Users">
+                            <i class="fas fa-users-cog"></i> User Management
+                        </a>
+                    </li>
+                }
+
+                <li class="caw-nav-item mt-3">
+                    <a class="caw-nav-link" asp-controller="Home" asp-action="Index">
+                        <i class="fas fa-globe"></i> Public Site
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="caw-main">
+            <!-- Top bar -->
+            <header class="caw-topbar">
+                <button class="caw-toggle-btn" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="caw-topbar-title">@ViewData["Title"]</div>
+                <div class="caw-topbar-right">
+                    <span class="caw-username">
+                        <i class="fas fa-user-circle"></i>
+                        @User.Identity!.Name
+                    </span>
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-outline-light ms-2">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </form>
+                </div>
+            </header>
+
+            <!-- Page content -->
+            <div class="caw-content">
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>@TempData["Success"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i>@TempData["Error"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <!-- Public / Guest Layout: simple top navbar -->
+    <nav class="navbar navbar-expand-lg caw-public-nav">
+        <div class="container">
+            <a class="navbar-brand caw-public-brand" asp-controller="Home" asp-action="Index">
+                <i class="fas fa-leaf"></i> CAW Invest
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#publicNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="publicNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Weather">Weather</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Diseases">Animal Diseases</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Fertilizer">Fertilizer Guide</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <a class="btn caw-btn-login" asp-controller="Account" asp-action="Login">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        @if (TempData["Success"] != null)
+        {
+            <div class="container mt-3">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["Success"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            </div>
+        }
+        @RenderBody()
+    </main>
+
+    <footer class="caw-public-footer">
+        <div class="container text-center">
+            <p class="mb-1">
+                <i class="fas fa-leaf text-success"></i>
+                <strong>CAW Invest</strong> &mdash; Farming &amp; Agriculture Management System
+            </p>
+            <p class="mb-0 text-muted small">&copy; @DateTime.Now.Year CAW Invest. All rights reserved.</p>
+        </div>
+    </footer>
+}
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script>
+    // Sidebar toggle
+    const toggleBtn = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+    if (toggleBtn && sidebar) {
+        toggleBtn.addEventListener('click', () => sidebar.classList.toggle('collapsed'));
+    }
+</script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

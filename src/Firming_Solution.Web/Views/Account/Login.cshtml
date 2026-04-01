@@ -1,0 +1,51 @@
+@model Firming_Solution.Web.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="caw-login-wrapper">
+    <div class="caw-login-card">
+        <div class="caw-login-logo">
+            <i class="fas fa-leaf"></i>
+            <h2>CAW Invest</h2>
+            <p>Farming &amp; Agriculture Management System</p>
+        </div>
+
+        <form asp-action="Login" method="post">
+            <input type="hidden" name="ReturnUrl" value="@ViewData["ReturnUrl"]" />
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="caw-form-label">Email / Username</label>
+                <input asp-for="Email" class="caw-input" placeholder="you@example.com" autocomplete="username" />
+                <span asp-validation-for="Email" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="caw-form-label">Password</label>
+                <input asp-for="Password" class="caw-input" type="password" placeholder="••••••••" autocomplete="current-password" />
+                <span asp-validation-for="Password" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3 d-flex align-items-center gap-2">
+                <input asp-for="RememberMe" class="form-check-input mt-0" style="width:1.1em; height:1.1em;" />
+                <label asp-for="RememberMe" class="caw-form-label mb-0">Remember me for 8 hours</label>
+            </div>
+
+            <button type="submit" class="btn btn-caw-primary w-100 py-2 fw-600">
+                <i class="fas fa-sign-in-alt me-2"></i>Login
+            </button>
+        </form>
+
+        <div class="text-center mt-3">
+            <a asp-controller="Home" asp-action="Index" class="small" style="color:var(--caw-text-muted)">
+                <i class="fas fa-arrow-left me-1"></i>Back to Public Site
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

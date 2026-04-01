@@ -1,0 +1,72 @@
+@model List<Firming_Solution.Domain.Entities.EidBazarPlan>
+@{
+    ViewData["Title"] = "Eid Bazar Plans";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div></div>
+    @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
+    {
+        <a asp-action="Create" class="btn btn-caw-primary btn-sm">
+            <i class="fas fa-plus me-1"></i>New Plan
+        </a>
+    }
+</div>
+
+<div class="caw-card">
+    <div class="caw-section-title"><i class="fas fa-moon me-2"></i>Eid Bazar Plans</div>
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="caw-table">
+                <thead>
+                    <tr><th>Eid Type</th><th>Eid Date</th><th>Days Left</th><th>Farm</th><th>Linked Batch</th><th>Target Animals</th><th>Exp. Price/kg</th><th>Exp. Revenue</th><th></th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var e in Model)
+                    {
+                        var daysLeft = (e.EidDate - DateTime.Today).Days;
+                        var daysClass = daysLeft <= 30 ? "profit-negative" : daysLeft <= 60 ? "text-gold" : "text-caw";
+                        <tr>
+                            <td style="color:var(--caw-text)">
+                                <i class="fas fa-moon text-gold me-1"></i>@e.EidType
+                            </td>
+                            <td style="color:var(--caw-text-muted)">@e.EidDate.ToString("dd MMM yyyy")</td>
+                            <td class="@daysClass fw-bold">@daysLeft days</td>
+                            <td style="color:var(--caw-text-muted)">@e.Farm?.FarmName</td>
+                            <td>
+                                @if (e.LinkedBatch != null)
+                                {
+                                    <a asp-controller="Batch" asp-action="Details" asp-route-id="@e.LinkedBatchId" class="text-gold">
+                                        @e.LinkedBatch.BatchName
+                                    </a>
+                                }
+                                else { <span style="color:var(--caw-text-muted)">—</span> }
+                            </td>
+                            <td style="color:var(--caw-text-muted)">@(e.TargetAnimals?.ToString("N0") ?? "—")</td>
+                            <td style="color:var(--caw-text-muted)">@(e.ExpectedPricePerKg.HasValue ? $"৳ {e.ExpectedPricePerKg.Value:N0}" : "—")</td>
+                            <td class="profit-positive">@(e.ExpectedRevenue.HasValue ? $"৳ {e.ExpectedRevenue.Value:N0}" : "—")</td>
+                            <td>
+                                @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
+                                {
+                                    <form asp-action="Delete" asp-route-id="@e.Id" method="post" class="d-inline"
+                                          onsubmit="return confirm('Delete this plan?')">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-4">
+            <i class="fas fa-moon fa-3x mb-3 text-gold"></i>
+            <p style="color:var(--caw-text-muted)">No Eid Bazar plans yet.</p>
+        </div>
+    }
+</div>
