@@ -1,59 +1,91 @@
 @model Firming_Solution.Domain.Entities.Cost
+@using Firming_Solution.Domain.Entities
+@using Firming_Solution.Domain.Enums
 @{
-    ViewData["Title"] = "Record Cost";
+    ViewData["Title"] = "খরচ রেকর্ড করুন";
+    var farms = (List<Farm>)ViewBag.Farms;
+    var batches = (List<Batch>)ViewBag.Batches;
+    var cropSeasons = (List<CropSeason>)ViewBag.CropSeasons;
 }
 
 <div class="row justify-content-center">
     <div class="col-md-8 col-lg-7">
         <div class="caw-card">
-            <div class="caw-section-title"><i class="fas fa-receipt me-2"></i>Record Cost</div>
+            <div class="caw-section-title"><i class="fas fa-receipt me-2"></i>খরচ রেকর্ড করুন</div>
             <form asp-action="Create" method="post">
                 <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3"></div>
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="FarmId" class="caw-form-label">Farm <span class="text-danger">*</span></label>
-                        <select asp-for="FarmId" asp-items="ViewBag.Farms" class="form-select">
-                            <option value="">-- Select Farm --</option>
-                        </select>
-                        <span asp-validation-for="FarmId" class="text-danger small"></span>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="BatchId" class="caw-form-label">Batch (optional)</label>
-                        <select asp-for="BatchId" asp-items="ViewBag.Batches" class="form-select">
-                            <option value="">-- Select Batch --</option>
-                        </select>
-                    </div>
+                <div class="mb-3">
+                    <label asp-for="FarmId" class="caw-form-label">খামার <span class="text-danger">*</span></label>
+                    <select id="farmSelect" asp-for="FarmId" class="form-select">
+                        <option value="">-- খামার নির্বাচন করুন --</option>
+                        @foreach (var f in farms)
+                        {
+                            <option value="@f.Id" data-farmtype="@f.FarmType.ToString()">@f.FarmName</option>
+                        }
+                    </select>
+                    <span asp-validation-for="FarmId" class="text-danger small"></span>
+                </div>
+
+                <div id="batchRow" class="mb-3" style="display:none">
+                    <label asp-for="BatchId" class="caw-form-label">ব্যাচ (ঐচ্ছিক)</label>
+                    <select id="batchSelect" asp-for="BatchId" class="form-select">
+                        <option value="">-- ব্যাচ নির্বাচন করুন --</option>
+                        @foreach (var b in batches)
+                        {
+                            <option value="@b.Id" data-farmid="@b.FarmId">@b.BatchName</option>
+                        }
+                    </select>
+                </div>
+
+                <div id="cropSeasonRow" class="mb-3" style="display:none">
+                    <label asp-for="CropSeasonId" class="caw-form-label">ফসলের মৌসুম (ঐচ্ছিক)</label>
+                    <select id="cropSeasonSelect" asp-for="CropSeasonId" class="form-select">
+                        <option value="">-- মৌসুম নির্বাচন করুন --</option>
+                        @foreach (var cs in cropSeasons)
+                        {
+                            <option value="@cs.Id" data-farmid="@cs.Land?.FarmId">@cs.CropName (@cs.Land?.Farm?.FarmName)</option>
+                        }
+                    </select>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label asp-for="CostCategory" class="caw-form-label">Category <span class="text-danger">*</span></label>
-                        <select asp-for="CostCategory" asp-items="Html.GetEnumSelectList<Firming_Solution.Domain.Enums.CostCategory>()" class="form-select"></select>
+                        <label asp-for="CostCategory" class="caw-form-label">বিভাগ <span class="text-danger">*</span></label>
+                        <select asp-for="CostCategory" class="form-select">
+                            <option value="Feed">খাবার</option>
+                            <option value="Medicine">ওষুধ</option>
+                            <option value="Labour">শ্রমিক</option>
+                            <option value="Utility">ইউটিলিটি</option>
+                            <option value="Transport">পরিবহন</option>
+                            <option value="Breeding">প্রজনন</option>
+                            <option value="Infrastructure">অবকাঠামো</option>
+                            <option value="Other">অন্যান্য</option>
+                        </select>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label asp-for="CostDate" class="caw-form-label">Date <span class="text-danger">*</span></label>
+                        <label asp-for="CostDate" class="caw-form-label">তারিখ <span class="text-danger">*</span></label>
                         <input asp-for="CostDate" class="form-control" type="date" />
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Amount" class="caw-form-label">Amount (৳) <span class="text-danger">*</span></label>
-                    <input asp-for="Amount" class="form-control" type="number" step="0.01" min="0.01" placeholder="0.00" />
+                    <label asp-for="Amount" class="caw-form-label">পরিমাণ (৳) <span class="text-danger">*</span></label>
+                    <input asp-for="Amount" class="form-control" type="number" step="0.01" min="0.01" placeholder="০.০০" />
                     <span asp-validation-for="Amount" class="text-danger small"></span>
                 </div>
 
                 <div class="mb-4">
-                    <label asp-for="Description" class="caw-form-label">Description</label>
-                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="Details about this cost..."></textarea>
+                    <label asp-for="Description" class="caw-form-label">বিবরণ</label>
+                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="এই খরচের বিস্তারিত..."></textarea>
                 </div>
 
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-caw-primary flex-fill">
-                        <i class="fas fa-save me-2"></i>Record Cost
+                        <i class="fas fa-save me-2"></i>খরচ রেকর্ড করুন
                     </button>
                     <a asp-action="Index" class="btn btn-outline-secondary flex-fill">
-                        <i class="fas fa-times me-2"></i>Cancel
+                        <i class="fas fa-times me-2"></i>বাতিল
                     </a>
                 </div>
             </form>
@@ -63,4 +95,43 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            const farmSel = document.getElementById('farmSelect');
+            const batchRow = document.getElementById('batchRow');
+            const batchSel = document.getElementById('batchSelect');
+            const cropRow = document.getElementById('cropSeasonRow');
+            const cropSel = document.getElementById('cropSeasonSelect');
+
+            function filterOptions(selectEl, farmId) {
+                Array.from(selectEl.options).forEach(opt => {
+                    if (!opt.value) return; // keep placeholder
+                    opt.style.display = (opt.dataset.farmid === farmId) ? '' : 'none';
+                    if (opt.style.display === 'none' && opt.selected) opt.selected = false;
+                });
+            }
+
+            function onFarmChange() {
+                const sel = farmSel.options[farmSel.selectedIndex];
+                const farmType = sel ? sel.dataset.farmtype : '';
+                const farmId = sel ? sel.value : '';
+
+                const isLivestock = farmType === 'Livestock';
+                const isAgriculture = farmType === 'Agriculture';
+                const isMixed = farmType === 'Mixed';
+
+                batchRow.style.display = (isLivestock || isMixed) ? '' : 'none';
+                cropRow.style.display = (isAgriculture || isMixed) ? '' : 'none';
+
+                if (!(isLivestock || isMixed)) batchSel.value = '';
+                if (!(isAgriculture || isMixed)) cropSel.value = '';
+
+                filterOptions(batchSel, farmId);
+                filterOptions(cropSel, farmId);
+            }
+
+            farmSel.addEventListener('change', onFarmChange);
+            onFarmChange(); // run on page load to restore state after validation failure
+        })();
+    </script>
 }

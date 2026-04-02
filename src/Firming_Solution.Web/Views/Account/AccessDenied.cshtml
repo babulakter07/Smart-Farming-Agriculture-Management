@@ -1,18 +1,18 @@
 @{
-    ViewData["Title"] = "Access Denied";
+    ViewData["Title"] = "প্রবেশাধিকার নেই";
 }
 
 <div class="caw-card text-center py-5">
     <i class="fas fa-ban fa-4x mb-3" style="color:var(--caw-danger)"></i>
-    <h2 class="text-gold">Access Denied</h2>
+    <h2 class="text-gold">প্রবেশাধিকার নেই</h2>
     <p style="color:var(--caw-text-muted)" class="mt-2">
-        You do not have permission to access this page.<br />
-        Please contact your administrator if you believe this is an error.
+        এই পেজে প্রবেশ করার অনুমতি আপনার নেই।<br />
+        আপনি মনে করেন এটি ভুল হলে আপনার অ্যাডমিনের সাথে যোগাযোগ করুন।
     </p>
     <a asp-controller="Dashboard" asp-action="Index" class="btn btn-caw-primary mt-3 me-2">
-        <i class="fas fa-home me-2"></i>Back to Dashboard
+        <i class="fas fa-home me-2"></i>ড্যাশবোর্ডে ফিরুন
     </a>
     <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary mt-3">
-        <i class="fas fa-globe me-2"></i>Public Site
+        <i class="fas fa-globe me-2"></i>পাবলিক সাইট
     </a>
 </div>

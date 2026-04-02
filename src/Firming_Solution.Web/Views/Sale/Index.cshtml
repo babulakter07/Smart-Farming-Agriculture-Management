@@ -1,37 +1,36 @@
 @model List<Firming_Solution.Domain.Entities.Sale>
 @{
-    ViewData["Title"] = "Sales";
-    var batches = ViewBag.Batches as List<Firming_Solution.Domain.Entities.Batch>;
+    ViewData["Title"] = "বিক্রয়";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <div></div>
     <div class="d-flex gap-2">
         <a asp-action="History" class="btn btn-outline-secondary btn-sm">
-            <i class="fas fa-history me-1"></i>Full History
+            <i class="fas fa-history me-1"></i>সম্পূর্ণ ইতিহাস
         </a>
         @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
         {
             <a asp-action="Create" class="btn btn-caw-primary btn-sm">
-                <i class="fas fa-plus me-1"></i>Record Sale
+                <i class="fas fa-plus me-1"></i>বিক্রয় রেকর্ড করুন
             </a>
         }
     </div>
 </div>
 
 <div class="caw-card">
-    <div class="caw-section-title"><i class="fas fa-cash-register me-2"></i>Sales (@Model.Count)</div>
+    <div class="caw-section-title"><i class="fas fa-cash-register me-2"></i>বিক্রয় (@Model.Count টি)</div>
     @if (Model.Any())
     {
         var totalRev = Model.Sum(s => s.TotalRevenue);
         <div class="mb-3 p-3" style="background:var(--caw-surface2); border-radius:8px;">
-            <span style="color:var(--caw-text-muted)">Total Revenue Shown: </span>
+            <span style="color:var(--caw-text-muted)">মোট আয়: </span>
             <strong class="profit-positive fs-5">৳ @totalRev.ToString("N0")</strong>
         </div>
         <div class="table-responsive">
             <table class="caw-table">
                 <thead>
-                    <tr><th>Sale Date</th><th>Batch</th><th>Qty</th><th>Weight (kg)</th><th>Price/kg</th><th>Revenue</th><th>Buyer</th><th></th></tr>
+                    <tr><th>তারিখ</th><th>ব্যাচ</th><th>পরিমাণ</th><th>ওজন (কেজি)</th><th>মূল্য/কেজি</th><th>আয়</th><th>ক্রেতা</th></tr>
                 </thead>
                 <tbody>
                     @foreach (var s in Model)
@@ -42,7 +41,6 @@
                             <td style="color:var(--caw-text-muted)">@(s.Quantity?.ToString("N0") ?? "—")</td>
                             <td style="color:var(--caw-text-muted)">@(s.TotalWeight_kg.HasValue ? s.TotalWeight_kg.Value.ToString("N1") : "—")</td>
                             <td style="color:var(--caw-text-muted)">@(s.PricePerKg > 0 ? $"৳ {s.PricePerKg:N2}" : "—")</td>
-                            <td></td>
                             <td class="profit-positive fw-bold">৳ @s.TotalRevenue.ToString("N0")</td>
                             <td style="color:var(--caw-text-muted)">@(s.BuyerName ?? "—")</td>
                         </tr>
@@ -53,6 +51,6 @@
     }
     else
     {
-        <p class="small text-center py-3" style="color:var(--caw-text-muted)">No sales found.</p>
+        <p class="small text-center py-3" style="color:var(--caw-text-muted)">কোনো বিক্রয় পাওয়া যায়নি।</p>
     }
 </div>

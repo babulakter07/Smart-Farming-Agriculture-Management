@@ -86,16 +86,19 @@ public class BatchController(ApplicationDbContext db, UserManager<AppUser> userM
         if (batch is null || !farmIds.Contains(batch.FarmId)) return NotFound();
 
         var totalFeedCost = batch.FeedLogs.Sum(f => f.Quantity_kg * f.PricePerKg);
+        // totalCosts already includes PurchaseCost (auto-inserted as a Cost record on batch creation)
         var totalCosts = batch.Costs.Sum(c => c.Amount);
+        var totalAllCosts = totalFeedCost + totalCosts;   // true total spend
         var totalRevenue = batch.Sales.Sum(s => s.TotalRevenue);
         var totalDeaths = batch.MortalityLogs.Sum(m => m.Count);
         var liveCount = batch.InitialCount - totalDeaths;
 
         ViewBag.TotalFeedCost = totalFeedCost;
-        ViewBag.TotalCosts = totalCosts;
+        ViewBag.TotalCosts = totalAllCosts;        // full cost shown in stat card
+        ViewBag.OtherCosts = totalCosts - batch.PurchaseCost;  // non-purchase, non-feed costs
         ViewBag.TotalRevenue = totalRevenue;
         ViewBag.LiveCount = liveCount;
-        ViewBag.GrossProfit = totalRevenue - batch.PurchaseCost - totalFeedCost - totalCosts;
+        ViewBag.GrossProfit = totalRevenue - totalAllCosts;
 
         return View(batch);
     }

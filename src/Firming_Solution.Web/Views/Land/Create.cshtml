@@ -1,63 +1,105 @@
-@model Firming_Solution.Domain.Entities.LandParcel
+@model Firming_Solution.Web.Models.LandParcelViewModel
+@using Firming_Solution.Web.Models
 @{
-    ViewData["Title"] = "Add Land Parcel";
+    ViewData["Title"] = "নতুন জমি যোগ করুন";
 }
 
 <div class="row justify-content-center">
     <div class="col-md-8 col-lg-7">
         <div class="caw-card">
-            <div class="caw-section-title"><i class="fas fa-map me-2"></i>Add Land Parcel</div>
+            <div class="caw-section-title"><i class="fas fa-map me-2"></i>নতুন জমি যোগ করুন</div>
             <form asp-action="Create" method="post">
                 <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3"></div>
 
                 <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="FarmId" class="caw-form-label">Farm <span class="text-danger">*</span></label>
+                    <div class="col-12 mb-3">
+                        <label asp-for="FarmId" class="caw-form-label">খামার <span class="text-danger">*</span></label>
                         <select asp-for="FarmId" asp-items="ViewBag.Farms" class="form-select">
-                            <option value="">-- Select Farm --</option>
+                            <option value="">-- খামার নির্বাচন করুন --</option>
                         </select>
                         <span asp-validation-for="FarmId" class="text-danger small"></span>
                     </div>
+                </div>
+
+                @* জমির পরিমাণ ও একক *@
+                <div class="row align-items-end mb-1">
+                    <div class="col-md-5 mb-3">
+                        <label asp-for="InputValue" class="caw-form-label">জমির পরিমাণ <span class="text-danger">*</span></label>
+                        <input asp-for="InputValue" id="inputValue" class="form-control" type="number" step="0.001" min="0.001" placeholder="০.০০" />
+                        <span asp-validation-for="InputValue" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="InputUnit" class="caw-form-label">একক <span class="text-danger">*</span></label>
+                        <select asp-for="InputUnit" id="inputUnit" class="form-select">
+                            @foreach (var u in LandParcelViewModel.Units)
+                            {
+                                <option value="@u">@u</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="p-2 rounded text-center" style="background:rgba(255,255,255,0.06); font-size:0.82rem; min-height:38px; line-height:1.4">
+                            <span id="convPreview" style="color:var(--caw-text-muted)">— শতাংশ</span>
+                        </div>
+                    </div>
+                </div>
+                {{!-- রূপান্তর তথ্য --}}
+                <div id="convBreakdown" class="mb-3 px-2 py-2 rounded small" style="background:rgba(255,200,80,0.06); color:var(--caw-text-muted); display:none; font-size:0.81rem; line-height:1.7">
+                </div>
+                <div class="mb-3" style="font-size:0.78rem; color:var(--caw-text-muted)">
+                    <i class="fas fa-info-circle me-1"></i>
+                    ১ শতাংশ = ৪৩৫.৬ বর্গফুট &nbsp;|&nbsp; ১ কাঠা = ৭২০ বর্গফুট ≈ ১.৬৫ শতাংশ &nbsp;|&nbsp; ১ বিঘা = ২০ কাঠা = ৩৩.০৬ শতাংশ &nbsp;|&nbsp; ১ একর = ১০০ শতাংশ
+                </div>
+
+                <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label asp-for="LandName" class="caw-form-label">Land Name <span class="text-danger">*</span></label>
-                        <input asp-for="LandName" class="form-control" placeholder="North Field, Plot A-1..." />
-                        <span asp-validation-for="LandName" class="text-danger small"></span>
+                        <label asp-for="OwnershipType" class="caw-form-label">মালিকানার ধরন</label>
+                        <select asp-for="OwnershipType" class="form-select">
+                            <option value="Own">নিজস্ব</option>
+                            <option value="Lease">ইজারা</option>
+                            <option value="Mortgaged">বন্ধকী</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="LeaseCostPerSeason" class="caw-form-label">মৌসুম প্রতি ইজারা মূল্য (৳)</label>
+                        <input asp-for="LeaseCostPerSeason" class="form-control" type="number" step="0.01" placeholder="০.০০" />
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <label asp-for="Area_Decimal" class="caw-form-label">Area (Decimal) <span class="text-danger">*</span></label>
-                        <input asp-for="Area_Decimal" class="form-control" type="number" step="0.01" min="0.01" placeholder="10.00" />
-                        <span asp-validation-for="Area_Decimal" class="text-danger small"></span>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label asp-for="OwnershipType" class="caw-form-label">Ownership Type</label>
-                        <select asp-for="OwnershipType" asp-items="Html.GetEnumSelectList<Firming_Solution.Domain.Enums.OwnershipType>()" class="form-select"></select>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label asp-for="LeaseCostPerSeason" class="caw-form-label">Lease Cost/Season (৳)</label>
-                        <input asp-for="LeaseCostPerSeason" class="form-control" type="number" step="0.01" placeholder="0.00" />
-                    </div>
-                </div>
-
-                <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label asp-for="SoilType" class="caw-form-label">Soil Type</label>
-                        <input asp-for="SoilType" class="form-control" placeholder="Sandy loam, Clay, Alluvial..." />
+                        <label asp-for="SoilType" class="caw-form-label">মাটির ধরন</label>
+                        <select asp-for="SoilType" id="soilTypeSelect" class="form-select">
+                            <option value="">-- নির্বাচন করুন --</option>
+                            <option value="পলিমাটি">পলিমাটি (Alluvial soil)</option>
+                            <option value="এঁটেল মাটি">এঁটেল মাটি (Clay soil)</option>
+                            <option value="বেলে মাটি">বেলে মাটি (Sandy soil)</option>
+                            <option value="দোঁআশ মাটি">দোঁআশ মাটি (Loamy soil)</option>
+                            <option value="পিট মাটি">পিট মাটি (Peat soil)</option>
+                            <option value="লাল মাটি">লাল মাটি (Laterite soil)</option>
+                            <option value="লবণাক্ত মাটি">লবণাক্ত মাটি (Saline soil)</option>
+                        </select>
                     </div>
                     <div class="col-md-6 mb-4">
-                        <label asp-for="LastTestedDate" class="caw-form-label">Last Soil Test Date</label>
+                        <label asp-for="LastTestedDate" class="caw-form-label">সর্বশেষ মাটি পরীক্ষার তারিখ</label>
                         <input asp-for="LastTestedDate" class="form-control" type="date" />
                     </div>
                 </div>
 
+                <!-- উপযুক্ত ফসল পরামর্শ -->
+                <div id="cropSuggestionBox" style="display:none;" class="mb-4 p-3 rounded" style="background:rgba(255,200,80,0.06); border:1px solid var(--caw-border);">
+                    <div class="fw-bold mb-2" style="color:var(--caw-gold);">
+                        <i class="fas fa-seedling me-2"></i>এই মাটিতে উপযুক্ত ফসল
+                    </div>
+                    <div id="cropSuggestionContent"></div>
+                </div>
+
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-caw-primary flex-fill">
-                        <i class="fas fa-save me-2"></i>Save Parcel
+                        <i class="fas fa-save me-2"></i>সংরক্ষণ করুন
                     </button>
                     <a asp-action="Index" class="btn btn-outline-secondary flex-fill">
-                        <i class="fas fa-times me-2"></i>Cancel
+                        <i class="fas fa-times me-2"></i>বাতিল
                     </a>
                 </div>
             </form>
@@ -67,4 +109,195 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Conversion factors: 1 unit = X শতাংশ
+        const factors = {
+            'শতাংশ': 1,
+            'কাঠা':  1.65289256,
+            'বিঘা':  33.0578512,
+            'একর':   100
+        };
+
+        function toBn(num) {
+            const bn = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+            return num.toFixed(3).replace(/\d/g, d => bn[d]);
+        }
+
+        function updatePreview() {
+            const val  = parseFloat(document.getElementById('inputValue').value);
+            const unit = document.getElementById('inputUnit').value;
+            const preview  = document.getElementById('convPreview');
+            const breakdown = document.getElementById('convBreakdown');
+
+            if (!val || val <= 0 || isNaN(val)) {
+                preview.textContent = '— শতাংশ';
+                breakdown.style.display = 'none';
+                return;
+            }
+
+            const shotangsho = val * factors[unit];
+            const katha = shotangsho / factors['কাঠা'];
+            const bigha = shotangsho / factors['বিঘা'];
+            const sqft  = shotangsho * 435.6;
+
+            preview.textContent = toBn(shotangsho) + ' শতাংশ';
+
+            breakdown.innerHTML =
+                '<i class="fas fa-exchange-alt me-1"></i><strong>রূপান্তর:</strong> ' +
+                toBn(shotangsho) + ' শতাংশ &nbsp;=&nbsp; ' +
+                toBn(katha) + ' কাঠা &nbsp;=&nbsp; ' +
+                toBn(bigha) + ' বিঘা &nbsp;=&nbsp; ' +
+                Math.round(sqft).toLocaleString('bn-BD') + ' বর্গফুট';
+            breakdown.style.display = 'block';
+        }
+
+        document.getElementById('inputValue').addEventListener('input', updatePreview);
+        document.getElementById('inputUnit').addEventListener('change', updatePreview);
+
+        // ============================================================
+        // মাটির ধরন অনুযায়ী উপযুক্ত ফসল পরামর্শ (বাংলাদেশ)
+        // ============================================================
+        const SOIL_CROPS = {
+            'পলিমাটি': {
+                desc: 'নদীবাহিত পলি থেকে তৈরি। বাংলাদেশের সবচেয়ে উর্বর মাটি। পানি ধারণ ও পুষ্টিগুণ উভয়ই ভালো।',
+                primary: [
+                    { name: 'বোরো ধান', icon: 'fa-wheat-awn', note: 'সেরা ফলন' },
+                    { name: 'আমন ধান',  icon: 'fa-wheat-awn', note: 'প্রধান ফসল' },
+                    { name: 'পাট',       icon: 'fa-leaf',      note: 'অর্থকরী ফসল' },
+                    { name: 'গম',        icon: 'fa-wheat-awn', note: 'রবি মৌসুম' },
+                    { name: 'সরিষা',    icon: 'fa-seedling',  note: 'তৈলবীজ' },
+                    { name: 'মসুর ডাল', icon: 'fa-seedling',  note: 'ডাল ফসল' },
+                ],
+                secondary: ['আখ', 'কলা', 'আম', 'শাকসবজি', 'মরিচ', 'পেঁয়াজ', 'রসুন'],
+                avoid: 'চা, আনারস (অম্লীয় মাটি প্রয়োজন)'
+            },
+            'এঁটেল মাটি': {
+                desc: 'ভারী, আঠালো, পানি ধরে রাখে। নিষ্কাশন দুর্বল, তাই জলাবদ্ধতা-সহনশীল ফসল ভালো হয়।',
+                primary: [
+                    { name: 'আমন ধান',  icon: 'fa-wheat-awn', note: 'সবচেয়ে উপযুক্ত' },
+                    { name: 'পাট',       icon: 'fa-leaf',      note: 'ভালো উৎপাদন' },
+                    { name: 'আখ',        icon: 'fa-seedling',  note: 'দীর্ঘমেয়াদী' },
+                    { name: 'কচু',       icon: 'fa-leaf',      note: 'সহজ চাষ' },
+                    { name: 'সরিষা',    icon: 'fa-seedling',  note: 'রবি মৌসুম' },
+                    { name: 'কলমি শাক', icon: 'fa-leaf',      note: 'পানিতে ভালো' },
+                ],
+                secondary: ['মুথা', 'হেলেঞ্চা', 'ঢেঁড়স', 'বেগুন', 'লাউ'],
+                avoid: 'গম, আলু, মুলা (পানি জমে নষ্ট হয়)'
+            },
+            'বেলে মাটি': {
+                desc: 'হালকা, দ্রুত পানি নিষ্কাশন হয়। সার কম ধরে রাখে, তাই নিয়মিত সেচ ও সার দরকার।',
+                primary: [
+                    { name: 'তরমুজ',      icon: 'fa-seedling',  note: 'বালুতে সেরা' },
+                    { name: 'মিষ্টি আলু', icon: 'fa-seedling',  note: 'ভালো ফলন' },
+                    { name: 'চিনাবাদাম',  icon: 'fa-seedling',  note: 'অর্থকরী' },
+                    { name: 'বরবটি',      icon: 'fa-leaf',      note: 'ডাল ফসল' },
+                    { name: 'কুমড়া',     icon: 'fa-seedling',  note: 'গ্রীষ্মকালীন' },
+                    { name: 'শিমুল আলু', icon: 'fa-seedling',  note: 'সহজ চাষ' },
+                ],
+                secondary: ['শশা', 'ঝিঙা', 'করলা', 'ধনিয়া', 'কালো জিরা'],
+                avoid: 'ধান (পানি ধরে রাখে না), জলদি পাট'
+            },
+            'দোঁআশ মাটি': {
+                desc: 'বালু, পলি ও কাদার সমন্বয়। বাংলাদেশের সর্বোৎকৃষ্ট কৃষি মাটি — প্রায় সব ফসলের জন্য আদর্শ।',
+                primary: [
+                    { name: 'ধান',    icon: 'fa-wheat-awn', note: 'সর্বোচ্চ ফলন' },
+                    { name: 'গম',     icon: 'fa-wheat-awn', note: 'সেরা মান' },
+                    { name: 'ভুট্টা', icon: 'fa-seedling',  note: 'উচ্চ ফলন' },
+                    { name: 'আলু',   icon: 'fa-seedling',  note: 'রবি ফসল' },
+                    { name: 'টমেটো', icon: 'fa-seedling',  note: 'উচ্চ মূল্য' },
+                    { name: 'সব ডাল', icon: 'fa-leaf',      note: 'মসুর/মাশকলাই' },
+                ],
+                secondary: ['পেঁয়াজ', 'রসুন', 'আদা', 'হলুদ', 'শাকসবজি', 'ফলের গাছ', 'সরিষা', 'তিল'],
+                avoid: 'কোনো বিশেষ বাধা নেই'
+            },
+            'পিট মাটি': {
+                desc: 'জৈব পদার্থ সমৃদ্ধ, অম্লীয়, জলাবদ্ধ। হাওর-বাওর অঞ্চলে (সিলেট, বরিশাল) পাওয়া যায়।',
+                primary: [
+                    { name: 'আউশ ধান',  icon: 'fa-wheat-awn', note: 'জলাশয়ে উপযুক্ত' },
+                    { name: 'পানিফল',    icon: 'fa-leaf',      note: 'জলজ ফসল' },
+                    { name: 'শালুক/পদ্ম', icon: 'fa-leaf',     note: 'জলজ সবজি' },
+                    { name: 'কচু',        icon: 'fa-leaf',      note: 'ভেজা মাটিতে' },
+                    { name: 'হেলেঞ্চা',  icon: 'fa-leaf',      note: 'শাক ফসল' },
+                    { name: 'কলমি শাক',  icon: 'fa-leaf',      note: 'পানিতে ভালো' },
+                ],
+                secondary: ['ঢেঁকিশাক', 'শাপলা', 'মাখনা (ভেঁট)'],
+                avoid: 'গম, সরিষা, বেশিরভাগ রবি ফসল (জলাবদ্ধতায় নষ্ট হয়)'
+            },
+            'লাল মাটি': {
+                desc: 'অম্লীয়, লোহা ও অ্যালুমিনিয়াম সমৃদ্ধ। বরেন্দ্র অঞ্চল, মধুপুর গড় ও সিলেট পাহাড়ে পাওয়া যায়।',
+                primary: [
+                    { name: 'চা',       icon: 'fa-leaf',     note: 'সিলেটে সেরা' },
+                    { name: 'আনারস',   icon: 'fa-seedling', note: 'টক মাটিতে ভালো' },
+                    { name: 'লিচু',    icon: 'fa-seedling', note: 'পাহাড়ি উপযুক্ত' },
+                    { name: 'কাঁঠাল',  icon: 'fa-seedling', note: 'প্রাকৃতিক উপযোগী' },
+                    { name: 'রাবার',   icon: 'fa-leaf',     note: 'পার্বত্যে উপযুক্ত' },
+                    { name: 'কাজু বাদাম', icon: 'fa-seedling', note: 'অর্থকরী' },
+                ],
+                secondary: ['বাঁশ', 'আদা', 'হলুদ', 'বেত', 'তেজপাতা', 'এলাচ'],
+                avoid: 'ধান ও গম (উচ্চ অম্লতায় ফলন কম), লবণসহিষ্ণু ফসল'
+            },
+            'লবণাক্ত মাটি': {
+                desc: 'উপকূলীয় অঞ্চলে (খুলনা, বাগেরহাট, সাতক্ষীরা) পাওয়া যায়। লবণসহিষ্ণু জাত বা উচ্চ-মূল্য ফসল উপযুক্ত।',
+                primary: [
+                    { name: 'BRRI ধান-৪৭', icon: 'fa-wheat-awn', note: 'লবণসহিষ্ণু জাত' },
+                    { name: 'BINA ধান-৮',  icon: 'fa-wheat-awn', note: 'উপকূলীয় উপযুক্ত' },
+                    { name: 'নারকেল',      icon: 'fa-seedling',  note: 'লবণে সহনশীল' },
+                    { name: 'সুপারি',      icon: 'fa-seedling',  note: 'উপকূলীয় ফসল' },
+                    { name: 'সূর্যমুখী',  icon: 'fa-seedling',  note: 'লবণ সহনশীল' },
+                    { name: 'তরমুজ',      icon: 'fa-seedling',  note: 'সহনশীল জাত' },
+                ],
+                secondary: ['কেওড়া', 'গোলপাতা', 'বাইন', 'হেতাল', 'সুন্দরী (ম্যানগ্রোভ)'],
+                avoid: 'গম, আলু, পেঁয়াজ (লবণে অত্যন্ত সংবেদনশীল)'
+            }
+        };
+
+        function renderCropSuggestion(soilKey) {
+            const box     = document.getElementById('cropSuggestionBox');
+            const content = document.getElementById('cropSuggestionContent');
+
+            if (!soilKey || !SOIL_CROPS[soilKey]) {
+                box.style.display = 'none';
+                return;
+            }
+
+            const data = SOIL_CROPS[soilKey];
+
+            const primaryCards = data.primary.map(c =>
+                `<span class="badge me-1 mb-1 px-2 py-1" style="background:rgba(165,214,167,0.18); color:#a5d6a7; font-size:0.78rem; border:1px solid rgba(165,214,167,0.3);">
+                    <i class="fas ${c.icon} me-1"></i>${c.name}
+                    <span style="opacity:0.7; font-size:0.7rem;"> — ${c.note}</span>
+                </span>`
+            ).join('');
+
+            const secondaryBadges = data.secondary.map(c =>
+                `<span class="badge me-1 mb-1 px-2 py-1" style="background:rgba(129,212,250,0.12); color:#81d4fa; font-size:0.75rem; border:1px solid rgba(129,212,250,0.2);">${c}</span>`
+            ).join('');
+
+            content.innerHTML = `
+                <p class="small mb-2" style="color:var(--caw-text-muted);">
+                    <i class="fas fa-info-circle me-1"></i>${data.desc}
+                </p>
+                <div class="mb-2">
+                    <div class="small fw-bold mb-1" style="color:#a5d6a7;">
+                        <i class="fas fa-star me-1"></i>প্রধান উপযুক্ত ফসল
+                    </div>
+                    ${primaryCards}
+                </div>
+                <div class="mb-2">
+                    <div class="small fw-bold mb-1" style="color:#81d4fa;">
+                        <i class="fas fa-plus-circle me-1"></i>আরো উপযুক্ত ফসল
+                    </div>
+                    ${secondaryBadges}
+                </div>
+                <div class="small mt-1" style="color:#ef9a9a;">
+                    <i class="fas fa-exclamation-triangle me-1"></i><strong>এড়িয়ে চলুন:</strong> ${data.avoid}
+                </div>`;
+
+            box.style.display = 'block';
+        }
+
+        document.getElementById('soilTypeSelect').addEventListener('change', function () {
+            renderCropSuggestion(this.value);
+        });
+    </script>
 }

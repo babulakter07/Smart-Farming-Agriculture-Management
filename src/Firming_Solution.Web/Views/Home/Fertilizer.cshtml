@@ -1,173 +1,379 @@
 @{
-    ViewData["Title"] = "Fertilizer Guide";
+    ViewData["Title"] = "সার গাইড";
 }
 
 <section style="padding:3rem 0;">
     <div class="container">
-        <div class="caw-section-heading">
-            <i class="fas fa-flask"></i>
-            <h2>Comprehensive Fertilizer Guide</h2>
+
+        <!-- শিরোনাম + একক নির্বাচক -->
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-2">
+            <div class="caw-section-heading mb-0">
+                <i class="fas fa-flask"></i>
+                <h2 class="mb-0">বিস্তারিত সার গাইড</h2>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <label class="fw-bold small" style="color:var(--caw-text); white-space:nowrap;">
+                    <i class="fas fa-ruler-combined me-1" style="color:var(--caw-gold)"></i>একক নির্বাচন:
+                </label>
+                <select id="unitSelector" class="form-select form-select-sm"
+                        style="width:auto; min-width:120px; background:var(--caw-card); color:var(--caw-text); border-color:var(--caw-border);">
+                    <option value="shotangsho">শতাংশ</option>
+                    <option value="ekor" selected>একর</option>
+                    <option value="bigha">বিঘা</option>
+                    <option value="hector">হেক্টর</option>
+                </select>
+            </div>
         </div>
         <p style="color:var(--caw-text-muted)" class="mb-4">
-            A complete reference for fertilizer selection, dosage, and application timing
-            for major crops grown in Bangladesh.
+            বাংলাদেশের প্রধান ফসলের জন্য সার নির্বাচন, মাত্রা ও প্রয়োগের সময়
+            সংক্রান্ত সম্পূর্ণ তথ্যসূত্র।
         </p>
 
-        <!-- Macronutrient Fertilizers -->
-        <h4 class="mb-3" style="color:var(--caw-gold)"><i class="fas fa-atom me-2"></i>Nitrogen Fertilizers (N)</h4>
+        <!-- নাইট্রোজেন সার -->
+        <h4 class="mb-3" style="color:var(--caw-gold)"><i class="fas fa-atom me-2"></i>নাইট্রোজেন সার (N)</h4>
         <div class="row g-3 mb-4">
             <div class="col-md-6">
                 <div class="caw-fert-card">
-                    <h6><i class="fas fa-flask me-2"></i>Urea (46% N)</h6>
-                    <p><strong style="color:#a5d6a7">Best Crops:</strong> Rice, jute, sugarcane, maize, vegetables.</p>
-                    <p><strong style="color:#81d4fa">Application Rate:</strong> 150–250 kg/ha in 3 split doses.</p>
-                    <p><strong style="color:#ffcc80">Timing:</strong> At transplanting, 15–20 days after, and at panicle initiation.</p>
-                    <p><strong style="color:#ef9a9a">Caution:</strong> Volatilises quickly if surface-applied to dry soil. Apply immediately before irrigation.</p>
+                    <h6><i class="fas fa-flask me-2"></i>ইউরিয়া (৪৬% N)</h6>
+                    <p><strong style="color:#a5d6a7">সেরা ফসল:</strong> ধান, পাট, আখ, ভুট্টা, সবজি।</p>
+                    <p>
+                        <strong style="color:#81d4fa">প্রয়োগ মাত্রা:</strong>
+                        <span class="dose-range" data-min-ha="150" data-max-ha="250"></span>/<span class="unit-lbl"></span>,
+                        ৩ ভাগে বিভক্ত করে।
+                    </p>
+                    <p><strong style="color:#ffcc80">সময়:</strong> রোপণের সময়, ১৫–২০ দিন পরে এবং শীষ বের হওয়ার সময়।</p>
+                    <p><strong style="color:#ef9a9a">সতর্কতা:</strong> শুকনো মাটিতে উপরে ছিটালে দ্রুত উড়ে যায়। সেচের আগে প্রয়োগ করুন।</p>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="caw-fert-card">
-                    <h6><i class="fas fa-flask me-2"></i>Ammonium Sulphate (21% N + 24% S)</h6>
-                    <p><strong style="color:#a5d6a7">Best Crops:</strong> Tea, potato, onion, cruciferous vegetables.</p>
-                    <p><strong style="color:#81d4fa">Application Rate:</strong> 200–300 kg/ha split.</p>
-                    <p><strong style="color:#ffcc80">Timing:</strong> Basal + top-dress after 3–4 weeks.</p>
-                    <p><strong style="color:#ef9a9a">Caution:</strong> Acidifies soil — not ideal for acid soils. Good sulphur source.</p>
+                    <h6><i class="fas fa-flask me-2"></i>অ্যামোনিয়াম সালফেট (২১% N + ২৪% S)</h6>
+                    <p><strong style="color:#a5d6a7">সেরা ফসল:</strong> চা, আলু, পেঁয়াজ, ক্রুসিফেরাস সবজি।</p>
+                    <p>
+                        <strong style="color:#81d4fa">প্রয়োগ মাত্রা:</strong>
+                        <span class="dose-range" data-min-ha="200" data-max-ha="300"></span>/<span class="unit-lbl"></span>,
+                        ভাগ করে প্রয়োগ।
+                    </p>
+                    <p><strong style="color:#ffcc80">সময়:</strong> বেসাল + ৩–৪ সপ্তাহ পরে টপ-ড্রেস।</p>
+                    <p><strong style="color:#ef9a9a">সতর্কতা:</strong> মাটি অম্লীয় করে — অম্লীয় মাটিতে আদর্শ নয়। সালফারের ভালো উৎস।</p>
                 </div>
             </div>
         </div>
 
-        <h4 class="mb-3" style="color:var(--caw-gold)"><i class="fas fa-atom me-2"></i>Phosphate Fertilizers (P)</h4>
+        <!-- ফসফেট সার -->
+        <h4 class="mb-3" style="color:var(--caw-gold)"><i class="fas fa-atom me-2"></i>ফসফেট সার (P)</h4>
         <div class="row g-3 mb-4">
             <div class="col-md-6">
                 <div class="caw-fert-card">
-                    <h6><i class="fas fa-flask me-2"></i>Triple Super Phosphate – TSP (46% P₂O₅)</h6>
-                    <p><strong style="color:#a5d6a7">Best Crops:</strong> Legumes, oil seeds, wheat, potato.</p>
-                    <p><strong style="color:#81d4fa">Application Rate:</strong> 75–120 kg/ha as basal dose.</p>
-                    <p><strong style="color:#ffcc80">Timing:</strong> All at planting — phosphorus does not move in soil.</p>
-                    <p><strong style="color:#ef9a9a">Caution:</strong> Broadcast and incorporate before sowing for best results.</p>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="caw-fert-card">
-                    <h6><i class="fas fa-flask me-2"></i>DAP – Diammonium Phosphate (18% N + 46% P₂O₅)</h6>
-                    <p><strong style="color:#a5d6a7">Best Crops:</strong> Cereals, vegetables, fruit trees.</p>
-                    <p><strong style="color:#81d4fa">Application Rate:</strong> 100–150 kg/ha basal.</p>
-                    <p><strong style="color:#ffcc80">Timing:</strong> At planting/sowing for root development.</p>
-                    <p><strong style="color:#ef9a9a">Caution:</strong> Can raise soil pH slightly. Excellent starter fertilizer.</p>
-                </div>
-            </div>
-        </div>
-
-        <h4 class="mb-3" style="color:var(--caw-gold)"><i class="fas fa-atom me-2"></i>Potassium Fertilizers (K)</h4>
-        <div class="row g-3 mb-4">
-            <div class="col-md-6">
-                <div class="caw-fert-card">
-                    <h6><i class="fas fa-flask me-2"></i>Muriate of Potash – MoP (60% K₂O)</h6>
-                    <p><strong style="color:#a5d6a7">Best Crops:</strong> Potato, banana, sugarcane, coconut, rice.</p>
-                    <p><strong style="color:#81d4fa">Application Rate:</strong> 80–150 kg/ha split in 2 doses.</p>
-                    <p><strong style="color:#ffcc80">Timing:</strong> Half basal, half at 30–40 days after transplanting.</p>
-                    <p><strong style="color:#ef9a9a">Caution:</strong> High chloride — avoid for tobacco and some vegetables. Improves drought and disease resistance.</p>
+                    <h6><i class="fas fa-flask me-2"></i>ট্রিপল সুপার ফসফেট – TSP (৪৬% P₂O₅)</h6>
+                    <p><strong style="color:#a5d6a7">সেরা ফসল:</strong> ডাল, তৈলবীজ, গম, আলু।</p>
+                    <p>
+                        <strong style="color:#81d4fa">প্রয়োগ মাত্রা:</strong>
+                        <span class="dose-range" data-min-ha="75" data-max-ha="120"></span>/<span class="unit-lbl"></span>,
+                        বেসাল মাত্রায়।
+                    </p>
+                    <p><strong style="color:#ffcc80">সময়:</strong> রোপণের সময় সম্পূর্ণ মাত্রা — ফসফরাস মাটিতে সরে না।</p>
+                    <p><strong style="color:#ef9a9a">সতর্কতা:</strong> সেরা ফলাফলের জন্য বপনের আগে মাটিতে ছিটিয়ে মিশিয়ে দিন।</p>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="caw-fert-card">
-                    <h6><i class="fas fa-flask me-2"></i>Sulphate of Potash – SoP (50% K₂O + 18% S)</h6>
-                    <p><strong style="color:#a5d6a7">Best Crops:</strong> Tobacco, grapes, sensitive vegetables.</p>
-                    <p><strong style="color:#81d4fa">Application Rate:</strong> 80–120 kg/ha.</p>
-                    <p><strong style="color:#ffcc80">Timing:</strong> Basal or split application.</p>
-                    <p><strong style="color:#ef9a9a">Caution:</strong> Chloride-free — premium option for chloride-sensitive crops.</p>
+                    <h6><i class="fas fa-flask me-2"></i>DAP – ডাই-অ্যামোনিয়াম ফসফেট (১৮% N + ৪৬% P₂O₅)</h6>
+                    <p><strong style="color:#a5d6a7">সেরা ফসল:</strong> শস্য, সবজি, ফলের গাছ।</p>
+                    <p>
+                        <strong style="color:#81d4fa">প্রয়োগ মাত্রা:</strong>
+                        <span class="dose-range" data-min-ha="100" data-max-ha="150"></span>/<span class="unit-lbl"></span>,
+                        বেসাল।
+                    </p>
+                    <p><strong style="color:#ffcc80">সময়:</strong> শিকড় বিকাশের জন্য রোপণ/বপনের সময়।</p>
+                    <p><strong style="color:#ef9a9a">সতর্কতা:</strong> মাটির pH সামান্য বাড়াতে পারে। চমৎকার স্টার্টার সার।</p>
                 </div>
             </div>
         </div>
 
-        <!-- Micronutrients -->
-        <h4 class="mb-3" style="color:var(--caw-gold)"><i class="fas fa-atom me-2"></i>Micronutrient Fertilizers</h4>
+        <!-- পটাশিয়াম সার -->
+        <h4 class="mb-3" style="color:var(--caw-gold)"><i class="fas fa-atom me-2"></i>পটাশিয়াম সার (K)</h4>
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="caw-fert-card">
+                    <h6><i class="fas fa-flask me-2"></i>মিউরিয়েট অব পটাশ – MoP (৬০% K₂O)</h6>
+                    <p><strong style="color:#a5d6a7">সেরা ফসল:</strong> আলু, কলা, আখ, নারকেল, ধান।</p>
+                    <p>
+                        <strong style="color:#81d4fa">প্রয়োগ মাত্রা:</strong>
+                        <span class="dose-range" data-min-ha="80" data-max-ha="150"></span>/<span class="unit-lbl"></span>,
+                        ২ ভাগে।
+                    </p>
+                    <p><strong style="color:#ffcc80">সময়:</strong> অর্ধেক বেসাল, অর্ধেক রোপণের ৩০–৪০ দিন পরে।</p>
+                    <p><strong style="color:#ef9a9a">সতর্কতা:</strong> উচ্চ ক্লোরাইড — তামাক ও কিছু সবজিতে ব্যবহার এড়িয়ে চলুন। খরা ও রোগ প্রতিরোধ ক্ষমতা বাড়ায়।</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="caw-fert-card">
+                    <h6><i class="fas fa-flask me-2"></i>সালফেট অব পটাশ – SoP (৫০% K₂O + ১৮% S)</h6>
+                    <p><strong style="color:#a5d6a7">সেরা ফসল:</strong> তামাক, আঙুর, সংবেদনশীল সবজি।</p>
+                    <p>
+                        <strong style="color:#81d4fa">প্রয়োগ মাত্রা:</strong>
+                        <span class="dose-range" data-min-ha="80" data-max-ha="120"></span>/<span class="unit-lbl"></span>।
+                    </p>
+                    <p><strong style="color:#ffcc80">সময়:</strong> বেসাল বা ভাগ করে প্রয়োগ।</p>
+                    <p><strong style="color:#ef9a9a">সতর্কতা:</strong> ক্লোরাইডমুক্ত — ক্লোরাইড-সংবেদনশীল ফসলের জন্য প্রিমিয়াম বিকল্প।</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- অণু পুষ্টি উপাদান সার -->
+        <h4 class="mb-3" style="color:var(--caw-gold)"><i class="fas fa-atom me-2"></i>অণু পুষ্টি উপাদান সার</h4>
         <div class="row g-3 mb-4">
             <div class="col-md-4">
                 <div class="caw-fert-card">
-                    <h6>Zinc Sulphate (21% Zn)</h6>
-                    <p><strong style="color:#a5d6a7">For:</strong> Rice, wheat, maize on zinc-deficient soils.</p>
-                    <p><strong style="color:#81d4fa">Rate:</strong> 10–20 kg/ha soil application or 0.5% foliar spray.</p>
-                    <p><strong style="color:#ef9a9a">Deficiency Signs:</strong> Stunted growth, bronzing of older leaves.</p>
+                    <h6>জিংক সালফেট (২১% Zn)</h6>
+                    <p><strong style="color:#a5d6a7">ব্যবহার:</strong> দস্তার অভাবযুক্ত মাটিতে ধান, গম, ভুট্টা।</p>
+                    <p>
+                        <strong style="color:#81d4fa">মাত্রা:</strong>
+                        <span class="dose-range" data-min-ha="10" data-max-ha="20"></span>/<span class="unit-lbl"></span>
+                        মাটিতে বা ০.৫% পাতায় স্প্রে।
+                    </p>
+                    <p><strong style="color:#ef9a9a">অভাবের লক্ষণ:</strong> বৃদ্ধি ব্যাহত, পুরনো পাতা বাদামি হওয়া।</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="caw-fert-card">
-                    <h6>Borax (11% B)</h6>
-                    <p><strong style="color:#a5d6a7">For:</strong> Rapeseed, cauliflower, sunflower, legumes.</p>
-                    <p><strong style="color:#81d4fa">Rate:</strong> 5–10 kg/ha basal or 0.1–0.25% foliar.</p>
-                    <p><strong style="color:#ef9a9a">Deficiency Signs:</strong> Hollow stem, distorted growing tips, poor seed set.</p>
+                    <h6>বোরাক্স (১১% B)</h6>
+                    <p><strong style="color:#a5d6a7">ব্যবহার:</strong> সরিষা, ফুলকপি, সূর্যমুখী, ডাল।</p>
+                    <p>
+                        <strong style="color:#81d4fa">মাত্রা:</strong>
+                        <span class="dose-range" data-min-ha="5" data-max-ha="10"></span>/<span class="unit-lbl"></span>
+                        বেসাল বা ০.১–০.২৫% পাতায় স্প্রে।
+                    </p>
+                    <p><strong style="color:#ef9a9a">অভাবের লক্ষণ:</strong> ফাঁপা কাণ্ড, বিকৃত আগা, বীজ না হওয়া।</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="caw-fert-card">
-                    <h6>Gypsum (CaSO₄ — 20% S + 23% Ca)</h6>
-                    <p><strong style="color:#a5d6a7">For:</strong> Groundnut, sunflower, all legumes, saline soils.</p>
-                    <p><strong style="color:#81d4fa">Rate:</strong> 200–400 kg/ha basal.</p>
-                    <p><strong style="color:#ef9a9a">Note:</strong> Also improves soil structure and reclaims saline soils.</p>
+                    <h6>জিপসাম (CaSO₄ — ২০% S + ২৩% Ca)</h6>
+                    <p><strong style="color:#a5d6a7">ব্যবহার:</strong> চিনাবাদাম, সূর্যমুখী, সব ডাল, লবণাক্ত মাটি।</p>
+                    <p>
+                        <strong style="color:#81d4fa">মাত্রা:</strong>
+                        <span class="dose-range" data-min-ha="200" data-max-ha="400"></span>/<span class="unit-lbl"></span>
+                        বেসাল।
+                    </p>
+                    <p><strong style="color:#ef9a9a">বিশেষ নোট:</strong> মাটির গঠন উন্নত করে এবং লবণাক্ত মাটি সংশোধন করে।</p>
                 </div>
             </div>
         </div>
 
-        <!-- Organic -->
-        <h4 class="mb-3" style="color:var(--caw-gold)"><i class="fas fa-leaf me-2"></i>Organic Fertilizers</h4>
+        <!-- জৈব সার -->
+        <h4 class="mb-3" style="color:var(--caw-gold)"><i class="fas fa-leaf me-2"></i>জৈব সার</h4>
         <div class="row g-3 mb-4">
             <div class="col-md-4">
                 <div class="caw-fert-card">
-                    <h6>Farmyard Manure (FYM)</h6>
-                    <p><strong style="color:#a5d6a7">N-P-K:</strong> ~0.5 – 0.25 – 0.5%</p>
-                    <p><strong style="color:#81d4fa">Rate:</strong> 5–15 tonnes/ha.</p>
-                    <p>Improves soil structure, water holding capacity and microbial life. Well-composted FYM is best.</p>
+                    <h6>গোবর সার (FYM)</h6>
+                    <p><strong style="color:#a5d6a7">N-P-K:</strong> ~০.৫ – ০.২৫ – ০.৫%</p>
+                    <p>
+                        <strong style="color:#81d4fa">মাত্রা:</strong>
+                        <span class="dose-range" data-min-ha="5000" data-max-ha="15000"></span>/<span class="unit-lbl"></span>।
+                    </p>
+                    <p>মাটির গঠন, জলধারণ ক্ষমতা ও অণুজীবের কার্যকলাপ উন্নত করে। পরিপক্ব কম্পোস্ট সেরা।</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="caw-fert-card">
-                    <h6>Poultry Manure</h6>
-                    <p><strong style="color:#a5d6a7">N-P-K:</strong> ~3 – 2.5 – 2%</p>
-                    <p><strong style="color:#81d4fa">Rate:</strong> 2–5 tonnes/ha.</p>
-                    <p>High nutrient content; use composted form to avoid pathogen risk and ammonia burn.</p>
+                    <h6>মুরগির বিষ্ঠা</h6>
+                    <p><strong style="color:#a5d6a7">N-P-K:</strong> ~৩ – ২.৫ – ২%</p>
+                    <p>
+                        <strong style="color:#81d4fa">মাত্রা:</strong>
+                        <span class="dose-range" data-min-ha="2000" data-max-ha="5000"></span>/<span class="unit-lbl"></span>।
+                    </p>
+                    <p>উচ্চ পুষ্টিগুণ; জীবাণু ও অ্যামোনিয়া পোড়ার ঝুঁকি এড়াতে কম্পোস্ট করা রূপ ব্যবহার করুন।</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="caw-fert-card">
-                    <h6>Vermicompost</h6>
-                    <p><strong style="color:#a5d6a7">N-P-K:</strong> ~1.5 – 1 – 1.5% + micronutrients</p>
-                    <p><strong style="color:#81d4fa">Rate:</strong> 2–4 tonnes/ha.</p>
-                    <p>Excellent for vegetables and nurseries. Improves root health and beneficial soil organisms.</p>
+                    <h6>ভার্মিকম্পোস্ট</h6>
+                    <p><strong style="color:#a5d6a7">N-P-K:</strong> ~১.৫ – ১ – ১.৫% + অণু পুষ্টি</p>
+                    <p>
+                        <strong style="color:#81d4fa">মাত্রা:</strong>
+                        <span class="dose-range" data-min-ha="2000" data-max-ha="4000"></span>/<span class="unit-lbl"></span>।
+                    </p>
+                    <p>সবজি ও নার্সারির জন্য চমৎকার। শিকড়ের স্বাস্থ্য ও উপকারী মাটির অণুজীব উন্নত করে।</p>
                 </div>
             </div>
         </div>
 
-        <!-- Application Schedule Table -->
+        <!-- সুপারিশকৃত সার সূচি -->
         <div class="caw-card">
-            <div class="caw-section-title"><i class="fas fa-table me-2"></i>Recommended Fertilizer Schedule — Major Bangladesh Crops</div>
+            <div class="caw-section-title">
+                <i class="fas fa-table me-2"></i>সুপারিশকৃত সার সূচি — বাংলাদেশের প্রধান ফসল
+            </div>
             <div class="table-responsive">
                 <table class="caw-table">
                     <thead>
                         <tr>
-                            <th>Crop</th>
-                            <th>N (Urea kg/ha)</th>
-                            <th>P (TSP kg/ha)</th>
-                            <th>K (MoP kg/ha)</th>
-                            <th>Season</th>
+                            <th>ফসল</th>
+                            <th>N – ইউরিয়া (কেজি/<span class="unit-lbl-th"></span>)</th>
+                            <th>P – TSP (কেজি/<span class="unit-lbl-th"></span>)</th>
+                            <th>K – MoP (কেজি/<span class="unit-lbl-th"></span>)</th>
+                            <th>মৌসুম</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>Boro Rice</td><td>200–250</td><td>80–100</td><td>80–100</td><td>Nov–May</td></tr>
-                        <tr><td>Aman Rice</td><td>130–150</td><td>50–60</td><td>50–60</td><td>Jul–Nov</td></tr>
-                        <tr><td>Wheat</td><td>150–180</td><td>90–100</td><td>60–80</td><td>Nov–Mar</td></tr>
-                        <tr><td>Maize</td><td>200–250</td><td>100–120</td><td>80–100</td><td>Year round</td></tr>
-                        <tr><td>Potato</td><td>130–150</td><td>100–130</td><td>120–150</td><td>Oct–Feb</td></tr>
-                        <tr><td>Jute</td><td>150–180</td><td>50–60</td><td>40–50</td><td>Mar–Jul</td></tr>
-                        <tr><td>Mustard</td><td>80–100</td><td>60–70</td><td>40–50</td><td>Oct–Jan</td></tr>
-                        <tr><td>Tomato</td><td>150–200</td><td>100–120</td><td>100–120</td><td>Oct–Mar</td></tr>
+                        <tr>
+                            <td>বোরো ধান</td>
+                            <td class="dose-cell" data-min-ha="200" data-max-ha="250"></td>
+                            <td class="dose-cell" data-min-ha="80"  data-max-ha="100"></td>
+                            <td class="dose-cell" data-min-ha="80"  data-max-ha="100"></td>
+                            <td>নভে–মে</td>
+                        </tr>
+                        <tr>
+                            <td>আমন ধান</td>
+                            <td class="dose-cell" data-min-ha="130" data-max-ha="150"></td>
+                            <td class="dose-cell" data-min-ha="50"  data-max-ha="60"></td>
+                            <td class="dose-cell" data-min-ha="50"  data-max-ha="60"></td>
+                            <td>জুলা–নভে</td>
+                        </tr>
+                        <tr>
+                            <td>গম</td>
+                            <td class="dose-cell" data-min-ha="150" data-max-ha="180"></td>
+                            <td class="dose-cell" data-min-ha="90"  data-max-ha="100"></td>
+                            <td class="dose-cell" data-min-ha="60"  data-max-ha="80"></td>
+                            <td>নভে–মার্চ</td>
+                        </tr>
+                        <tr>
+                            <td>ভুট্টা</td>
+                            <td class="dose-cell" data-min-ha="200" data-max-ha="250"></td>
+                            <td class="dose-cell" data-min-ha="100" data-max-ha="120"></td>
+                            <td class="dose-cell" data-min-ha="80"  data-max-ha="100"></td>
+                            <td>সারা বছর</td>
+                        </tr>
+                        <tr>
+                            <td>আলু</td>
+                            <td class="dose-cell" data-min-ha="130" data-max-ha="150"></td>
+                            <td class="dose-cell" data-min-ha="100" data-max-ha="130"></td>
+                            <td class="dose-cell" data-min-ha="120" data-max-ha="150"></td>
+                            <td>অক্টো–ফেব্রু</td>
+                        </tr>
+                        <tr>
+                            <td>পাট</td>
+                            <td class="dose-cell" data-min-ha="150" data-max-ha="180"></td>
+                            <td class="dose-cell" data-min-ha="50"  data-max-ha="60"></td>
+                            <td class="dose-cell" data-min-ha="40"  data-max-ha="50"></td>
+                            <td>মার্চ–জুলা</td>
+                        </tr>
+                        <tr>
+                            <td>সরিষা</td>
+                            <td class="dose-cell" data-min-ha="80"  data-max-ha="100"></td>
+                            <td class="dose-cell" data-min-ha="60"  data-max-ha="70"></td>
+                            <td class="dose-cell" data-min-ha="40"  data-max-ha="50"></td>
+                            <td>অক্টো–জানু</td>
+                        </tr>
+                        <tr>
+                            <td>টমেটো</td>
+                            <td class="dose-cell" data-min-ha="150" data-max-ha="200"></td>
+                            <td class="dose-cell" data-min-ha="100" data-max-ha="120"></td>
+                            <td class="dose-cell" data-min-ha="100" data-max-ha="120"></td>
+                            <td>অক্টো–মার্চ</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
             <p class="mt-2 small" style="color:var(--caw-text-muted)">
-                * Rates are approximate — actual needs vary by soil test results, variety, and local conditions.
-                Always conduct soil tests every 2–3 years for optimal recommendations.
+                * মাত্রাগুলো আনুমানিক — মাটি পরীক্ষার ফলাফল, জাত ও স্থানীয় পরিস্থিতি অনুযায়ী প্রকৃত চাহিদা পরিবর্তিত হতে পারে।
+                সর্বোত্তম সুপারিশের জন্য প্রতি ২–৩ বছর অন্তর মাটি পরীক্ষা করুন।
             </p>
         </div>
+
     </div>
 </section>
+
+@section Scripts {
+<script>
+    // রূপান্তর সহগ — প্রতি হেক্টর থেকে প্রতি নির্বাচিত এককে
+    const FACTORS = {
+        hector:     1,
+        ekor:       1 / 2.4711,
+        bigha:      1 / 7.4132,   // ১ হেক্টর = ৭.৪১ বিঘা (বাংলাদেশ: ১ একর = ৩ বিঘা)
+        shotangsho: 1 / 247.105   // ১ হেক্টর = ২৪৭.১ শতাংশ
+    };
+
+    const LABELS = {
+        hector:     'হেক্টর',
+        ekor:       'একর',
+        bigha:      'বিঘা',
+        shotangsho: 'শতাংশ'
+    };
+
+    const BN_DIGITS = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+
+    function toBn(str) {
+        return String(str).replace(/[0-9]/g, d => BN_DIGITS[parseInt(d)]);
+    }
+
+    function formatKg(kg) {
+        if (kg >= 1000) {
+            const t = kg / 1000;
+            const formatted = t >= 10 ? t.toFixed(1) : t.toFixed(2);
+            return toBn(parseFloat(formatted)) + ' টন';
+        }
+        if (kg >= 100) {
+            return toBn(Math.round(kg)) + ' কেজি';
+        }
+        if (kg >= 10) {
+            return toBn(parseFloat(kg.toFixed(1))) + ' কেজি';
+        }
+        if (kg >= 1) {
+            return toBn(parseFloat(kg.toFixed(2))) + ' কেজি';
+        }
+        // গ্রামে রূপান্তর
+        const g = kg * 1000;
+        if (g >= 100) return toBn(Math.round(g)) + ' গ্রাম';
+        if (g >= 10)  return toBn(parseFloat(g.toFixed(1))) + ' গ্রাম';
+        return toBn(parseFloat(g.toFixed(2))) + ' গ্রাম';
+    }
+
+    function formatRange(minHa, maxHa, factor) {
+        const minVal = formatKg(minHa * factor);
+        const maxVal = formatKg(maxHa * factor);
+        return minVal + '–' + maxVal;
+    }
+
+    function formatTableCell(minHa, maxHa, factor) {
+        const min = minHa * factor;
+        const max = maxHa * factor;
+        if (min >= 100) {
+            return toBn(Math.round(min)) + '–' + toBn(Math.round(max));
+        }
+        if (min >= 10) {
+            return toBn(parseFloat(min.toFixed(1))) + '–' + toBn(parseFloat(max.toFixed(1)));
+        }
+        return toBn(parseFloat(min.toFixed(2))) + '–' + toBn(parseFloat(max.toFixed(2)));
+    }
+
+    function updateAll() {
+        const unit  = document.getElementById('unitSelector').value;
+        const factor = FACTORS[unit];
+        const label  = LABELS[unit];
+
+        // একক লেবেল আপডেট (কার্ড এবং টেবিল হেডার)
+        document.querySelectorAll('.unit-lbl, .unit-lbl-th').forEach(el => {
+            el.textContent = label;
+        });
+
+        // সার কার্ডের মাত্রা আপডেট
+        document.querySelectorAll('.dose-range').forEach(el => {
+            const minHa = parseFloat(el.dataset.minHa);
+            const maxHa = parseFloat(el.dataset.maxHa);
+            el.textContent = formatRange(minHa, maxHa, factor);
+        });
+
+        // টেবিলের ঘর আপডেট
+        document.querySelectorAll('.dose-cell').forEach(el => {
+            const minHa = parseFloat(el.dataset.minHa);
+            const maxHa = parseFloat(el.dataset.maxHa);
+            el.textContent = formatTableCell(minHa, maxHa, factor);
+        });
+    }
+
+    document.getElementById('unitSelector').addEventListener('change', updateAll);
+    updateAll(); // পেজ লোডে একবার চালাও
+</script>
+}

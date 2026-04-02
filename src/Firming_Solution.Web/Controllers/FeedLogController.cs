@@ -38,7 +38,7 @@ public class FeedLogController(ApplicationDbContext db, UserManager<AppUser> use
     public async Task<IActionResult> Create(int? batchId)
     {
         var farmIds = await GetFarmIdsAsync();
-        ViewBag.Batches = new SelectList(await db.Batches.Where(b => farmIds.Contains(b.FarmId) && b.Status == Domain.Enums.BatchStatus.Active).ToListAsync(), "Id", "BatchName", batchId);
+        ViewBag.Batches = new SelectList(await db.Batches.Where(b => farmIds.Contains(b.FarmId) && b.Status != Domain.Enums.BatchStatus.Closed).ToListAsync(), "Id", "BatchName", batchId);
         ViewBag.FeedTypes = new SelectList(await db.FeedTypes.ToListAsync(), "Id", "FeedName");
         return View(new DailyFeedLog { LogDate = DateTime.Today, Quantity_kg = 1, PricePerKg = 0 });
     }
@@ -54,7 +54,7 @@ public class FeedLogController(ApplicationDbContext db, UserManager<AppUser> use
         if (!ModelState.IsValid)
         {
             var farmIds = await GetFarmIdsAsync();
-            ViewBag.Batches = new SelectList(await db.Batches.Where(b => farmIds.Contains(b.FarmId)).ToListAsync(), "Id", "BatchName");
+            ViewBag.Batches = new SelectList(await db.Batches.Where(b => farmIds.Contains(b.FarmId) && b.Status != Domain.Enums.BatchStatus.Closed).ToListAsync(), "Id", "BatchName");
             ViewBag.FeedTypes = new SelectList(await db.FeedTypes.ToListAsync(), "Id", "FeedName");
             return View(model);
         }

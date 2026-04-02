@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CAW Invest</title>
+    <title>@ViewData["Title"] - CAW ইনভেস্ট</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -14,139 +14,139 @@
 
 @if (User.Identity?.IsAuthenticated == true)
 {
-    <!-- Authenticated Layout: Sidebar + Top bar -->
     <div class="caw-wrapper">
-        <!-- Sidebar -->
+        <!-- সাইডবার -->
         <nav class="caw-sidebar" id="sidebar">
             <div class="caw-sidebar-brand">
                 <i class="fas fa-leaf"></i>
-                <span>CAW Invest</span>
+                <span>CAW ইনভেস্ট</span>
             </div>
-            <div class="caw-sidebar-tagline">Farming & Agriculture</div>
+            <div class="caw-sidebar-tagline">কৃষি ও খামার ব্যবস্থাপনা</div>
 
             <ul class="caw-nav">
                 <li class="caw-nav-item">
                     <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" ? "active" : "")"
                        asp-controller="Dashboard" asp-action="Index">
-                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                        <i class="fas fa-tachometer-alt"></i> ড্যাশবোর্ড
                     </a>
                 </li>
-                <li class="caw-nav-section">Farm Management</li>
+
+                <li class="caw-nav-section">খামার ব্যবস্থাপনা</li>
                 <li class="caw-nav-item">
                     <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Farm" ? "active" : "")"
                        asp-controller="Farm" asp-action="Index">
-                        <i class="fas fa-tractor"></i> Farms
+                        <i class="fas fa-tractor"></i> খামার
                     </a>
                 </li>
                 <li class="caw-nav-item">
                     <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Batch" ? "active" : "")"
                        asp-controller="Batch" asp-action="Index">
-                        <i class="fas fa-layer-group"></i> Batches
+                        <i class="fas fa-layer-group"></i> ব্যাচ
                     </a>
                 </li>
                 <li class="caw-nav-item">
                     <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Land" ? "active" : "")"
                        asp-controller="Land" asp-action="Index">
-                        <i class="fas fa-map"></i> Land Parcels
+                        <i class="fas fa-map"></i> জমি
                     </a>
                 </li>
 
-                <li class="caw-nav-section">Livestock</li>
+                <li class="caw-nav-section">প্রাণিসম্পদ</li>
                 <li class="caw-nav-item">
                     <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "FeedLog" ? "active" : "")"
                        asp-controller="FeedLog" asp-action="Index">
-                        <i class="fas fa-wheat-awn"></i> Feed Logs
+                        <i class="fas fa-wheat-awn"></i> খাবারের রেকর্ড
                     </a>
                 </li>
                 <li class="caw-nav-item">
                     <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "WeightLog" ? "active" : "")"
                        asp-controller="WeightLog" asp-action="Index">
-                        <i class="fas fa-weight-scale"></i> Weight Logs
+                        <i class="fas fa-weight-scale"></i> ওজন লগ
                     </a>
                 </li>
                 <li class="caw-nav-item">
                     <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "MortalityLog" ? "active" : "")"
                        asp-controller="MortalityLog" asp-action="Index">
-                        <i class="fas fa-skull-crossbones"></i> Mortality Logs
+                        <i class="fas fa-skull-crossbones"></i> মৃত্যুর রেকর্ড
                     </a>
                 </li>
 
-                <li class="caw-nav-section">Agriculture</li>
+                <li class="caw-nav-section">কৃষি</li>
                 <li class="caw-nav-item">
                     <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "CropSeason" ? "active" : "")"
                        asp-controller="CropSeason" asp-action="Index">
-                        <i class="fas fa-seedling"></i> Crop Seasons
+                        <i class="fas fa-seedling"></i> ফসলের মৌসুম
                     </a>
                 </li>
                 <li class="caw-nav-item">
                     <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "FertiliserPlan" ? "active" : "")"
                        asp-controller="FertiliserPlan" asp-action="Index">
-                        <i class="fas fa-flask"></i> Fertiliser Plans
+                        <i class="fas fa-flask"></i> সারের পরিকল্পনা
                     </a>
                 </li>
                 <li class="caw-nav-item">
                     <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "WeatherLog" ? "active" : "")"
                        asp-controller="WeatherLog" asp-action="Index">
-                        <i class="fas fa-cloud-sun"></i> Weather Logs
+                        <i class="fas fa-cloud-sun"></i> আবহাওয়া লগ
                     </a>
                 </li>
 
-                <li class="caw-nav-section">Finance</li>
+                <li class="caw-nav-section">আর্থিক</li>
                 <li class="caw-nav-item">
                     <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Sale" ? "active" : "")"
                        asp-controller="Sale" asp-action="Index">
-                        <i class="fas fa-cash-register"></i> Sales
+                        <i class="fas fa-cash-register"></i> বিক্রয়
                     </a>
                 </li>
                 <li class="caw-nav-item">
                     <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Investment" ? "active" : "")"
                        asp-controller="Investment" asp-action="Index">
-                        <i class="fas fa-chart-line"></i> Investments
+                        <i class="fas fa-chart-line"></i> বিনিয়োগ
                     </a>
                 </li>
                 <li class="caw-nav-item">
                     <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Cost" ? "active" : "")"
                        asp-controller="Cost" asp-action="Index">
-                        <i class="fas fa-receipt"></i> Costs
+                        <i class="fas fa-receipt"></i> খরচ
                     </a>
                 </li>
 
-                <li class="caw-nav-section">Planning</li>
+                <li class="caw-nav-section">পরিকল্পনা</li>
                 <li class="caw-nav-item">
                     <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "DailyTask" ? "active" : "")"
                        asp-controller="DailyTask" asp-action="Index">
-                        <i class="fas fa-tasks"></i> Daily Tasks
+                        <i class="fas fa-tasks"></i> দৈনিক কাজ
                     </a>
                 </li>
                 <li class="caw-nav-item">
                     <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "EidBazarPlan" ? "active" : "")"
                        asp-controller="EidBazarPlan" asp-action="Index">
-                        <i class="fas fa-moon"></i> Eid Bazar Plans
+                        <i class="fas fa-moon"></i> ঈদ বাজার পরিকল্পনা
                     </a>
                 </li>
 
                 @if (User.IsInRole("SuperAdmin"))
                 {
-                    <li class="caw-nav-section">Administration</li>
+                    <li class="caw-nav-section">প্রশাসন</li>
                     <li class="caw-nav-item">
                         <a class="caw-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
                            asp-controller="Admin" asp-action="Users">
-                            <i class="fas fa-users-cog"></i> User Management
+                            <i class="fas fa-users-cog"></i> ব্যবহারকারী ব্যবস্থাপনা
                         </a>
                     </li>
                 }
 
                 <li class="caw-nav-item mt-3">
                     <a class="caw-nav-link" asp-controller="Home" asp-action="Index">
-                        <i class="fas fa-globe"></i> Public Site
+                        <i class="fas fa-globe"></i> পাবলিক সাইট
                     </a>
                 </li>
             </ul>
         </nav>
 
-        <!-- Main Content -->
+        <!-- মূল কন্টেন্ট -->
         <div class="caw-main">
-            <!-- Top bar -->
+            <!-- টপ বার -->
             <header class="caw-topbar">
                 <button class="caw-toggle-btn" id="sidebarToggle">
                     <i class="fas fa-bars"></i>
@@ -160,13 +160,13 @@
                     <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
                         @Html.AntiForgeryToken()
                         <button type="submit" class="btn btn-sm btn-outline-light ms-2">
-                            <i class="fas fa-sign-out-alt"></i> Logout
+                            <i class="fas fa-sign-out-alt"></i> লগআউট
                         </button>
                     </form>
                 </div>
             </header>
 
-            <!-- Page content -->
+            <!-- পেজ কন্টেন্ট -->
             <div class="caw-content">
                 @if (TempData["Success"] != null)
                 {
@@ -189,11 +189,11 @@
 }
 else
 {
-    <!-- Public / Guest Layout: simple top navbar -->
+    <!-- পাবলিক লেআউট -->
     <nav class="navbar navbar-expand-lg caw-public-nav">
         <div class="container">
             <a class="navbar-brand caw-public-brand" asp-controller="Home" asp-action="Index">
-                <i class="fas fa-leaf"></i> CAW Invest
+                <i class="fas fa-leaf"></i> CAW ইনভেস্ট
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#publicNav">
                 <span class="navbar-toggler-icon"></span>
@@ -201,20 +201,20 @@ else
             <div class="collapse navbar-collapse" id="publicNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">হোম</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Home" asp-action="Weather">Weather</a>
+                        <a class="nav-link" asp-controller="Home" asp-action="Weather">আবহাওয়া</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Home" asp-action="Diseases">Animal Diseases</a>
+                        <a class="nav-link" asp-controller="Home" asp-action="Diseases">পশুর রোগ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Home" asp-action="Fertilizer">Fertilizer Guide</a>
+                        <a class="nav-link" asp-controller="Home" asp-action="Fertilizer">সার গাইড</a>
                     </li>
                     <li class="nav-item ms-2">
                         <a class="btn caw-btn-login" asp-controller="Account" asp-action="Login">
-                            <i class="fas fa-sign-in-alt"></i> Login
+                            <i class="fas fa-sign-in-alt"></i> লগইন
                         </a>
                     </li>
                 </ul>
@@ -239,9 +239,9 @@ else
         <div class="container text-center">
             <p class="mb-1">
                 <i class="fas fa-leaf text-success"></i>
-                <strong>CAW Invest</strong> &mdash; Farming &amp; Agriculture Management System
+                <strong>CAW ইনভেস্ট</strong> &mdash; কৃষি ও খামার ব্যবস্থাপনা সিস্টেম
             </p>
-            <p class="mb-0 text-muted small">&copy; @DateTime.Now.Year CAW Invest. All rights reserved.</p>
+            <p class="mb-0 text-muted small">&copy; @DateTime.Now.Year CAW ইনভেস্ট। সর্বস্বত্ব সংরক্ষিত।</p>
         </div>
     </footer>
 }
@@ -250,7 +250,6 @@ else
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script>
-    // Sidebar toggle
     const toggleBtn = document.getElementById('sidebarToggle');
     const sidebar = document.getElementById('sidebar');
     if (toggleBtn && sidebar) {

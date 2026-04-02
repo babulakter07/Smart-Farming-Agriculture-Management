@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "হোম";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var weatherData = ViewBag.WeatherData as dynamic[];
 }
@@ -10,17 +10,17 @@
         <div class="row align-items-center">
             <div class="col-lg-7">
                 <h1 class="caw-hero-title">
-                    Smart <span>Farming</span> &amp;<br />Agriculture Management
+                    স্মার্ট <span>কৃষি</span> ও<br />খামার ব্যবস্থাপনা
                 </h1>
                 <p class="caw-hero-subtitle mt-3">
-                    CAW Invest empowers farmers and agribusiness managers with real-time insights,
-                    livestock tracking, financial analytics, and smart planning tools.
+                    CAW ইনভেস্ট কৃষক ও কৃষি ব্যবসা পরিচালকদের রিয়েল-টাইম তথ্য,
+                    প্রাণিসম্পদ ট্র্যাকিং, আর্থিক বিশ্লেষণ এবং স্মার্ট পরিকল্পনা সরঞ্জাম দিয়ে ক্ষমতায়িত করে।
                 </p>
                 <a href="#weather" class="caw-hero-cta me-2">
-                    <i class="fas fa-cloud-sun me-2"></i>Check Weather
+                    <i class="fas fa-cloud-sun me-2"></i>আবহাওয়া দেখুন
                 </a>
                 <a asp-controller="Account" asp-action="Login" class="btn btn-outline-light mt-3 mt-md-0" style="border-radius:30px; padding:0.75rem 2rem;">
-                    <i class="fas fa-sign-in-alt me-2"></i>Login to Dashboard
+                    <i class="fas fa-sign-in-alt me-2"></i>ড্যাশবোর্ডে লগইন
                 </a>
             </div>
             <div class="col-lg-5 text-center d-none d-lg-block mt-4 mt-lg-0">
@@ -33,29 +33,29 @@
             <div class="col-6 col-md-3">
                 <div class="caw-info-card text-center p-3">
                     <i class="fas fa-leaf fa-2x text-caw mb-2"></i>
-                    <div class="fw-bold text-gold fs-4">500+</div>
-                    <div class="small" style="color:var(--caw-text-muted)">Farms Managed</div>
+                    <div class="fw-bold text-gold fs-4">৫০০+</div>
+                    <div class="small" style="color:var(--caw-text-muted)">খামার পরিচালিত</div>
                 </div>
             </div>
             <div class="col-6 col-md-3">
                 <div class="caw-info-card text-center p-3">
                     <i class="fas fa-kiwi-bird fa-2x text-caw mb-2"></i>
-                    <div class="fw-bold text-gold fs-4">50K+</div>
-                    <div class="small" style="color:var(--caw-text-muted)">Animals Tracked</div>
+                    <div class="fw-bold text-gold fs-4">৫০ হাজার+</div>
+                    <div class="small" style="color:var(--caw-text-muted)">প্রাণী ট্র্যাক</div>
                 </div>
             </div>
             <div class="col-6 col-md-3">
                 <div class="caw-info-card text-center p-3">
                     <i class="fas fa-chart-line fa-2x text-caw mb-2"></i>
-                    <div class="fw-bold text-gold fs-4">৳ 1Cr+</div>
-                    <div class="small" style="color:var(--caw-text-muted)">Revenue Tracked</div>
+                    <div class="fw-bold text-gold fs-4">৳ ১ কোটি+</div>
+                    <div class="small" style="color:var(--caw-text-muted)">আয় ট্র্যাক</div>
                 </div>
             </div>
             <div class="col-6 col-md-3">
                 <div class="caw-info-card text-center p-3">
                     <i class="fas fa-users fa-2x text-caw mb-2"></i>
-                    <div class="fw-bold text-gold fs-4">1000+</div>
-                    <div class="small" style="color:var(--caw-text-muted)">Active Users</div>
+                    <div class="fw-bold text-gold fs-4">১০০০+</div>
+                    <div class="small" style="color:var(--caw-text-muted)">সক্রিয় ব্যবহারকারী</div>
                 </div>
             </div>
         </div>
@@ -67,11 +67,11 @@
     <div class="container">
         <div class="caw-section-heading">
             <i class="fas fa-cloud-sun-rain"></i>
-            <h2>Weather Forecast</h2>
+            <h2>আবহাওয়ার পূর্বাভাস</h2>
         </div>
         <p style="color:var(--caw-text-muted)" class="mb-4">
-            Current weather conditions across major agricultural regions in Bangladesh.
-            Plan your farming activities accordingly.
+            বাংলাদেশের প্রধান কৃষি অঞ্চলের বর্তমান আবহাওয়া পরিস্থিতি।
+            সেই অনুযায়ী আপনার কৃষি কার্যক্রম পরিকল্পনা করুন।
         </p>
         <div class="row g-3">
             @if (weatherData != null)
@@ -88,7 +88,7 @@
                             <div class="caw-weather-city">@w.Condition</div>
                             <div class="mt-2 small" style="color:var(--caw-text-muted)">
                                 <span><i class="fas fa-tint me-1"></i>@w.Humidity%</span>
-                                <span class="ms-3"><i class="fas fa-wind me-1"></i>@w.Wind km/h</span>
+                                <span class="ms-3"><i class="fas fa-wind me-1"></i>@w.Wind কি.মি/ঘ.</span>
                             </div>
                         </div>
                     </div>
@@ -97,7 +97,7 @@
         </div>
         <div class="text-center mt-3">
             <a asp-controller="Home" asp-action="Weather" class="btn btn-outline-success">
-                <i class="fas fa-arrow-right me-2"></i>Full Weather Report
+                <i class="fas fa-arrow-right me-2"></i>সম্পূর্ণ আবহাওয়া প্রতিবেদন
             </a>
         </div>
     </div>
@@ -108,57 +108,57 @@
     <div class="container">
         <div class="caw-section-heading">
             <i class="fas fa-virus"></i>
-            <h2>Common Animal Diseases</h2>
+            <h2>সাধারণ পশুর রোগ</h2>
         </div>
         <p style="color:var(--caw-text-muted)" class="mb-4">
-            Early recognition of common livestock diseases can save your herd.
-            Know the symptoms and preventive measures.
+            সাধারণ প্রাণিসম্পদ রোগের প্রাথমিক সনাক্তকরণ আপনার পাল বাঁচাতে পারে।
+            লক্ষণ ও প্রতিরোধমূলক ব্যবস্থা জানুন।
         </p>
         <div class="row g-3">
             <div class="col-md-6">
                 <div class="caw-disease-card">
-                    <h6><i class="fas fa-bug me-2"></i>Foot and Mouth Disease (FMD)</h6>
-                    <p><strong style="color:#ef9a9a">Symptoms:</strong> Fever, blisters on mouth &amp; hooves, reduced milk yield, lameness.</p>
-                    <p><strong style="color:#a5d6a7">Prevention:</strong> Regular vaccination, quarantine new animals, maintain biosecurity.</p>
-                    <p><strong style="color:#81d4fa">Affected:</strong> Cattle, Goat, Sheep</p>
+                    <h6><i class="fas fa-bug me-2"></i>ক্ষুরারোগ (FMD)</h6>
+                    <p><strong style="color:#ef9a9a">লক্ষণ:</strong> জ্বর, মুখ ও খুরে ফোস্কা, দুধ উৎপাদন হ্রাস, খোঁড়া হওয়া।</p>
+                    <p><strong style="color:#a5d6a7">প্রতিরোধ:</strong> নিয়মিত টিকা দিন, নতুন প্রাণী আলাদা রাখুন, জৈব নিরাপত্তা বজায় রাখুন।</p>
+                    <p><strong style="color:#81d4fa">আক্রান্ত:</strong> গরু, ছাগল, ভেড়া</p>
                 </div>
                 <div class="caw-disease-card">
-                    <h6><i class="fas fa-bug me-2"></i>Brucellosis</h6>
-                    <p><strong style="color:#ef9a9a">Symptoms:</strong> Abortion in late pregnancy, infertility, swollen joints, fever.</p>
-                    <p><strong style="color:#a5d6a7">Prevention:</strong> Test and remove infected animals, vaccinate calves, proper milk pasteurisation.</p>
-                    <p><strong style="color:#81d4fa">Affected:</strong> Cattle, Goat</p>
+                    <h6><i class="fas fa-bug me-2"></i>ব্রুসেলোসিস</h6>
+                    <p><strong style="color:#ef9a9a">লক্ষণ:</strong> গর্ভাবস্থার শেষ দিকে গর্ভপাত, বন্ধ্যাত্ব, ফোলা জয়েন্ট, জ্বর।</p>
+                    <p><strong style="color:#a5d6a7">প্রতিরোধ:</strong> আক্রান্ত প্রাণী পরীক্ষা করে সরিয়ে নিন, বাছুরকে টিকা দিন, দুধ পাস্তুরায়ন করুন।</p>
+                    <p><strong style="color:#81d4fa">আক্রান্ত:</strong> গরু, ছাগল</p>
                 </div>
                 <div class="caw-disease-card">
-                    <h6><i class="fas fa-bug me-2"></i>Blackleg</h6>
-                    <p><strong style="color:#ef9a9a">Symptoms:</strong> Sudden death, swelling of muscles, high fever, lameness.</p>
-                    <p><strong style="color:#a5d6a7">Prevention:</strong> Annual vaccination, proper wound care, avoid waterlogged pastures.</p>
-                    <p><strong style="color:#81d4fa">Affected:</strong> Cattle</p>
+                    <h6><i class="fas fa-bug me-2"></i>ব্ল্যাকলেগ</h6>
+                    <p><strong style="color:#ef9a9a">লক্ষণ:</strong> হঠাৎ মৃত্যু, পেশী ফুলে যাওয়া, তীব্র জ্বর, খোঁড়া হওয়া।</p>
+                    <p><strong style="color:#a5d6a7">প্রতিরোধ:</strong> বার্ষিক টিকা দিন, ক্ষত সঠিকভাবে পরিচর্যা করুন, জলাবদ্ধ চারণভূমি এড়িয়ে চলুন।</p>
+                    <p><strong style="color:#81d4fa">আক্রান্ত:</strong> গরু</p>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="caw-disease-card">
-                    <h6><i class="fas fa-bug me-2"></i>Avian Influenza (Bird Flu)</h6>
-                    <p><strong style="color:#ef9a9a">Symptoms:</strong> Sudden death, coughing, sneezing, reduced egg production, swollen head.</p>
-                    <p><strong style="color:#a5d6a7">Prevention:</strong> Strict biosecurity, no contact with wild birds, disinfect equipment regularly.</p>
-                    <p><strong style="color:#81d4fa">Affected:</strong> Poultry</p>
+                    <h6><i class="fas fa-bug me-2"></i>বার্ড ফ্লু (এভিয়ান ইনফ্লুয়েঞ্জা)</h6>
+                    <p><strong style="color:#ef9a9a">লক্ষণ:</strong> হঠাৎ মৃত্যু, কাশি, হাঁচি, ডিম উৎপাদন কমে যাওয়া, মাথা ফোলা।</p>
+                    <p><strong style="color:#a5d6a7">প্রতিরোধ:</strong> কঠোর জৈব নিরাপত্তা, বন্য পাখির সংস্পর্শ এড়ানো, নিয়মিত সরঞ্জাম জীবাণুমুক্ত করুন।</p>
+                    <p><strong style="color:#81d4fa">আক্রান্ত:</strong> পোল্ট্রি</p>
                 </div>
                 <div class="caw-disease-card">
-                    <h6><i class="fas fa-bug me-2"></i>Newcastle Disease</h6>
-                    <p><strong style="color:#ef9a9a">Symptoms:</strong> Respiratory distress, nervous signs, twisted neck, greenish diarrhoea.</p>
-                    <p><strong style="color:#a5d6a7">Prevention:</strong> Regular ND vaccination, separate sick birds immediately, clean water supply.</p>
-                    <p><strong style="color:#81d4fa">Affected:</strong> Poultry</p>
+                    <h6><i class="fas fa-bug me-2"></i>নিউক্যাসেল রোগ</h6>
+                    <p><strong style="color:#ef9a9a">লক্ষণ:</strong> শ্বাসকষ্ট, স্নায়বিক লক্ষণ, ঘাড় বাঁকানো, সবুজ ডায়রিয়া।</p>
+                    <p><strong style="color:#a5d6a7">প্রতিরোধ:</strong> নিয়মিত ND টিকা দিন, অসুস্থ পাখি অবিলম্বে আলাদা করুন, পরিষ্কার পানি সরবরাহ করুন।</p>
+                    <p><strong style="color:#81d4fa">আক্রান্ত:</strong> পোল্ট্রি</p>
                 </div>
                 <div class="caw-disease-card">
-                    <h6><i class="fas fa-bug me-2"></i>Mastitis</h6>
-                    <p><strong style="color:#ef9a9a">Symptoms:</strong> Hot, swollen udder, abnormal milk, fever, reduced milk yield.</p>
-                    <p><strong style="color:#a5d6a7">Prevention:</strong> Proper milking hygiene, dry cow therapy, regular teat dipping.</p>
-                    <p><strong style="color:#81d4fa">Affected:</strong> Cattle</p>
+                    <h6><i class="fas fa-bug me-2"></i>ম্যাস্টাইটিস</h6>
+                    <p><strong style="color:#ef9a9a">লক্ষণ:</strong> গরম ও ফোলা ওলান, অস্বাভাবিক দুধ, জ্বর, দুধ উৎপাদন কমে যাওয়া।</p>
+                    <p><strong style="color:#a5d6a7">প্রতিরোধ:</strong> সঠিক দুধ দোহনের স্বাস্থ্যবিধি, ড্রাই কাউ থেরাপি, নিয়মিত বাঁটে ডিপিং।</p>
+                    <p><strong style="color:#81d4fa">আক্রান্ত:</strong> গরু</p>
                 </div>
             </div>
         </div>
         <div class="text-center mt-3">
             <a asp-controller="Home" asp-action="Diseases" class="btn btn-outline-danger">
-                <i class="fas fa-arrow-right me-2"></i>Full Disease Reference
+                <i class="fas fa-arrow-right me-2"></i>সম্পূর্ণ রোগ তথ্যসূত্র
             </a>
         </div>
     </div>
@@ -169,57 +169,57 @@
     <div class="container">
         <div class="caw-section-heading">
             <i class="fas fa-flask"></i>
-            <h2>Fertilizer Guide</h2>
+            <h2>সার গাইড</h2>
         </div>
         <p style="color:var(--caw-text-muted)" class="mb-4">
-            Choose the right fertilizer for your crop and soil type to maximise yield
-            while maintaining soil health.
+            মাটির স্বাস্থ্য বজায় রেখে সর্বোচ্চ ফলন পেতে আপনার ফসল ও মাটির ধরন
+            অনুযায়ী সঠিক সার বেছে নিন।
         </p>
         <div class="row g-3">
             <div class="col-md-6">
                 <div class="caw-fert-card">
-                    <h6><i class="fas fa-seedling me-2"></i>Urea (N 46%)</h6>
-                    <p><strong style="color:#a5d6a7">Best For:</strong> Rice, jute, sugarcane, leafy vegetables.</p>
-                    <p><strong style="color:#81d4fa">Dosage:</strong> 150–200 kg/hectare split in 2–3 applications.</p>
-                    <p><strong style="color:#ffcc80">Tip:</strong> Apply when soil is moist; avoid application before heavy rain.</p>
+                    <h6><i class="fas fa-seedling me-2"></i>ইউরিয়া (N ৪৬%)</h6>
+                    <p><strong style="color:#a5d6a7">সেরা ব্যবহার:</strong> ধান, পাট, আখ, পাতাজাতীয় সবজি।</p>
+                    <p><strong style="color:#81d4fa">মাত্রা:</strong> ৬০–৮০ কেজি/একর (২–৩ ভাগে প্রয়োগ)।</p>
+                    <p><strong style="color:#ffcc80">পরামর্শ:</strong> ভেজা মাটিতে প্রয়োগ করুন; ভারী বৃষ্টির আগে প্রয়োগ এড়িয়ে চলুন।</p>
                 </div>
                 <div class="caw-fert-card">
-                    <h6><i class="fas fa-seedling me-2"></i>Triple Super Phosphate (TSP)</h6>
-                    <p><strong style="color:#a5d6a7">Best For:</strong> Legumes, oil seeds, root vegetables, wheat.</p>
-                    <p><strong style="color:#81d4fa">Dosage:</strong> 75–100 kg/hectare at planting time.</p>
-                    <p><strong style="color:#ffcc80">Tip:</strong> Mix with soil before sowing for best root development.</p>
+                    <h6><i class="fas fa-seedling me-2"></i>ট্রিপল সুপার ফসফেট (TSP)</h6>
+                    <p><strong style="color:#a5d6a7">সেরা ব্যবহার:</strong> ডাল, তৈলবীজ, মূলজাতীয় সবজি, গম।</p>
+                    <p><strong style="color:#81d4fa">মাত্রা:</strong> ৩০–৪০ কেজি/একর রোপণের সময়।</p>
+                    <p><strong style="color:#ffcc80">পরামর্শ:</strong> ভালো শিকড় বিকাশের জন্য বপনের আগে মাটিতে মিশিয়ে নিন।</p>
                 </div>
                 <div class="caw-fert-card">
-                    <h6><i class="fas fa-seedling me-2"></i>Muriate of Potash (MoP)</h6>
-                    <p><strong style="color:#a5d6a7">Best For:</strong> Potato, banana, sugarcane, coconut.</p>
-                    <p><strong style="color:#81d4fa">Dosage:</strong> 100–150 kg/hectare during basal application.</p>
-                    <p><strong style="color:#ffcc80">Tip:</strong> Improves drought resistance and disease tolerance.</p>
+                    <h6><i class="fas fa-seedling me-2"></i>মিউরিয়েট অব পটাশ (MoP)</h6>
+                    <p><strong style="color:#a5d6a7">সেরা ব্যবহার:</strong> আলু, কলা, আখ, নারকেল।</p>
+                    <p><strong style="color:#81d4fa">মাত্রা:</strong> ৪০–৬০ কেজি/একর বেসাল প্রয়োগে।</p>
+                    <p><strong style="color:#ffcc80">পরামর্শ:</strong> খরা প্রতিরোধ ও রোগ সহনশীলতা বৃদ্ধি করে।</p>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="caw-fert-card">
-                    <h6><i class="fas fa-seedling me-2"></i>DAP (Diammonium Phosphate)</h6>
-                    <p><strong style="color:#a5d6a7">Best For:</strong> Cereals, vegetables, fruit trees.</p>
-                    <p><strong style="color:#81d4fa">Dosage:</strong> 100–125 kg/hectare as basal dose.</p>
-                    <p><strong style="color:#ffcc80">Tip:</strong> Excellent for early plant growth and root establishment.</p>
+                    <h6><i class="fas fa-seedling me-2"></i>DAP (ডাই-অ্যামোনিয়াম ফসফেট)</h6>
+                    <p><strong style="color:#a5d6a7">সেরা ব্যবহার:</strong> শস্য, সবজি, ফলের গাছ।</p>
+                    <p><strong style="color:#81d4fa">মাত্রা:</strong> ৪০–৫০ কেজি/একর বেসাল মাত্রায়।</p>
+                    <p><strong style="color:#ffcc80">পরামর্শ:</strong> প্রাথমিক গাছের বৃদ্ধি ও শিকড় স্থাপনে অত্যন্ত কার্যকর।</p>
                 </div>
                 <div class="caw-fert-card">
-                    <h6><i class="fas fa-seedling me-2"></i>Organic Compost / Manure</h6>
-                    <p><strong style="color:#a5d6a7">Best For:</strong> All crops, especially vegetables and fruit orchards.</p>
-                    <p><strong style="color:#81d4fa">Dosage:</strong> 5–10 tonnes/hectare before cultivation.</p>
-                    <p><strong style="color:#ffcc80">Tip:</strong> Improves soil structure, water retention, and microbial activity.</p>
+                    <h6><i class="fas fa-seedling me-2"></i>জৈব সার / কম্পোস্ট</h6>
+                    <p><strong style="color:#a5d6a7">সেরা ব্যবহার:</strong> সব ফসল, বিশেষ করে সবজি ও ফলের বাগান।</p>
+                    <p><strong style="color:#81d4fa">মাত্রা:</strong> ২–৪ টন/একর চাষের আগে।</p>
+                    <p><strong style="color:#ffcc80">পরামর্শ:</strong> মাটির গঠন, জলধারণ ও অণুজীবের কার্যকলাপ উন্নত করে।</p>
                 </div>
                 <div class="caw-fert-card">
-                    <h6><i class="fas fa-seedling me-2"></i>Zinc Sulphate</h6>
-                    <p><strong style="color:#a5d6a7">Best For:</strong> Rice, wheat, maize — zinc-deficient soils.</p>
-                    <p><strong style="color:#81d4fa">Dosage:</strong> 10–20 kg/hectare.</p>
-                    <p><strong style="color:#ffcc80">Tip:</strong> Signs of zinc deficiency: stunted growth, yellowing of young leaves.</p>
+                    <h6><i class="fas fa-seedling me-2"></i>জিংক সালফেট</h6>
+                    <p><strong style="color:#a5d6a7">সেরা ব্যবহার:</strong> ধান, গম, ভুট্টা — দস্তার অভাবযুক্ত মাটিতে।</p>
+                    <p><strong style="color:#81d4fa">মাত্রা:</strong> ৪–৮ কেজি/একর।</p>
+                    <p><strong style="color:#ffcc80">পরামর্শ:</strong> দস্তার অভাবের লক্ষণ: বৃদ্ধি ব্যাহত, কচি পাতা হলদে হওয়া।</p>
                 </div>
             </div>
         </div>
         <div class="text-center mt-3">
             <a asp-controller="Home" asp-action="Fertilizer" class="btn btn-outline-success">
-                <i class="fas fa-arrow-right me-2"></i>Complete Fertilizer Reference
+                <i class="fas fa-arrow-right me-2"></i>সম্পূর্ণ সার তথ্যসূত্র
             </a>
         </div>
     </div>
@@ -230,55 +230,55 @@
     <div class="container">
         <div class="caw-section-heading">
             <i class="fas fa-star"></i>
-            <h2>Platform Features</h2>
+            <h2>প্ল্যাটফর্মের বৈশিষ্ট্যসমূহ</h2>
         </div>
         <div class="row g-4">
             <div class="col-md-4">
                 <div class="caw-info-card">
                     <div class="card-icon"><i class="fas fa-tractor"></i></div>
-                    <h5>Multi-Farm Management</h5>
-                    <p>Manage multiple farms, parcels, and livestock batches from one centralised dashboard.</p>
+                    <h5>বহু খামার ব্যবস্থাপনা</h5>
+                    <p>একটি কেন্দ্রীভূত ড্যাশবোর্ড থেকে একাধিক খামার, জমি ও প্রাণিসম্পদ ব্যাচ পরিচালনা করুন।</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="caw-info-card">
                     <div class="card-icon"><i class="fas fa-chart-pie"></i></div>
-                    <h5>Profit &amp; Loss Analytics</h5>
-                    <p>Real-time P&amp;L summaries per batch including FCR, ROI, and cost-per-head calculations.</p>
+                    <h5>লাভ-ক্ষতি বিশ্লেষণ</h5>
+                    <p>প্রতিটি ব্যাচের রিয়েল-টাইম লাভ-ক্ষতির সারসংক্ষেপ, FCR, ROI এবং প্রতি মাথার খরচ গণনাসহ।</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="caw-info-card">
                     <div class="card-icon"><i class="fas fa-moon"></i></div>
-                    <h5>Eid Bazar Planning</h5>
-                    <p>Plan and track livestock batches targeted for Eid-ul-Adha market with countdown timers.</p>
+                    <h5>ঈদ বাজার পরিকল্পনা</h5>
+                    <p>কাউন্টডাউন টাইমারসহ ঈদুল আজহার বাজারের জন্য লক্ষ্যমাত্রা নির্ধারিত প্রাণিসম্পদ ব্যাচ পরিকল্পনা ও ট্র্যাক করুন।</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="caw-info-card">
                     <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
-                    <h5>Role-Based Access</h5>
-                    <p>RBAC with SuperAdmin, Manager, Accountant, Worker, and Viewer roles.</p>
+                    <h5>ভূমিকাভিত্তিক অ্যাক্সেস</h5>
+                    <p>সুপার অ্যাডমিন, ম্যানেজার, হিসাবরক্ষক, কর্মী ও দর্শক ভূমিকাসহ RBAC।</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="caw-info-card">
                     <div class="card-icon"><i class="fas fa-tasks"></i></div>
-                    <h5>Daily Task Management</h5>
-                    <p>Assign, track, and complete daily farm tasks like feeding, weighing, and medication.</p>
+                    <h5>দৈনিক কাজ ব্যবস্থাপনা</h5>
+                    <p>খাওয়ানো, ওজন করা এবং ওষুধ প্রদানের মতো দৈনিক খামারের কাজ নির্ধারণ, ট্র্যাক ও সম্পন্ন করুন।</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="caw-info-card">
                     <div class="card-icon"><i class="fas fa-history"></i></div>
-                    <h5>Complete Audit Trail</h5>
-                    <p>Full history of all records with soft-delete — nothing is lost, everything is traceable.</p>
+                    <h5>সম্পূর্ণ অডিট ট্রেইল</h5>
+                    <p>সফট-ডিলেটসহ সমস্ত রেকর্ডের সম্পূর্ণ ইতিহাস — কিছুই হারায় না, সব কিছু ট্রেস করা যায়।</p>
                 </div>
             </div>
         </div>
         <div class="text-center mt-4">
             <a asp-controller="Account" asp-action="Login" class="caw-hero-cta">
-                <i class="fas fa-rocket me-2"></i>Get Started
+                <i class="fas fa-rocket me-2"></i>শুরু করুন
             </a>
         </div>
     </div>

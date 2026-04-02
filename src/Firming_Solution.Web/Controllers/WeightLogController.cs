@@ -20,16 +20,28 @@ public class WeightLogController(ApplicationDbContext db, UserManager<AppUser> u
         return await db.UserFarms.Where(uf => uf.UserId == user.Id).Select(uf => uf.FarmId).ToListAsync();
     }
 
-    public async Task<IActionResult> Index(int batchId)
+    public async Task<IActionResult> Index(int? batchId)
     {
         var farmIds = await GetFarmIdsAsync();
-        var batch = await db.Batches.Include(b => b.Farm).FirstOrDefaultAsync(b => b.Id == batchId);
-        if (batch is null || !farmIds.Contains(batch.FarmId)) return NotFound();
 
-        var logs = await db.WeightLogs.Where(w => w.BatchId == batchId).OrderBy(w => w.LogDate).ToListAsync();
-        ViewBag.Batch = batch;
+        if (batchId.HasValue)
+        {
+            var batch = await db.Batches.Include(b => b.Farm).FirstOrDefaultAsync(b => b.Id == batchId.Value);
+            if (batch is null || !farmIds.Contains(batch.FarmId)) return NotFound();
+            ViewBag.Batch = batch;
+        }
+
+        var query = db.WeightLogs
+            .Include(w => w.Batch).ThenInclude(b => b!.Farm)
+            .Where(w => farmIds.Contains(w.Batch!.FarmId));
+
+        if (batchId.HasValue)
+            query = query.Where(w => w.BatchId == batchId.Value);
+
+        var logs = await query.OrderByDescending(w => w.LogDate).ToListAsync();
+
         ViewBag.ChartLabels = logs.Select(l => l.LogDate.ToString("MMM dd")).ToArray();
-        ViewBag.ChartData = logs.Select(l => l.AvgWeight_kg).ToArray();
+        ViewBag.ChartData   = logs.Select(l => l.AvgWeight_kg).ToArray();
         return View(logs);
     }
 
@@ -37,7 +49,7 @@ public class WeightLogController(ApplicationDbContext db, UserManager<AppUser> u
     public async Task<IActionResult> Create(int batchId)
     {
         var farmIds = await GetFarmIdsAsync();
-        ViewBag.Batches = new SelectList(await db.Batches.Where(b => farmIds.Contains(b.FarmId)).ToListAsync(), "Id", "BatchName", batchId);
+        ViewBag.Batches = new SelectList(await db.Batches.Where(b => farmIds.Contains(b.FarmId) && b.Status != Domain.Enums.BatchStatus.Closed).ToListAsync(), "Id", "BatchName", batchId);
         return View(new WeightLog { BatchId = batchId, LogDate = DateTime.Today });
     }
 

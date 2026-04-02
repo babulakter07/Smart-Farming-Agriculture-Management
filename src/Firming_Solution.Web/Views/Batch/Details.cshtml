@@ -3,22 +3,31 @@
 @{
     ViewData["Title"] = Model.BatchName;
     decimal totalFeedCost = ViewBag.TotalFeedCost ?? 0m;
-    decimal totalCosts = ViewBag.TotalCosts ?? 0m;
-    decimal totalRevenue = ViewBag.TotalRevenue ?? 0m;
-    int liveCount = ViewBag.LiveCount ?? Model.InitialCount;
-    decimal grossProfit = ViewBag.GrossProfit ?? 0m;
+    decimal totalCosts    = ViewBag.TotalCosts ?? 0m;      // feed + purchase + other
+    decimal otherCosts    = ViewBag.OtherCosts ?? 0m;      // non-purchase, non-feed costs
+    decimal totalRevenue  = ViewBag.TotalRevenue ?? 0m;
+    int     liveCount     = ViewBag.LiveCount ?? Model.InitialCount;
+    decimal grossProfit   = ViewBag.GrossProfit ?? 0m;
     string ProfitCls(decimal v) => v >= 0 ? "profit-positive" : "profit-negative";
+
+    string BatchStatusBn(BatchStatus s) => s switch {
+        BatchStatus.Active   => "সক্রিয়",
+        BatchStatus.Planning => "পরিকল্পনা",
+        BatchStatus.Selling  => "বিক্রয়",
+        BatchStatus.Closed   => "বন্ধ",
+        _ => s.ToString()
+    };
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
     <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
-        <i class="fas fa-arrow-left me-1"></i>All Batches
+        <i class="fas fa-arrow-left me-1"></i>সব ব্যাচ
     </a>
     <div class="d-flex gap-2 flex-wrap">
         @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
         {
             <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning btn-sm">
-                <i class="fas fa-edit me-1"></i>Edit
+                <i class="fas fa-edit me-1"></i>সম্পাদনা
             </a>
             @if (Model.Status != BatchStatus.Closed)
             {
@@ -27,58 +36,57 @@
                     @if (Model.Status == BatchStatus.Planning)
                     {
                         <button type="submit" name="status" value="@BatchStatus.Active" class="btn btn-outline-success btn-sm">
-                            <i class="fas fa-play me-1"></i>Activate
+                            <i class="fas fa-play me-1"></i>সক্রিয় করুন
                         </button>
                     }
                     else if (Model.Status == BatchStatus.Active || Model.Status == BatchStatus.Selling)
                     {
                         <button type="submit" name="status" value="@BatchStatus.Closed" class="btn btn-outline-danger btn-sm"
-                                onclick="return confirm('Close this batch?')">
-                            <i class="fas fa-stop me-1"></i>Close Batch
+                                onclick="return confirm('এই ব্যাচ বন্ধ করবেন?')">
+                            <i class="fas fa-stop me-1"></i>ব্যাচ বন্ধ করুন
                         </button>
                     }
                 </form>
             }
         }
         <a asp-controller="FeedLog" asp-action="Create" asp-route-batchId="@Model.Id" class="btn btn-caw-primary btn-sm">
-            <i class="fas fa-wheat-awn me-1"></i>Feed Log
+            <i class="fas fa-wheat-awn me-1"></i>খাবার লগ
         </a>
         <a asp-controller="WeightLog" asp-action="Create" asp-route-batchId="@Model.Id" class="btn btn-outline-info btn-sm">
-            <i class="fas fa-weight-scale me-1"></i>Weight Log
+            <i class="fas fa-weight-scale me-1"></i>ওজন লগ
         </a>
         <a asp-controller="MortalityLog" asp-action="Create" asp-route-batchId="@Model.Id" class="btn btn-outline-danger btn-sm">
-            <i class="fas fa-skull-crossbones me-1"></i>Mortality
+            <i class="fas fa-skull-crossbones me-1"></i>মৃত্যু লগ
         </a>
         <a asp-controller="Sale" asp-action="Create" asp-route-batchId="@Model.Id" class="btn btn-outline-warning btn-sm">
-            <i class="fas fa-cash-register me-1"></i>Record Sale
+            <i class="fas fa-cash-register me-1"></i>বিক্রয় রেকর্ড
         </a>
     </div>
 </div>
 
-<!-- Summary Cards -->
 <div class="row g-3 mb-4">
     <div class="col-sm-6 col-lg-3">
         <div class="caw-card caw-stat-card text-center">
-            <div class="caw-card-title">Live Animals</div>
+            <div class="caw-card-title">জীবিত প্রাণী</div>
             <div class="caw-card-value">@liveCount.ToString("N0")</div>
-            <div class="small mt-1" style="color:var(--caw-text-muted)">of @Model.InitialCount initial</div>
+            <div class="small mt-1" style="color:var(--caw-text-muted)">প্রাথমিক @Model.InitialCount টি থেকে</div>
         </div>
     </div>
     <div class="col-sm-6 col-lg-3">
         <div class="caw-card caw-stat-card info text-center">
-            <div class="caw-card-title">Total Revenue</div>
+            <div class="caw-card-title">মোট আয়</div>
             <div class="caw-card-value" style="font-size:1.4rem;">৳ @totalRevenue.ToString("N0")</div>
         </div>
     </div>
     <div class="col-sm-6 col-lg-3">
         <div class="caw-card caw-stat-card text-center">
-            <div class="caw-card-title">Total Costs</div>
+            <div class="caw-card-title">মোট খরচ</div>
             <div class="caw-card-value" style="font-size:1.4rem;">৳ @totalCosts.ToString("N0")</div>
         </div>
     </div>
     <div class="col-sm-6 col-lg-3">
         <div class="caw-card caw-stat-card @(grossProfit >= 0 ? "" : "danger") text-center">
-            <div class="caw-card-title">Gross Profit</div>
+            <div class="caw-card-title">মোট মুনাফা</div>
             <div class="caw-card-value @ProfitCls(grossProfit)" style="font-size:1.4rem;">
                 @(grossProfit >= 0 ? $"৳ {grossProfit:N0}" : $"(৳ {Math.Abs(grossProfit):N0})")
             </div>
@@ -87,68 +95,73 @@
 </div>
 
 <div class="row g-4">
-    <!-- Batch Info -->
     <div class="col-lg-4">
         <div class="caw-card">
-            <div class="caw-section-title"><i class="fas fa-info-circle me-2"></i>Batch Info</div>
+            <div class="caw-section-title"><i class="fas fa-info-circle me-2"></i>ব্যাচের তথ্য</div>
             <dl class="row mb-0" style="font-size:0.88rem;">
-                <dt class="col-5" style="color:var(--caw-text-muted)">Farm</dt>
+                <dt class="col-5" style="color:var(--caw-text-muted)">খামার</dt>
                 <dd class="col-7">@Model.Farm?.FarmName</dd>
 
-                <dt class="col-5" style="color:var(--caw-text-muted)">Species</dt>
+                <dt class="col-5" style="color:var(--caw-text-muted)">প্রজাতি</dt>
                 <dd class="col-7">@Model.Species</dd>
 
-                <dt class="col-5" style="color:var(--caw-text-muted)">Breed</dt>
+                <dt class="col-5" style="color:var(--caw-text-muted)">জাত</dt>
                 <dd class="col-7">@(Model.Breed ?? "—")</dd>
 
-                <dt class="col-5" style="color:var(--caw-text-muted)">Start Date</dt>
+                <dt class="col-5" style="color:var(--caw-text-muted)">শুরুর তারিখ</dt>
                 <dd class="col-7">@Model.StartDate.ToString("dd MMM yyyy")</dd>
 
-                <dt class="col-5" style="color:var(--caw-text-muted)">End (Planned)</dt>
+                <dt class="col-5" style="color:var(--caw-text-muted)">পরিকল্পিত সমাপ্তি</dt>
                 <dd class="col-7">@(Model.PlannedEndDate.HasValue ? Model.PlannedEndDate.Value.ToString("dd MMM yyyy") : "—")</dd>
 
-                <dt class="col-5" style="color:var(--caw-text-muted)">Purchase Cost</dt>
+                <dt class="col-5" style="color:var(--caw-text-muted)">ক্রয় মূল্য</dt>
                 <dd class="col-7">৳ @Model.PurchaseCost.ToString("N0")</dd>
 
-                <dt class="col-5" style="color:var(--caw-text-muted)">Feed Cost</dt>
+                <dt class="col-5" style="color:var(--caw-text-muted)">খাবার খরচ</dt>
                 <dd class="col-7">৳ @totalFeedCost.ToString("N0")</dd>
 
-                <dt class="col-5" style="color:var(--caw-text-muted)">Eid Target</dt>
-                <dd class="col-7">
-                    @if (Model.IsEidTarget) { <i class="fas fa-moon text-gold"></i><span class="ms-1">Yes</span> }
-                    else { <span style="color:var(--caw-text-muted)">No</span> }
+                <dt class="col-5" style="color:var(--caw-text-muted)">মোট খরচ বিভাজন</dt>
+                <dd class="col-7" style="font-size:.82rem; color:var(--caw-text-muted)">
+                    ক্রয়: ৳ @Model.PurchaseCost.ToString("N0")<br />
+                    খাবার: ৳ @totalFeedCost.ToString("N0")<br />
+                    অন্যান্য: ৳ @otherCosts.ToString("N0")
                 </dd>
 
-                <dt class="col-5" style="color:var(--caw-text-muted)">Status</dt>
+                <dt class="col-5" style="color:var(--caw-text-muted)">ঈদ টার্গেট</dt>
+                <dd class="col-7">
+                    @if (Model.IsEidTarget) { <i class="fas fa-moon text-gold"></i><span class="ms-1">হ্যাঁ</span> }
+                    else { <span style="color:var(--caw-text-muted)">না</span> }
+                </dd>
+
+                <dt class="col-5" style="color:var(--caw-text-muted)">অবস্থা</dt>
                 <dd class="col-7">
                     @{
                         var bCls = Model.Status switch {
-                            BatchStatus.Active => "badge-active",
+                            BatchStatus.Active   => "badge-active",
                             BatchStatus.Planning => "badge-planning",
-                            BatchStatus.Selling => "badge-selling",
-                            BatchStatus.Closed => "badge-closed",
+                            BatchStatus.Selling  => "badge-selling",
+                            BatchStatus.Closed   => "badge-closed",
                             _ => ""
                         };
                     }
-                    <span class="caw-badge @bCls">@Model.Status</span>
+                    <span class="caw-badge @bCls">@BatchStatusBn(Model.Status)</span>
                 </dd>
 
                 @if (!string.IsNullOrEmpty(Model.Notes))
                 {
-                    <dt class="col-5" style="color:var(--caw-text-muted)">Notes</dt>
+                    <dt class="col-5" style="color:var(--caw-text-muted)">মন্তব্য</dt>
                     <dd class="col-7" style="color:var(--caw-text-muted)">@Model.Notes</dd>
                 }
             </dl>
         </div>
     </div>
 
-    <!-- Feed Logs -->
     <div class="col-lg-8">
         <div class="caw-card">
             <div class="caw-section-title">
-                <i class="fas fa-wheat-awn me-2"></i>Feed Logs (@Model.FeedLogs.Count)
+                <i class="fas fa-wheat-awn me-2"></i>খাবারের লগ (@Model.FeedLogs.Count টি)
                 <a asp-controller="FeedLog" asp-action="Create" asp-route-batchId="@Model.Id" class="float-end btn btn-caw-primary btn-sm">
-                    <i class="fas fa-plus me-1"></i>Add
+                    <i class="fas fa-plus me-1"></i>যোগ করুন
                 </a>
             </div>
             @if (Model.FeedLogs.Any())
@@ -156,7 +169,7 @@
                 <div class="table-responsive">
                     <table class="caw-table">
                         <thead>
-                            <tr><th>Date</th><th>Feed Type</th><th>Qty (kg)</th><th>Price/kg</th><th>Total</th><th></th></tr>
+                            <tr><th>তারিখ</th><th>খাবারের ধরন</th><th>পরিমাণ (কেজি)</th><th>মূল্য/কেজি</th><th>মোট</th><th></th></tr>
                         </thead>
                         <tbody>
                             @foreach (var fl in Model.FeedLogs.OrderByDescending(f => f.LogDate).Take(20))
@@ -171,7 +184,7 @@
                                         @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
                                         {
                                             <form asp-controller="FeedLog" asp-action="Delete" asp-route-id="@fl.Id" method="post" class="d-inline"
-                                                  onsubmit="return confirm('Delete this feed log?')">
+                                                  onsubmit="return confirm('এই খাবার লগ মুছে ফেলবেন?')">
                                                 @Html.AntiForgeryToken()
                                                 <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash"></i></button>
                                             </form>
@@ -185,32 +198,31 @@
             }
             else
             {
-                <p class="small" style="color:var(--caw-text-muted)">No feed logs yet.</p>
+                <p class="small" style="color:var(--caw-text-muted)">এখনো কোনো খাবার লগ নেই।</p>
             }
         </div>
 
-        <!-- Weight Logs -->
         <div class="caw-card">
             <div class="caw-section-title">
-                <i class="fas fa-weight-scale me-2"></i>Weight Logs (@Model.WeightLogs.Count)
+                <i class="fas fa-weight-scale me-2"></i>ওজন লগ (@Model.WeightLogs.Count টি)
                 <a asp-controller="WeightLog" asp-action="Create" asp-route-batchId="@Model.Id" class="float-end btn btn-outline-info btn-sm">
-                    <i class="fas fa-plus me-1"></i>Add
+                    <i class="fas fa-plus me-1"></i>যোগ করুন
                 </a>
             </div>
             @if (Model.WeightLogs.Any())
             {
                 <div class="table-responsive">
                     <table class="caw-table">
-                        <thead><tr><th>Date</th><th>Sample</th><th>Avg Weight</th><th>FCR</th><th>Est. Total</th></tr></thead>
+                        <thead><tr><th>তারিখ</th><th>নমুনা</th><th>গড় ওজন</th><th>FCR</th><th>আনুমানিক মোট</th></tr></thead>
                         <tbody>
                             @foreach (var wl in Model.WeightLogs.OrderByDescending(w => w.LogDate).Take(10))
                             {
                                 <tr>
                                     <td style="color:var(--caw-text-muted)">@wl.LogDate.ToString("dd MMM")</td>
                                     <td style="color:var(--caw-text-muted)">@wl.SampleCount</td>
-                                    <td style="color:var(--caw-text)">@wl.AvgWeight_kg.ToString("N3") kg</td>
+                                    <td style="color:var(--caw-text)">@wl.AvgWeight_kg.ToString("N3") কেজি</td>
                                     <td style="color:var(--caw-text-muted)">@(wl.FCR_Cumulative.HasValue ? wl.FCR_Cumulative.Value.ToString("N2") : "—")</td>
-                                    <td class="text-caw">@(wl.TotalEstWeight.HasValue ? $"{wl.TotalEstWeight.Value:N1} kg" : "—")</td>
+                                    <td class="text-caw">@(wl.TotalEstWeight.HasValue ? $"{wl.TotalEstWeight.Value:N1} কেজি" : "—")</td>
                                 </tr>
                             }
                         </tbody>
@@ -219,23 +231,22 @@
             }
             else
             {
-                <p class="small" style="color:var(--caw-text-muted)">No weight logs yet.</p>
+                <p class="small" style="color:var(--caw-text-muted)">এখনো কোনো ওজন লগ নেই।</p>
             }
         </div>
 
-        <!-- Sales -->
         <div class="caw-card">
             <div class="caw-section-title">
-                <i class="fas fa-cash-register me-2"></i>Sales (@Model.Sales.Count)
+                <i class="fas fa-cash-register me-2"></i>বিক্রয় (@Model.Sales.Count টি)
                 <a asp-controller="Sale" asp-action="Create" asp-route-batchId="@Model.Id" class="float-end btn btn-outline-warning btn-sm">
-                    <i class="fas fa-plus me-1"></i>Add
+                    <i class="fas fa-plus me-1"></i>যোগ করুন
                 </a>
             </div>
             @if (Model.Sales.Any())
             {
                 <div class="table-responsive">
                     <table class="caw-table">
-                        <thead><tr><th>Date</th><th>Qty</th><th>Weight (kg)</th><th>Price/kg</th><th>Revenue</th></tr></thead>
+                        <thead><tr><th>তারিখ</th><th>পরিমাণ</th><th>ওজন (কেজি)</th><th>মূল্য/কেজি</th><th>আয়</th></tr></thead>
                         <tbody>
                             @foreach (var s in Model.Sales.OrderByDescending(s => s.SaleDate))
                             {
@@ -253,20 +264,19 @@
             }
             else
             {
-                <p class="small" style="color:var(--caw-text-muted)">No sales recorded yet.</p>
+                <p class="small" style="color:var(--caw-text-muted)">এখনো কোনো বিক্রয় নেই।</p>
             }
         </div>
 
-        <!-- Mortality Logs -->
         @if (Model.MortalityLogs.Any())
         {
             <div class="caw-card">
                 <div class="caw-section-title">
-                    <i class="fas fa-skull-crossbones me-2"></i>Mortality Logs (@Model.MortalityLogs.Sum(m => m.Count) total)
+                    <i class="fas fa-skull-crossbones me-2"></i>মৃত্যুর লগ (মোট @Model.MortalityLogs.Sum(m => m.Count) টি)
                 </div>
                 <div class="table-responsive">
                     <table class="caw-table">
-                        <thead><tr><th>Date</th><th>Count</th><th>Cause</th></tr></thead>
+                        <thead><tr><th>তারিখ</th><th>সংখ্যা</th><th>কারণ</th></tr></thead>
                         <tbody>
                             @foreach (var ml in Model.MortalityLogs.OrderByDescending(m => m.LogDate))
                             {

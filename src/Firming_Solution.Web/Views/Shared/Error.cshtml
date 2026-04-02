@@ -1,25 +1,25 @@
-﻿@model ErrorViewModel
+@model ErrorViewModel
 @{
-    ViewData["Title"] = "Error";
+    ViewData["Title"] = "ত্রুটি";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<h1 class="text-danger">ত্রুটি।</h1>
+<h2 class="text-danger">আপনার অনুরোধ প্রক্রিয়া করার সময় একটি ত্রুটি ঘটেছে।</h2>
 
 @if (Model.ShowRequestId)
 {
     <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+        <strong>অনুরোধ আইডি:</strong> <code>@Model.RequestId</code>
     </p>
 }
 
-<h3>Development Mode</h3>
+<h3>ডেভেলপমেন্ট মোড</h3>
 <p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
+    <strong>Development</strong> পরিবেশে স্যুইচ করলে ঘটে যাওয়া ত্রুটির আরও বিস্তারিত তথ্য প্রদর্শিত হবে।
 </p>
 <p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
+    <strong>ডিপ্লয়কৃত অ্যাপ্লিকেশনে Development পরিবেশ সক্রিয় করা উচিত নয়।</strong>
+    এটি ব্যবহারকারীদের কাছে ব্যতিক্রম থেকে সংবেদনশীল তথ্য প্রদর্শন করতে পারে।
+    স্থানীয় ডিবাগিংয়ের জন্য, <strong>ASPNETCORE_ENVIRONMENT</strong> পরিবেশ ভেরিয়েবল <strong>Development</strong>-এ সেট করে
+    <strong>Development</strong> পরিবেশ সক্রিয় করুন এবং অ্যাপটি পুনরায় চালু করুন।
 </p>

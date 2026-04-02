@@ -1,60 +1,64 @@
 @model Firming_Solution.Domain.Entities.DailyFeedLog
 @{
-    ViewData["Title"] = "Log Feed";
+    ViewData["Title"] = "খাবার লগ করুন";
 }
 
 <div class="row justify-content-center">
     <div class="col-md-8 col-lg-7">
         <div class="caw-card">
-            <div class="caw-section-title"><i class="fas fa-wheat-awn me-2"></i>Log Daily Feed</div>
+            <div class="caw-section-title"><i class="fas fa-wheat-awn me-2"></i>দৈনিক খাবার লগ করুন</div>
             <form asp-action="Create" method="post">
                 <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3"></div>
 
                 <div class="mb-3">
-                    <label asp-for="BatchId" class="caw-form-label">Batch <span class="text-danger">*</span></label>
+                    <label asp-for="BatchId" class="caw-form-label">ব্যাচ <span class="text-danger">*</span></label>
                     <select asp-for="BatchId" asp-items="ViewBag.Batches" class="form-select">
-                        <option value="">-- Select Active Batch --</option>
+                        <option value="">-- সক্রিয় ব্যাচ নির্বাচন করুন --</option>
                     </select>
                     <span asp-validation-for="BatchId" class="text-danger small"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="FeedTypeId" class="caw-form-label">Feed Type <span class="text-danger">*</span></label>
+                    <label asp-for="FeedTypeId" class="caw-form-label">খাবারের ধরন <span class="text-danger">*</span></label>
                     <select asp-for="FeedTypeId" asp-items="ViewBag.FeedTypes" class="form-select">
-                        <option value="">-- Select Feed Type --</option>
+                        <option value="">-- খাবারের ধরন নির্বাচন করুন --</option>
                     </select>
                     <span asp-validation-for="FeedTypeId" class="text-danger small"></span>
                 </div>
 
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <label asp-for="LogDate" class="caw-form-label">Date <span class="text-danger">*</span></label>
+                        <label asp-for="LogDate" class="caw-form-label">তারিখ <span class="text-danger">*</span></label>
                         <input asp-for="LogDate" class="form-control" type="date" />
                         <span asp-validation-for="LogDate" class="text-danger small"></span>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label asp-for="Quantity_kg" class="caw-form-label">Quantity (kg) <span class="text-danger">*</span></label>
+                        <label asp-for="Quantity_kg" class="caw-form-label">পরিমাণ (কেজি) <span class="text-danger">*</span></label>
                         <input asp-for="Quantity_kg" class="form-control" type="number" step="0.01" min="0.01" />
                         <span asp-validation-for="Quantity_kg" class="text-danger small"></span>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label asp-for="PricePerKg" class="caw-form-label">Price/kg (৳) <span class="text-danger">*</span></label>
+                        <label asp-for="PricePerKg" class="caw-form-label">মূল্য/কেজি (৳) <span class="text-danger">*</span></label>
                         <input asp-for="PricePerKg" class="form-control" type="number" step="0.01" min="0" />
                         <span asp-validation-for="PricePerKg" class="text-danger small"></span>
                     </div>
                 </div>
 
                 <div class="mb-4">
-                    <label asp-for="Session" class="caw-form-label">Session</label>
-                    <select asp-for="Session" asp-items="Html.GetEnumSelectList<Firming_Solution.Domain.Enums.FeedSession>()" class="form-select"></select>
+                    <label asp-for="Session" class="caw-form-label">সেশন</label>
+                    <select asp-for="Session" class="form-select">
+                        <option value="Morning">সকাল</option>
+                        <option value="Noon">দুপুর</option>
+                        <option value="Evening">বিকাল</option>
+                    </select>
                 </div>
 
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-caw-primary flex-fill">
-                        <i class="fas fa-save me-2"></i>Save Feed Log
+                        <i class="fas fa-save me-2"></i>খাবার লগ সংরক্ষণ করুন
                     </button>
                     <a asp-action="Index" class="btn btn-outline-secondary flex-fill">
-                        <i class="fas fa-times me-2"></i>Cancel
+                        <i class="fas fa-times me-2"></i>বাতিল
                     </a>
                 </div>
             </form>

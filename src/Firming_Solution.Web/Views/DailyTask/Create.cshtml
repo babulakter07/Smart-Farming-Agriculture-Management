@@ -1,59 +1,68 @@
 @model Firming_Solution.Domain.Entities.DailyTask
 @{
-    ViewData["Title"] = "Add Task";
+    ViewData["Title"] = "কাজ যোগ করুন";
 }
 
 <div class="row justify-content-center">
     <div class="col-md-8 col-lg-7">
         <div class="caw-card">
-            <div class="caw-section-title"><i class="fas fa-plus-circle me-2"></i>Add Daily Task</div>
+            <div class="caw-section-title"><i class="fas fa-plus-circle me-2"></i>দৈনিক কাজ যোগ করুন</div>
             <form asp-action="Create" method="post">
                 <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3"></div>
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label asp-for="FarmId" class="caw-form-label">Farm <span class="text-danger">*</span></label>
+                        <label asp-for="FarmId" class="caw-form-label">খামার <span class="text-danger">*</span></label>
                         <select asp-for="FarmId" asp-items="ViewBag.Farms" class="form-select">
-                            <option value="">-- Select Farm --</option>
+                            <option value="">-- খামার নির্বাচন করুন --</option>
                         </select>
                         <span asp-validation-for="FarmId" class="text-danger small"></span>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label asp-for="TaskType" class="caw-form-label">Task Type <span class="text-danger">*</span></label>
-                        <select asp-for="TaskType" asp-items="Html.GetEnumSelectList<Firming_Solution.Domain.Enums.TaskType>()" class="form-select"></select>
+                        <label asp-for="TaskType" class="caw-form-label">কাজের ধরন <span class="text-danger">*</span></label>
+                        <select asp-for="TaskType" class="form-select">
+                            <option value="Feeding">খাওয়ানো</option>
+                            <option value="Medicine">ওষুধ প্রয়োগ</option>
+                            <option value="Weighing">ওজন করা</option>
+                            <option value="Cleaning">পরিষ্কার</option>
+                            <option value="Inspection">পরিদর্শন</option>
+                            <option value="Irrigation">সেচ</option>
+                            <option value="Fertilising">সার প্রয়োগ</option>
+                            <option value="Other">অন্যান্য</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label asp-for="TaskDate" class="caw-form-label">Task Date <span class="text-danger">*</span></label>
+                        <label asp-for="TaskDate" class="caw-form-label">কাজের তারিখ <span class="text-danger">*</span></label>
                         <input asp-for="TaskDate" class="form-control" type="date" />
                         <span asp-validation-for="TaskDate" class="text-danger small"></span>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label asp-for="StartTime" class="caw-form-label">Start Time</label>
+                        <label asp-for="StartTime" class="caw-form-label">শুরুর সময়</label>
                         <input asp-for="StartTime" class="form-control" type="time" />
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="AssignedToId" class="caw-form-label">Assign To</label>
+                    <label asp-for="AssignedToId" class="caw-form-label">দায়িত্ব দিন</label>
                     <select asp-for="AssignedToId" asp-items="ViewBag.Users" class="form-select">
-                        <option value="">-- Unassigned --</option>
+                        <option value="">-- নির্ধারিত নয় --</option>
                     </select>
                 </div>
 
                 <div class="mb-4">
-                    <label asp-for="Description" class="caw-form-label">Description</label>
-                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="Task details..."></textarea>
+                    <label asp-for="Description" class="caw-form-label">বিবরণ</label>
+                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="কাজের বিস্তারিত..."></textarea>
                 </div>
 
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-caw-primary flex-fill">
-                        <i class="fas fa-save me-2"></i>Create Task
+                        <i class="fas fa-save me-2"></i>কাজ তৈরি করুন
                     </button>
                     <a asp-action="Index" class="btn btn-outline-secondary flex-fill">
-                        <i class="fas fa-times me-2"></i>Cancel
+                        <i class="fas fa-times me-2"></i>বাতিল
                     </a>
                 </div>
             </form>

@@ -1,14 +1,15 @@
 @model List<Firming_Solution.Domain.Entities.WeightLog>
 @{
-    ViewData["Title"] = "Weight Logs";
+    ViewData["Title"] = "ওজন লগ";
     var batch = ViewBag.Batch as Firming_Solution.Domain.Entities.Batch;
+    bool allBatches = batch is null;
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     @if (batch != null)
     {
         <a asp-controller="Batch" asp-action="Details" asp-route-id="@batch.Id" class="btn btn-outline-secondary btn-sm">
-            <i class="fas fa-arrow-left me-1"></i>Back to @batch.BatchName
+            <i class="fas fa-arrow-left me-1"></i>@batch.BatchName -এ ফিরুন
         </a>
     }
     else
@@ -18,31 +19,51 @@
     @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager") || User.IsInRole("Worker"))
     {
         <a asp-action="Create" class="btn btn-caw-primary btn-sm">
-            <i class="fas fa-plus me-1"></i>Log Weight
+            <i class="fas fa-plus me-1"></i>ওজন লগ করুন
         </a>
     }
 </div>
 
 <div class="caw-card">
     <div class="caw-section-title">
-        <i class="fas fa-weight-scale me-2"></i>Weight Logs — @(batch?.BatchName ?? "All Batches")
+        <i class="fas fa-weight-scale me-2"></i>ওজন লগ — @(batch?.BatchName ?? "সব ব্যাচ") (@Model.Count টি)
     </div>
     @if (Model.Any())
     {
         <div class="table-responsive">
             <table class="caw-table">
                 <thead>
-                    <tr><th>Date</th><th>Sample Count</th><th>Avg Weight (kg)</th><th>FCR</th><th>Est. Total Weight</th><th>Notes</th></tr>
+                    <tr>
+                        @if (allBatches)
+                        {
+                            <th>ব্যাচ</th>
+                            <th>খামার</th>
+                        }
+                        <th>তারিখ</th>
+                        <th>নমুনার সংখ্যা</th>
+                        <th>গড় ওজন (কেজি)</th>
+                        <th>FCR</th>
+                        <th>আনুমানিক মোট ওজন</th>
+                        <th>মন্তব্য</th>
+                    </tr>
                 </thead>
                 <tbody>
                     @foreach (var wl in Model)
                     {
                         <tr>
+                            @if (allBatches)
+                            {
+                                <td>
+                                    <a asp-controller="Batch" asp-action="Details" asp-route-id="@wl.BatchId"
+                                       class="text-gold">@wl.Batch?.BatchName</a>
+                                </td>
+                                <td style="color:var(--caw-text-muted)">@wl.Batch?.Farm?.FarmName</td>
+                            }
                             <td style="color:var(--caw-text-muted)">@wl.LogDate.ToString("dd MMM yyyy")</td>
                             <td style="color:var(--caw-text-muted)">@wl.SampleCount</td>
-                            <td class="fw-bold" style="color:var(--caw-text)">@wl.AvgWeight_kg.ToString("N3") kg</td>
+                            <td class="fw-bold" style="color:var(--caw-text)">@wl.AvgWeight_kg.ToString("N3") কেজি</td>
                             <td style="color:var(--caw-text-muted)">@(wl.FCR_Cumulative.HasValue ? wl.FCR_Cumulative.Value.ToString("N2") : "—")</td>
-                            <td class="text-caw">@(wl.TotalEstWeight.HasValue ? $"{wl.TotalEstWeight.Value:N1} kg" : "—")</td>
+                            <td style="color:var(--caw-text-muted)">@(wl.TotalEstWeight.HasValue ? $"{wl.TotalEstWeight.Value:N1} কেজি" : "—")</td>
                             <td style="color:var(--caw-text-muted)">@(wl.Notes ?? "—")</td>
                         </tr>
                     }
@@ -52,6 +73,6 @@
     }
     else
     {
-        <p class="small text-center py-3" style="color:var(--caw-text-muted)">No weight logs found.</p>
+        <p class="small text-center py-3" style="color:var(--caw-text-muted)">কোনো ওজন লগ পাওয়া যায়নি।</p>
     }
 </div>

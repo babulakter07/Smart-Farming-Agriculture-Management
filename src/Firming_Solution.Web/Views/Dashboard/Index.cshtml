@@ -2,7 +2,7 @@
 @using Firming_Solution.Domain.Entities
 @using Firming_Solution.Domain.Enums
 @{
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "ড্যাশবোর্ড";
     var stats = ViewBag.Stats as DashboardStats;
     var recentBatches = ViewBag.RecentBatches as List<Batch>;
     var todayTasks = ViewBag.TodayTasks as List<DailyTask>;
@@ -11,21 +11,35 @@
 
     string GProfit(decimal g) => g >= 0 ? $"৳ {g:N0}" : $"(৳ {Math.Abs(g):N0})";
     string GProfitClass(decimal g) => g >= 0 ? "profit-positive" : "profit-negative";
+
+    string BatchStatusBn(BatchStatus s) => s switch {
+        BatchStatus.Active   => "সক্রিয়",
+        BatchStatus.Planning => "পরিকল্পনা",
+        BatchStatus.Selling  => "বিক্রয়",
+        BatchStatus.Closed   => "বন্ধ",
+        _ => s.ToString()
+    };
+    string TaskStatusBn(Firming_Solution.Domain.Enums.TaskStatus s) => s switch {
+        Firming_Solution.Domain.Enums.TaskStatus.Pending    => "অপেক্ষমাণ",
+        Firming_Solution.Domain.Enums.TaskStatus.Done       => "সম্পন্ন",
+        Firming_Solution.Domain.Enums.TaskStatus.InProgress => "চলমান",
+        Firming_Solution.Domain.Enums.TaskStatus.Skipped    => "এড়িয়ে যাওয়া",
+        _ => s.ToString()
+    };
 }
 
 <div class="mb-4">
-    <h4 style="color:var(--caw-text)">Welcome back, <span class="text-gold">@ViewBag.UserName</span></h4>
-    <p style="color:var(--caw-text-muted)" class="mb-0">Role: <strong>@ViewBag.UserRole</strong> &mdash; @DateTime.Now.ToString("dddd, MMMM d, yyyy")</p>
+    <h4 style="color:var(--caw-text)">স্বাগতম, <span class="text-gold">@ViewBag.UserName</span></h4>
+    <p style="color:var(--caw-text-muted)" class="mb-0">ভূমিকা: <strong>@ViewBag.UserRole</strong> &mdash; @DateTime.Now.ToString("dddd, MMMM d, yyyy")</p>
 </div>
 
-<!-- Stats Cards -->
 @if (stats != null)
 {
     <div class="row g-3 mb-4">
         <div class="col-sm-6 col-lg-3">
             <div class="caw-card caw-stat-card d-flex justify-content-between align-items-center">
                 <div>
-                    <div class="caw-card-title">Total Farms</div>
+                    <div class="caw-card-title">মোট খামার</div>
                     <div class="caw-card-value">@stats.TotalFarms</div>
                 </div>
                 <div class="caw-card-icon text-caw"><i class="fas fa-tractor"></i></div>
@@ -34,7 +48,7 @@
         <div class="col-sm-6 col-lg-3">
             <div class="caw-card caw-stat-card info d-flex justify-content-between align-items-center">
                 <div>
-                    <div class="caw-card-title">Active Batches</div>
+                    <div class="caw-card-title">সক্রিয় ব্যাচ</div>
                     <div class="caw-card-value">@stats.ActiveBatches</div>
                 </div>
                 <div class="caw-card-icon" style="color:var(--caw-info)"><i class="fas fa-layer-group"></i></div>
@@ -43,7 +57,7 @@
         <div class="col-sm-6 col-lg-3">
             <div class="caw-card caw-stat-card gold d-flex justify-content-between align-items-center">
                 <div>
-                    <div class="caw-card-title">Total Animals</div>
+                    <div class="caw-card-title">মোট প্রাণী</div>
                     <div class="caw-card-value">@stats.TotalAnimals.ToString("N0")</div>
                 </div>
                 <div class="caw-card-icon text-gold"><i class="fas fa-kiwi-bird"></i></div>
@@ -52,7 +66,7 @@
         <div class="col-sm-6 col-lg-3">
             <div class="caw-card caw-stat-card warn d-flex justify-content-between align-items-center">
                 <div>
-                    <div class="caw-card-title">Pending Tasks Today</div>
+                    <div class="caw-card-title">আজকের বাকি কাজ</div>
                     <div class="caw-card-value">@stats.PendingTasks</div>
                 </div>
                 <div class="caw-card-icon" style="color:var(--caw-warning)"><i class="fas fa-tasks"></i></div>
@@ -64,7 +78,7 @@
         <div class="col-sm-6 col-lg-3">
             <div class="caw-card caw-stat-card d-flex justify-content-between align-items-center">
                 <div>
-                    <div class="caw-card-title">Total Investment</div>
+                    <div class="caw-card-title">মোট বিনিয়োগ</div>
                     <div class="caw-card-value" style="font-size:1.5rem;">৳ @stats.TotalInvestment.ToString("N0")</div>
                 </div>
                 <div class="caw-card-icon" style="color:#ce93d8"><i class="fas fa-piggy-bank"></i></div>
@@ -73,7 +87,7 @@
         <div class="col-sm-6 col-lg-3">
             <div class="caw-card caw-stat-card info d-flex justify-content-between align-items-center">
                 <div>
-                    <div class="caw-card-title">Total Revenue</div>
+                    <div class="caw-card-title">মোট আয়</div>
                     <div class="caw-card-value" style="font-size:1.5rem;">৳ @stats.TotalRevenue.ToString("N0")</div>
                 </div>
                 <div class="caw-card-icon" style="color:var(--caw-info)"><i class="fas fa-cash-register"></i></div>
@@ -82,7 +96,7 @@
         <div class="col-sm-6 col-lg-3">
             <div class="caw-card caw-stat-card @(stats.GrossProfit >= 0 ? "" : "danger") d-flex justify-content-between align-items-center">
                 <div>
-                    <div class="caw-card-title">Gross Profit</div>
+                    <div class="caw-card-title">মোট মুনাফা</div>
                     <div class="caw-card-value @GProfitClass(stats.GrossProfit)" style="font-size:1.5rem;">@GProfit(stats.GrossProfit)</div>
                 </div>
                 <div class="caw-card-icon @GProfitClass(stats.GrossProfit)"><i class="fas fa-chart-line"></i></div>
@@ -91,7 +105,7 @@
         <div class="col-sm-6 col-lg-3">
             <div class="caw-card caw-stat-card gold d-flex justify-content-between align-items-center">
                 <div>
-                    <div class="caw-card-title">Eid Target Batches</div>
+                    <div class="caw-card-title">ঈদ টার্গেট ব্যাচ</div>
                     <div class="caw-card-value text-gold">@stats.EidTargetBatches</div>
                 </div>
                 <div class="caw-card-icon text-gold"><i class="fas fa-moon"></i></div>
@@ -101,40 +115,38 @@
 }
 
 <div class="row g-4">
-    <!-- Recent Batches -->
+    <!-- সাম্প্রতিক ব্যাচ -->
     <div class="col-lg-6">
         <div class="caw-card">
             <div class="caw-section-title">
-                <i class="fas fa-layer-group me-2"></i>Recent Batches
-                <a asp-controller="Batch" asp-action="Index" class="float-end small text-gold">View All</a>
+                <i class="fas fa-layer-group me-2"></i>সাম্প্রতিক ব্যাচ
+                <a asp-controller="Batch" asp-action="Index" class="float-end small text-gold">সব দেখুন</a>
             </div>
             @if (recentBatches != null && recentBatches.Any())
             {
                 <div class="table-responsive">
                     <table class="caw-table">
                         <thead>
-                            <tr><th>Batch</th><th>Farm</th><th>Species</th><th>Status</th></tr>
+                            <tr><th>ব্যাচ</th><th>খামার</th><th>প্রজাতি</th><th>অবস্থা</th></tr>
                         </thead>
                         <tbody>
                             @foreach (var b in recentBatches)
                             {
                                 <tr>
-                                    <td>
-                                        <a asp-controller="Batch" asp-action="Details" asp-route-id="@b.Id" class="text-gold">@b.BatchName</a>
-                                    </td>
+                                    <td><a asp-controller="Batch" asp-action="Details" asp-route-id="@b.Id" class="text-gold">@b.BatchName</a></td>
                                     <td style="color:var(--caw-text-muted)">@b.Farm?.FarmName</td>
                                     <td style="color:var(--caw-text-muted)">@b.Species</td>
                                     <td>
                                         @{
                                             var bCls = b.Status switch {
-                                                BatchStatus.Active => "badge-active",
+                                                BatchStatus.Active   => "badge-active",
                                                 BatchStatus.Planning => "badge-planning",
-                                                BatchStatus.Selling => "badge-selling",
-                                                BatchStatus.Closed => "badge-closed",
+                                                BatchStatus.Selling  => "badge-selling",
+                                                BatchStatus.Closed   => "badge-closed",
                                                 _ => ""
                                             };
                                         }
-                                        <span class="caw-badge @bCls">@b.Status</span>
+                                        <span class="caw-badge @bCls">@BatchStatusBn(b.Status)</span>
                                     </td>
                                 </tr>
                             }
@@ -144,43 +156,43 @@
             }
             else
             {
-                <p style="color:var(--caw-text-muted)" class="small">No batches found.</p>
+                <p style="color:var(--caw-text-muted)" class="small">কোনো ব্যাচ পাওয়া যায়নি।</p>
             }
         </div>
     </div>
 
-    <!-- Today's Tasks -->
+    <!-- আজকের কাজ -->
     <div class="col-lg-6">
         <div class="caw-card">
             <div class="caw-section-title">
-                <i class="fas fa-tasks me-2"></i>Today's Tasks
-                <a asp-controller="DailyTask" asp-action="Index" class="float-end small text-gold">View All</a>
+                <i class="fas fa-tasks me-2"></i>আজকের কাজ
+                <a asp-controller="DailyTask" asp-action="Index" class="float-end small text-gold">সব দেখুন</a>
             </div>
             @if (todayTasks != null && todayTasks.Any())
             {
                 <div class="table-responsive">
                     <table class="caw-table">
                         <thead>
-                            <tr><th>Task</th><th>Assigned To</th><th>Time</th><th>Status</th></tr>
+                            <tr><th>কাজ</th><th>দায়িত্বপ্রাপ্ত</th><th>সময়</th><th>অবস্থা</th></tr>
                         </thead>
                         <tbody>
                             @foreach (var t in todayTasks)
                             {
                                 <tr>
                                     <td style="color:var(--caw-text)">@t.TaskType</td>
-                                    <td style="color:var(--caw-text-muted)">@(t.AssignedTo?.FullName ?? "Unassigned")</td>
+                                    <td style="color:var(--caw-text-muted)">@(t.AssignedTo?.FullName ?? "নির্ধারিত নয়")</td>
                                     <td style="color:var(--caw-text-muted)">@(t.StartTime.HasValue ? t.StartTime.Value.ToString(@"hh\:mm") : "—")</td>
                                     <td>
                                         @{
                                             var tCls = t.Status switch {
-                                                Firming_Solution.Domain.Enums.TaskStatus.Pending => "badge-pending",
-                                                Firming_Solution.Domain.Enums.TaskStatus.Done => "badge-done",
+                                                Firming_Solution.Domain.Enums.TaskStatus.Pending    => "badge-pending",
+                                                Firming_Solution.Domain.Enums.TaskStatus.Done       => "badge-done",
                                                 Firming_Solution.Domain.Enums.TaskStatus.InProgress => "badge-inprogress",
-                                                Firming_Solution.Domain.Enums.TaskStatus.Skipped => "badge-skipped",
+                                                Firming_Solution.Domain.Enums.TaskStatus.Skipped    => "badge-skipped",
                                                 _ => ""
                                             };
                                         }
-                                        <span class="caw-badge @tCls">@t.Status</span>
+                                        <span class="caw-badge @tCls">@TaskStatusBn(t.Status)</span>
                                     </td>
                                 </tr>
                             }
@@ -190,24 +202,24 @@
             }
             else
             {
-                <p style="color:var(--caw-text-muted)" class="small">No tasks scheduled for today.</p>
+                <p style="color:var(--caw-text-muted)" class="small">আজকের জন্য কোনো কাজ নেই।</p>
             }
         </div>
     </div>
 
-    <!-- Recent Sales -->
+    <!-- সাম্প্রতিক বিক্রয় -->
     <div class="col-lg-6">
         <div class="caw-card">
             <div class="caw-section-title">
-                <i class="fas fa-cash-register me-2"></i>Recent Sales
-                <a asp-controller="Sale" asp-action="History" class="float-end small text-gold">History</a>
+                <i class="fas fa-cash-register me-2"></i>সাম্প্রতিক বিক্রয়
+                <a asp-controller="Sale" asp-action="History" class="float-end small text-gold">সব ইতিহাস</a>
             </div>
             @if (recentSales != null && recentSales.Any())
             {
                 <div class="table-responsive">
                     <table class="caw-table">
                         <thead>
-                            <tr><th>Batch</th><th>Date</th><th>Qty</th><th>Revenue</th></tr>
+                            <tr><th>ব্যাচ</th><th>তারিখ</th><th>পরিমাণ</th><th>আয়</th></tr>
                         </thead>
                         <tbody>
                             @foreach (var s in recentSales)
@@ -225,17 +237,17 @@
             }
             else
             {
-                <p style="color:var(--caw-text-muted)" class="small">No sales recorded yet.</p>
+                <p style="color:var(--caw-text-muted)" class="small">এখনো কোনো বিক্রয় নেই।</p>
             }
         </div>
     </div>
 
-    <!-- Eid Bazar Plans -->
+    <!-- ঈদ বাজার পরিকল্পনা -->
     <div class="col-lg-6">
         <div class="caw-card">
             <div class="caw-section-title">
-                <i class="fas fa-moon me-2"></i>Upcoming Eid Bazar Plans
-                <a asp-controller="EidBazarPlan" asp-action="Index" class="float-end small text-gold">View All</a>
+                <i class="fas fa-moon me-2"></i>আসন্ন ঈদ বাজার পরিকল্পনা
+                <a asp-controller="EidBazarPlan" asp-action="Index" class="float-end small text-gold">সব দেখুন</a>
             </div>
             @if (eidPlans != null && eidPlans.Any())
             {
@@ -246,11 +258,11 @@
                         <div>
                             <div style="color:var(--caw-text)" class="fw-600">@e.EidType</div>
                             <div class="small" style="color:var(--caw-text-muted)">
-                                Batch: @(e.LinkedBatch?.BatchName ?? "N/A") &mdash; Target: @(e.TargetAnimals?.ToString("N0") ?? "?") animals
+                                ব্যাচ: @(e.LinkedBatch?.BatchName ?? "নেই") &mdash; লক্ষ্য: @(e.TargetAnimals?.ToString("N0") ?? "?") টি প্রাণী
                             </div>
                         </div>
                         <div class="text-end">
-                            <div class="text-gold fw-bold">@daysLeft days</div>
+                            <div class="text-gold fw-bold">@daysLeft দিন বাকি</div>
                             <div class="small" style="color:var(--caw-text-muted)">@e.EidDate.ToString("dd MMM")</div>
                         </div>
                     </div>
@@ -258,41 +270,41 @@
             }
             else
             {
-                <p style="color:var(--caw-text-muted)" class="small">No upcoming Eid plans.</p>
+                <p style="color:var(--caw-text-muted)" class="small">কোনো আসন্ন ঈদ পরিকল্পনা নেই।</p>
             }
         </div>
     </div>
 </div>
 
-<!-- Quick Actions -->
+<!-- দ্রুত কার্যক্রম -->
 <div class="caw-card mt-4">
-    <div class="caw-section-title"><i class="fas fa-bolt me-2"></i>Quick Actions</div>
+    <div class="caw-section-title"><i class="fas fa-bolt me-2"></i>দ্রুত কার্যক্রম</div>
     <div class="d-flex flex-wrap gap-2">
         <a asp-controller="Farm" asp-action="Create" class="btn btn-caw-primary btn-sm">
-            <i class="fas fa-plus me-1"></i>New Farm
+            <i class="fas fa-plus me-1"></i>নতুন খামার
         </a>
         <a asp-controller="Batch" asp-action="Create" class="btn btn-caw-primary btn-sm">
-            <i class="fas fa-plus me-1"></i>New Batch
+            <i class="fas fa-plus me-1"></i>নতুন ব্যাচ
         </a>
         <a asp-controller="FeedLog" asp-action="Create" class="btn btn-outline-success btn-sm">
-            <i class="fas fa-wheat-awn me-1"></i>Log Feed
+            <i class="fas fa-wheat-awn me-1"></i>খাবার লগ
         </a>
         <a asp-controller="WeightLog" asp-action="Create" class="btn btn-outline-success btn-sm">
-            <i class="fas fa-weight-scale me-1"></i>Log Weight
+            <i class="fas fa-weight-scale me-1"></i>ওজন লগ
         </a>
         <a asp-controller="Sale" asp-action="Create" class="btn btn-outline-warning btn-sm">
-            <i class="fas fa-cash-register me-1"></i>Record Sale
+            <i class="fas fa-cash-register me-1"></i>বিক্রয় রেকর্ড
         </a>
         <a asp-controller="DailyTask" asp-action="Create" class="btn btn-outline-info btn-sm">
-            <i class="fas fa-plus me-1"></i>Add Task
+            <i class="fas fa-plus me-1"></i>কাজ যোগ করুন
         </a>
         @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager") || User.IsInRole("Accountant"))
         {
             <a asp-controller="Investment" asp-action="Create" class="btn btn-outline-secondary btn-sm">
-                <i class="fas fa-plus me-1"></i>Log Investment
+                <i class="fas fa-plus me-1"></i>বিনিয়োগ লগ
             </a>
             <a asp-controller="Cost" asp-action="Create" class="btn btn-outline-secondary btn-sm">
-                <i class="fas fa-receipt me-1"></i>Record Cost
+                <i class="fas fa-receipt me-1"></i>খরচ রেকর্ড
             </a>
         }
     </div>

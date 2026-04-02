@@ -36,9 +36,17 @@ public class FertiliserPlanController(ApplicationDbContext db, UserManager<AppUs
     public async Task<IActionResult> Create()
     {
         var farmIds = await GetFarmIdsAsync();
+        var lands = await db.LandParcels
+            .Where(lp => farmIds.Contains(lp.FarmId))
+            .Include(lp => lp.Farm)
+            .ToListAsync();
         ViewBag.Lands = new SelectList(
-            await db.LandParcels.Where(lp => farmIds.Contains(lp.FarmId)).ToListAsync(),
-            "Id", "LandName");
+            lands.Select(lp => new {
+                lp.Id,
+                Display = $"{lp.Farm!.FarmName} — {lp.Area_Decimal:N2} শতাংশ" +
+                          (string.IsNullOrEmpty(lp.SoilType) ? "" : $" ({lp.SoilType})")
+            }),
+            "Id", "Display");
         ViewBag.Seasons = new SelectList(
             await db.CropSeasons.Where(cs => farmIds.Contains(cs.Land!.FarmId)).ToListAsync(),
             "Id", "CropName");
@@ -54,9 +62,17 @@ public class FertiliserPlanController(ApplicationDbContext db, UserManager<AppUs
         if (!ModelState.IsValid)
         {
             var farmIds = await GetFarmIdsAsync();
+            var lands = await db.LandParcels
+                .Where(lp => farmIds.Contains(lp.FarmId))
+                .Include(lp => lp.Farm)
+                .ToListAsync();
             ViewBag.Lands = new SelectList(
-                await db.LandParcels.Where(lp => farmIds.Contains(lp.FarmId)).ToListAsync(),
-                "Id", "LandName");
+                lands.Select(lp => new {
+                    lp.Id,
+                    Display = $"{lp.Farm!.FarmName} — {lp.Area_Decimal:N2} শতাংশ" +
+                              (string.IsNullOrEmpty(lp.SoilType) ? "" : $" ({lp.SoilType})")
+                }),
+                "Id", "Display");
             ViewBag.Seasons = new SelectList(
                 await db.CropSeasons.Where(cs => farmIds.Contains(cs.Land!.FarmId)).ToListAsync(),
                 "Id", "CropName");

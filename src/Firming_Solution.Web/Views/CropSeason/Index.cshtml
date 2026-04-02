@@ -1,7 +1,39 @@
 @model List<Firming_Solution.Domain.Entities.CropSeason>
 @using Firming_Solution.Domain.Enums
 @{
-    ViewData["Title"] = "Crop Seasons";
+    ViewData["Title"] = "ফসলের মৌসুম";
+    const decimal MON_TO_KG = 37.324m;
+
+    string StatusBn(CropStatus s) => s switch {
+        CropStatus.Planning  => "পরিকল্পনা",
+        CropStatus.Growing   => "চলমান",
+        CropStatus.Harvested => "ফসল কাটা হয়েছে",
+        CropStatus.Closed    => "বন্ধ",
+        _ => s.ToString()
+    };
+
+    string CostCatBn(string cat) => cat switch {
+        "Feed"           => "খাবার",
+        "Medicine"       => "ওষুধ",
+        "Labour"         => "শ্রমিক",
+        "Utility"        => "ইউটিলিটি",
+        "Transport"      => "পরিবহন",
+        "Breeding"       => "প্রজনন",
+        "Infrastructure" => "অবকাঠামো",
+        _                => "অন্যান্য"
+    };
+
+    // P/L helpers
+    decimal Revenue(Firming_Solution.Domain.Entities.CropSeason cs) {
+        if (cs.ActualYield_kg is null || cs.SaleUnitPrice is null) return 0;
+        var pricePerKg = (cs.YieldUnit == "mon")
+            ? cs.SaleUnitPrice.Value / MON_TO_KG
+            : cs.SaleUnitPrice.Value;
+        return cs.ActualYield_kg.Value * pricePerKg;
+    }
+
+    decimal TotalCost(Firming_Solution.Domain.Entities.CropSeason cs) =>
+        (cs.SeedCost ?? 0) + cs.Costs.Sum(c => c.Amount);
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -9,76 +41,327 @@
     @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
     {
         <a asp-action="Create" class="btn btn-caw-primary btn-sm">
-            <i class="fas fa-plus me-1"></i>New Crop Season
+            <i class="fas fa-plus me-1"></i>নতুন ফসলের মৌসুম
         </a>
     }
 </div>
 
 <div class="caw-card">
-    <div class="caw-section-title"><i class="fas fa-seedling me-2"></i>Crop Seasons (@Model.Count)</div>
+    <div class="caw-section-title"><i class="fas fa-seedling me-2"></i>ফসলের মৌসুম (@Model.Count টি)</div>
     @if (Model.Any())
     {
         <div class="table-responsive">
             <table class="caw-table">
                 <thead>
-                    <tr><th>Crop</th><th>Variety</th><th>Land</th><th>Farm</th><th>Sow Date</th><th>Harvest Date</th><th>Status</th><th>Yield</th><th>Actions</th></tr>
+                    <tr>
+                        <th style="width:32px"></th>
+                        <th>ফসল / জমি</th>
+                        <th>বপন</th>
+                        <th>ফসল কাটা</th>
+                        <th>অবস্থা</th>
+                        <th>ফলন</th>
+                        <th>রাজস্ব</th>
+                        <th>মোট খরচ</th>
+                        <th>লাভ / ক্ষতি</th>
+                        <th>কার্যক্রম</th>
+                    </tr>
                 </thead>
                 <tbody>
-                    @foreach (var cs in Model)
-                    {
-                        var sCls = cs.Status switch {
-                            CropStatus.Planning => "badge-planning",
-                            CropStatus.Growing => "badge-active",
-                            CropStatus.Harvested => "badge-selling",
-                            CropStatus.Closed => "badge-closed",
-                            _ => ""
-                        };
-                        <tr>
-                            <td style="color:var(--caw-text)">@cs.CropName</td>
-                            <td style="color:var(--caw-text-muted)">@(cs.Variety ?? "—")</td>
-                            <td style="color:var(--caw-text-muted)">@cs.Land?.LandName</td>
-                            <td style="color:var(--caw-text-muted)">@cs.Land?.Farm?.FarmName</td>
-                            <td style="color:var(--caw-text-muted)">@(cs.SowDate.HasValue ? cs.SowDate.Value.ToString("dd MMM yyyy") : "—")</td>
-                            <td style="color:var(--caw-text-muted)">
-                                @(cs.ActualHarvestDate.HasValue ? cs.ActualHarvestDate.Value.ToString("dd MMM yyyy") :
-                                    cs.ExpectedHarvestDate.HasValue ? $"~ {cs.ExpectedHarvestDate.Value:dd MMM}" : "—")
-                            </td>
-                            <td><span class="caw-badge @sCls">@cs.Status</span></td>
-                            <td style="color:var(--caw-text-muted)">
-                                @(cs.ActualYield_kg.HasValue ? $"{cs.ActualYield_kg.Value:N1} kg" :
-                                    cs.ExpectedYield_kg.HasValue ? $"~ {cs.ExpectedYield_kg.Value:N1} kg" : "—")
-                            </td>
-                            <td>
-                                @if ((User.IsInRole("SuperAdmin") || User.IsInRole("Manager")) && cs.Status != CropStatus.Closed)
+                @foreach (var cs in Model)
+                {
+                    var sCls = cs.Status switch {
+                        CropStatus.Planning  => "badge-planning",
+                        CropStatus.Growing   => "badge-active",
+                        CropStatus.Harvested => "badge-selling",
+                        CropStatus.Closed    => "badge-closed",
+                        _ => ""
+                    };
+                    var revenue   = Revenue(cs);
+                    var costTotal = TotalCost(cs);
+                    var pl        = revenue - costTotal;
+                    var hasCosts  = cs.Costs.Any();
+                    var hasYield  = cs.ActualYield_kg.HasValue;
+                    var collapseId = $"costs-{cs.Id}";
+                    var yieldId    = $"yield-{cs.Id}";
+                    var unitLbl    = (cs.YieldUnit == "mon") ? "মণ" : "কেজি";
+
+                    <tr>
+                        <td>
+                            @if (hasCosts)
+                            {
+                                <button class="btn btn-sm btn-outline-secondary py-0 px-1 cost-toggle"
+                                        data-bs-toggle="collapse" data-bs-target="#@collapseId"
+                                        aria-expanded="false" title="খরচ দেখুন">
+                                    <i class="fas fa-chevron-right fa-xs toggle-icon"></i>
+                                </button>
+                            }
+                        </td>
+                        <td>
+                            <span style="color:var(--caw-text)"><strong>@cs.CropName</strong></span>
+                            @if (!string.IsNullOrEmpty(cs.Variety))
+                            {
+                                <small style="color:var(--caw-text-muted)"> (@cs.Variety)</small>
+                            }
+                            <br />
+                            <small style="color:var(--caw-text-muted)">
+                                @cs.Land?.Farm?.FarmName
+                                @if (cs.Land?.Area_Decimal > 0)
+                                { <text> — @cs.Land.Area_Decimal.ToString("N2") শতাংশ</text> }
+                            </small>
+                        </td>
+                        <td style="color:var(--caw-text-muted)">
+                            @(cs.SowDate.HasValue ? cs.SowDate.Value.ToString("dd MMM yyyy") : "—")
+                        </td>
+                        <td style="color:var(--caw-text-muted)">
+                            @(cs.ActualHarvestDate.HasValue ? cs.ActualHarvestDate.Value.ToString("dd MMM yyyy") :
+                              cs.ExpectedHarvestDate.HasValue ? $"~ {cs.ExpectedHarvestDate.Value:dd MMM}" : "—")
+                        </td>
+                        <td><span class="caw-badge @sCls">@StatusBn(cs.Status)</span></td>
+                        <td>
+                            @if (hasYield)
+                            {
+                                <span style="color:var(--caw-text)">
+                                    @cs.ActualYield_kg!.Value.ToString("N1") @unitLbl
+                                </span>
+                                @if (cs.SaleUnitPrice.HasValue)
                                 {
-                                    if (cs.Status == CropStatus.Planning)
-                                    {
-                                        <form asp-action="UpdateStatus" asp-route-id="@cs.Id" method="post" class="d-inline">
-                                            @Html.AntiForgeryToken()
-                                            <button type="submit" name="status" value="@CropStatus.Growing" class="btn btn-outline-success btn-sm">
-                                                <i class="fas fa-play"></i>
-                                            </button>
-                                        </form>
-                                    }
-                                    else if (cs.Status == CropStatus.Growing)
-                                    {
-                                        <form asp-action="UpdateStatus" asp-route-id="@cs.Id" method="post" class="d-inline">
-                                            @Html.AntiForgeryToken()
-                                            <button type="submit" name="status" value="@CropStatus.Harvested" class="btn btn-outline-warning btn-sm">
-                                                <i class="fas fa-wheat-awn"></i>
-                                            </button>
-                                        </form>
-                                    }
+                                    <br /><small style="color:var(--caw-text-muted)">৳ @cs.SaleUnitPrice.Value.ToString("N2") / @unitLbl</small>
                                 }
+                            }
+                            else
+                            {
+                                <span style="color:var(--caw-text-muted)">—</span>
+                            }
+                            @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
+                            {
+                                <button class="btn btn-outline-secondary btn-sm ms-1 py-0"
+                                        data-bs-toggle="collapse" data-bs-target="#@yieldId"
+                                        title="ফলন আপডেট করুন">
+                                    <i class="fas fa-edit fa-xs"></i>
+                                </button>
+                            }
+                        </td>
+                        <td>
+                            @if (revenue > 0)
+                            {
+                                <span style="color:var(--caw-gold,#d4a843);font-weight:600">৳ @revenue.ToString("N0")</span>
+                            }
+                            else { <span style="color:var(--caw-text-muted)">—</span> }
+                        </td>
+                        <td>
+                            @if (costTotal > 0)
+                            {
+                                <span style="color:var(--caw-text-muted)">৳ @costTotal.ToString("N0")</span>
+                                @if (!hasCosts && cs.SeedCost.HasValue)
+                                {
+                                    <br /><small style="color:var(--caw-text-muted)">(বীজ)</small>
+                                }
+                                else if (hasCosts)
+                                {
+                                    <button class="btn btn-sm btn-outline-secondary py-0 px-1 ms-1 cost-toggle"
+                                            data-bs-toggle="collapse" data-bs-target="#@collapseId"
+                                            title="বিস্তারিত">
+                                        <i class="fas fa-list fa-xs"></i>
+                                    </button>
+                                }
+                            }
+                            else { <span style="color:var(--caw-text-muted)">—</span> }
+                            @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager") || User.IsInRole("Accountant"))
+                            {
+                                <a asp-controller="Cost" asp-action="Create" asp-route-cropSeasonId="@cs.Id"
+                                   class="btn btn-outline-secondary btn-sm ms-1 py-0" title="খরচ যোগ করুন">
+                                    <i class="fas fa-plus fa-xs"></i>
+                                </a>
+                            }
+                        </td>
+                        <td>
+                            @if (revenue > 0 || costTotal > 0)
+                            {
+                                var plColor = pl >= 0 ? "color:#28a745;font-weight:700" : "color:#dc3545;font-weight:700";
+                                var plIcon  = pl >= 0 ? "fa-arrow-up" : "fa-arrow-down";
+                                <span style="@plColor">
+                                    <i class="fas @plIcon fa-xs me-1"></i>৳ @Math.Abs(pl).ToString("N0")
+                                </span>
+                            }
+                            else { <span style="color:var(--caw-text-muted)">—</span> }
+                        </td>
+                        <td>
+                            @* Forward status *@
+                            @if ((User.IsInRole("SuperAdmin") || User.IsInRole("Manager")) && cs.Status != CropStatus.Closed)
+                            {
+                                if (cs.Status == CropStatus.Planning)
+                                {
+                                    <form asp-action="UpdateStatus" asp-route-id="@cs.Id" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" name="status" value="@CropStatus.Growing"
+                                                class="btn btn-outline-success btn-sm" title="চলমান করুন">
+                                            <i class="fas fa-play"></i>
+                                        </button>
+                                    </form>
+                                }
+                                else if (cs.Status == CropStatus.Growing)
+                                {
+                                    <form asp-action="UpdateStatus" asp-route-id="@cs.Id" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" name="status" value="@CropStatus.Harvested"
+                                                class="btn btn-outline-warning btn-sm" title="ফসল কাটুন">
+                                            <i class="fas fa-wheat-awn"></i>
+                                        </button>
+                                    </form>
+                                }
+                                else if (cs.Status == CropStatus.Harvested)
+                                {
+                                    <form asp-action="UpdateStatus" asp-route-id="@cs.Id" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" name="status" value="@CropStatus.Closed"
+                                                class="btn btn-outline-secondary btn-sm" title="বন্ধ করুন">
+                                            <i class="fas fa-lock"></i>
+                                        </button>
+                                    </form>
+                                }
+                            }
+                            @* Revert status *@
+                            @if ((User.IsInRole("SuperAdmin") || User.IsInRole("Manager")) && cs.Status != CropStatus.Planning)
+                            {
+                                var prevStatus = cs.Status switch {
+                                    CropStatus.Growing   => CropStatus.Planning,
+                                    CropStatus.Harvested => CropStatus.Growing,
+                                    CropStatus.Closed    => CropStatus.Harvested,
+                                    _ => CropStatus.Planning
+                                };
+                                var prevLbl = cs.Status switch {
+                                    CropStatus.Growing   => "পরিকল্পনায় ফিরুন",
+                                    CropStatus.Harvested => "চলমানে ফিরুন",
+                                    CropStatus.Closed    => "ফসল কাটায় ফিরুন",
+                                    _ => "পূর্বে ফিরুন"
+                                };
+                                <form asp-action="UpdateStatus" asp-route-id="@cs.Id" method="post" class="d-inline ms-1">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" name="status" value="@prevStatus"
+                                            class="btn btn-outline-danger btn-sm" title="@prevLbl"
+                                            onclick="return confirm('@prevLbl?')">
+                                        <i class="fas fa-rotate-left"></i>
+                                    </button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+
+                    @* Yield / Price edit panel *@
+                    @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
+                    {
+                        <tr class="collapse" id="@yieldId">
+                            <td colspan="10" class="p-0">
+                                <div style="background:var(--caw-card-bg,#1a1f2e); border-left:3px solid #28a745; margin:0 8px 4px 8px; border-radius:0 4px 4px 0; padding:12px 16px">
+                                    <form asp-action="UpdateYield" asp-route-id="@cs.Id" method="post" class="row g-2 align-items-end">
+                                        @Html.AntiForgeryToken()
+                                        <div class="col-auto">
+                                            <label class="caw-form-label mb-1" style="font-size:.8rem">ফলনের পরিমাণ</label>
+                                            <input type="number" name="actualYield" step="0.01" min="0"
+                                                   value="@cs.ActualYield_kg" class="form-control form-control-sm" style="width:110px" placeholder="০" />
+                                        </div>
+                                        <div class="col-auto">
+                                            <label class="caw-form-label mb-1" style="font-size:.8rem">একক</label>
+                                            <select name="yieldUnit" class="form-select form-select-sm" style="width:90px">
+                                                @if (cs.YieldUnit == "mon")
+                                                {
+                                                    <option value="kg">কেজি</option>
+                                                    <option value="mon" selected>মণ</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="kg" selected>কেজি</option>
+                                                    <option value="mon">মণ</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-auto">
+                                            <label class="caw-form-label mb-1" style="font-size:.8rem">বিক্রয় মূল্য / একক (৳)</label>
+                                            <input type="number" name="saleUnitPrice" step="0.01" min="0"
+                                                   value="@cs.SaleUnitPrice" class="form-control form-control-sm" style="width:120px" placeholder="০.০০" />
+                                        </div>
+                                        <div class="col-auto">
+                                            <label class="caw-form-label mb-1" style="font-size:.8rem">বীজ খরচ (৳)</label>
+                                            <input type="number" name="seedCost" step="0.01" min="0"
+                                                   value="@cs.SeedCost" class="form-control form-control-sm" style="width:110px" placeholder="০.০০" />
+                                        </div>
+                                        <div class="col-auto">
+                                            <button type="submit" class="btn btn-success btn-sm">
+                                                <i class="fas fa-save me-1"></i>সংরক্ষণ
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     }
+
+                    @* Cost detail panel *@
+                    @if (hasCosts)
+                    {
+                        <tr class="collapse" id="@collapseId">
+                            <td colspan="10" class="p-0">
+                                <div style="background:var(--caw-card-bg,#1a1f2e); border-left:3px solid var(--caw-gold,#d4a843); margin:0 8px 4px 8px; border-radius:0 4px 4px 0;">
+                                    <table class="table table-sm mb-0" style="font-size:.85rem">
+                                        <thead>
+                                            <tr style="color:var(--caw-text-muted)">
+                                                <th class="ps-3">তারিখ</th>
+                                                <th>বিভাগ</th>
+                                                <th>বিবরণ</th>
+                                                <th class="text-end pe-3">পরিমাণ (৳)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (cs.SeedCost > 0)
+                                            {
+                                                <tr>
+                                                    <td class="ps-3" style="color:var(--caw-text-muted)">—</td>
+                                                    <td><span class="caw-badge badge-planning" style="font-size:.75rem">বীজ খরচ</span></td>
+                                                    <td style="color:var(--caw-text-muted)">প্রাথমিক বীজ ব্যয়</td>
+                                                    <td class="text-end pe-3" style="color:var(--caw-gold,#d4a843);font-weight:600">৳ @cs.SeedCost!.Value.ToString("N2")</td>
+                                                </tr>
+                                            }
+                                            @foreach (var cost in cs.Costs.OrderByDescending(c => c.CostDate))
+                                            {
+                                                <tr>
+                                                    <td class="ps-3" style="color:var(--caw-text-muted)">@cost.CostDate.ToString("dd MMM yyyy")</td>
+                                                    <td><span class="caw-badge badge-planning" style="font-size:.75rem">@CostCatBn(cost.CostCategory.ToString())</span></td>
+                                                    <td style="color:var(--caw-text-muted)">@(cost.Description ?? "—")</td>
+                                                    <td class="text-end pe-3" style="color:var(--caw-gold,#d4a843);font-weight:600">৳ @cost.Amount.ToString("N2")</td>
+                                                </tr>
+                                            }
+                                            <tr style="border-top:1px solid rgba(255,255,255,.1)">
+                                                <td colspan="3" class="ps-3 text-end" style="color:var(--caw-text-muted)"><strong>মোট খরচ</strong></td>
+                                                <td class="text-end pe-3" style="color:var(--caw-gold,#d4a843);font-weight:700">৳ @costTotal.ToString("N2")</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
                 </tbody>
             </table>
         </div>
     }
     else
     {
-        <p class="small text-center py-3" style="color:var(--caw-text-muted)">No crop seasons found.</p>
+        <p class="small text-center py-3" style="color:var(--caw-text-muted)">কোনো ফসলের মৌসুম পাওয়া যায়নি।</p>
     }
 </div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.cost-toggle').forEach(btn => {
+            const target = document.querySelector(btn.dataset.bsTarget);
+            if (!target) return;
+            target.addEventListener('show.bs.collapse', () => {
+                btn.querySelectorAll('.toggle-icon').forEach(i => i.classList.replace('fa-chevron-right', 'fa-chevron-down'));
+            });
+            target.addEventListener('hide.bs.collapse', () => {
+                btn.querySelectorAll('.toggle-icon').forEach(i => i.classList.replace('fa-chevron-down', 'fa-chevron-right'));
+            });
+        });
+    </script>
+}

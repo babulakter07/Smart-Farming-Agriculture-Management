@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "Weather Forecast";
+    ViewData["Title"] = "আবহাওয়ার পূর্বাভাস";
     var weatherData = ViewBag.WeatherData as dynamic[];
 }
 
@@ -7,11 +7,11 @@
     <div class="container">
         <div class="caw-section-heading">
             <i class="fas fa-cloud-sun-rain"></i>
-            <h2>Bangladesh Agricultural Weather Forecast</h2>
+            <h2>বাংলাদেশ কৃষি আবহাওয়ার পূর্বাভাস</h2>
         </div>
         <p style="color:var(--caw-text-muted)" class="mb-4">
-            Daily weather conditions for Bangladesh's key farming regions. Use these forecasts to plan
-            irrigation, harvesting, spraying, and outdoor activities.
+            বাংলাদেশের প্রধান কৃষি অঞ্চলের দৈনিক আবহাওয়া পরিস্থিতি। সেচ, ফসল কাটা,
+            স্প্রে করা ও মাঠের কাজ পরিকল্পনা করতে এই পূর্বাভাস ব্যবহার করুন।
         </p>
 
         <div class="row g-4 mb-5">
@@ -29,8 +29,8 @@
                             <div class="caw-weather-city mb-2">@w.Condition</div>
                             <p class="small mb-3" style="color:var(--caw-text-muted)">@w.Description</p>
                             <div class="d-flex justify-content-center gap-3 small" style="color:var(--caw-text-muted)">
-                                <span><i class="fas fa-tint me-1 text-info"></i>@w.Humidity% Humidity</span>
-                                <span><i class="fas fa-wind me-1 text-caw"></i>@w.Wind km/h</span>
+                                <span><i class="fas fa-tint me-1 text-info"></i>@w.Humidity% আর্দ্রতা</span>
+                                <span><i class="fas fa-wind me-1 text-caw"></i>@w.Wind কি.মি/ঘ.</span>
                             </div>
                         </div>
                     </div>
@@ -38,36 +38,36 @@
             }
         </div>
 
-        <!-- Farming Tips by Weather -->
+        <!-- আবহাওয়া অনুযায়ী কৃষি পরামর্শ -->
         <div class="caw-card">
-            <div class="caw-section-title"><i class="fas fa-lightbulb me-2"></i>Farming Tips by Weather Condition</div>
+            <div class="caw-section-title"><i class="fas fa-lightbulb me-2"></i>আবহাওয়া অনুযায়ী কৃষি পরামর্শ</div>
             <div class="row g-3">
                 <div class="col-md-3">
                     <div class="text-center p-3">
                         <i class="fas fa-sun fa-2x mb-2" style="color:#f5a623"></i>
-                        <h6 style="color:var(--caw-gold)">Sunny Days</h6>
-                        <p class="small" style="color:var(--caw-text-muted)">Ideal for harvesting, drying grains, and outdoor farm work. Ensure animals have shade and fresh water.</p>
+                        <h6 style="color:var(--caw-gold)">রৌদ্রজ্জ্বল দিন</h6>
+                        <p class="small" style="color:var(--caw-text-muted)">ফসল কাটা, শস্য শুকানো ও মাঠের কাজের জন্য আদর্শ। প্রাণীদের ছায়া ও তাজা পানির ব্যবস্থা নিশ্চিত করুন।</p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="text-center p-3">
                         <i class="fas fa-cloud fa-2x mb-2" style="color:#b0bec5"></i>
-                        <h6 style="color:var(--caw-gold)">Cloudy Days</h6>
-                        <p class="small" style="color:var(--caw-text-muted)">Good for transplanting seedlings and applying foliar sprays. Monitor for fungal disease risk.</p>
+                        <h6 style="color:var(--caw-gold)">মেঘলা দিন</h6>
+                        <p class="small" style="color:var(--caw-text-muted)">চারা রোপণ ও পাতায় স্প্রে করার জন্য উপযুক্ত। ছত্রাকজনিত রোগের ঝুঁকি পর্যবেক্ষণ করুন।</p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="text-center p-3">
                         <i class="fas fa-cloud-showers-heavy fa-2x mb-2" style="color:#81d4fa"></i>
-                        <h6 style="color:var(--caw-gold)">Rainy Days</h6>
-                        <p class="small" style="color:var(--caw-text-muted)">Protect feed and medicine stocks. Avoid chemical spray. Check drainage in animal enclosures.</p>
+                        <h6 style="color:var(--caw-gold)">বৃষ্টির দিন</h6>
+                        <p class="small" style="color:var(--caw-text-muted)">খাবার ও ওষুধের মজুদ রক্ষা করুন। রাসায়নিক স্প্রে এড়িয়ে চলুন। প্রাণীর খামারে পানি নিষ্কাশন পরীক্ষা করুন।</p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="text-center p-3">
                         <i class="fas fa-bolt fa-2x mb-2" style="color:#ffd54f"></i>
-                        <h6 style="color:var(--caw-gold)">Storm Warning</h6>
-                        <p class="small" style="color:var(--caw-text-muted)">Secure livestock in shelters. Harvest any mature crops. Check structural integrity of farm buildings.</p>
+                        <h6 style="color:var(--caw-gold)">ঝড়ের সতর্কতা</h6>
+                        <p class="small" style="color:var(--caw-text-muted)">প্রাণিসম্পদকে আশ্রয়ে নিয়ে যান। পরিপক্ব ফসল কেটে নিন। খামারের ভবনের কাঠামোগত অবস্থা পরীক্ষা করুন।</p>
                     </div>
                 </div>
             </div>

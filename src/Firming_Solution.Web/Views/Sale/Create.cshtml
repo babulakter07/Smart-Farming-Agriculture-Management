@@ -1,79 +1,79 @@
 @model Firming_Solution.Domain.Entities.Sale
 @{
-    ViewData["Title"] = "Record Sale";
+    ViewData["Title"] = "বিক্রয় রেকর্ড করুন";
 }
 
 <div class="row justify-content-center">
     <div class="col-md-8 col-lg-7">
         <div class="caw-card">
-            <div class="caw-section-title"><i class="fas fa-cash-register me-2"></i>Record Sale</div>
+            <div class="caw-section-title"><i class="fas fa-cash-register me-2"></i>বিক্রয় রেকর্ড করুন</div>
             <form asp-action="Create" method="post">
                 <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3"></div>
 
                 <div class="mb-3">
-                    <label asp-for="BatchId" class="caw-form-label">Batch <span class="text-danger">*</span></label>
+                    <label asp-for="BatchId" class="caw-form-label">ব্যাচ <span class="text-danger">*</span></label>
                     <select asp-for="BatchId" asp-items="ViewBag.Batches" class="form-select">
-                        <option value="">-- Select Batch --</option>
+                        <option value="">-- ব্যাচ নির্বাচন করুন --</option>
                     </select>
                     <span asp-validation-for="BatchId" class="text-danger small"></span>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label asp-for="SaleDate" class="caw-form-label">Sale Date <span class="text-danger">*</span></label>
+                        <label asp-for="SaleDate" class="caw-form-label">বিক্রয়ের তারিখ <span class="text-danger">*</span></label>
                         <input asp-for="SaleDate" class="form-control" type="date" />
                         <span asp-validation-for="SaleDate" class="text-danger small"></span>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label asp-for="Quantity" class="caw-form-label">Quantity (heads)</label>
-                        <input asp-for="Quantity" class="form-control" type="number" min="1" placeholder="100" />
+                        <label asp-for="Quantity" class="caw-form-label">পরিমাণ (মাথা)</label>
+                        <input asp-for="Quantity" class="form-control" type="number" min="1" placeholder="১০০" />
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label asp-for="TotalWeight_kg" class="caw-form-label">Total Weight (kg)</label>
-                        <input asp-for="TotalWeight_kg" class="form-control" type="number" step="0.01" placeholder="250.00"
+                        <label asp-for="TotalWeight_kg" class="caw-form-label">মোট ওজন (কেজি)</label>
+                        <input asp-for="TotalWeight_kg" class="form-control" type="number" step="0.01" placeholder="২৫০.০০"
                                oninput="calcRevenue()" />
-                        <div class="small mt-1" style="color:var(--caw-text-muted)">If weight provided, revenue = Weight × Price/kg</div>
+                        <div class="small mt-1" style="color:var(--caw-text-muted)">ওজন দিলে: আয় = ওজন × মূল্য/কেজি</div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label asp-for="PricePerKg" class="caw-form-label">Price per kg (৳)</label>
-                        <input asp-for="PricePerKg" class="form-control" type="number" step="0.01" placeholder="0.00"
+                        <label asp-for="PricePerKg" class="caw-form-label">মূল্য প্রতি কেজি (৳)</label>
+                        <input asp-for="PricePerKg" class="form-control" type="number" step="0.01" placeholder="০.০০"
                                oninput="calcRevenue()" />
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="TotalRevenue" class="caw-form-label">Total Revenue (৳) <span class="text-danger">*</span></label>
-                    <input asp-for="TotalRevenue" class="form-control" type="number" step="0.01" id="revenueField" placeholder="0.00" />
+                    <label asp-for="TotalRevenue" class="caw-form-label">মোট আয় (৳) <span class="text-danger">*</span></label>
+                    <input asp-for="TotalRevenue" class="form-control" type="number" step="0.01" id="revenueField" placeholder="০.০০" />
                     <span asp-validation-for="TotalRevenue" class="text-danger small"></span>
-                    <div class="small mt-1" style="color:var(--caw-text-muted)">Auto-calculated from weight × price, or enter manually.</div>
+                    <div class="small mt-1" style="color:var(--caw-text-muted)">ওজন × মূল্য থেকে স্বয়ংক্রিয়ভাবে পূরণ হয়, বা হাতে লিখুন।</div>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="BuyerName" class="caw-form-label">Buyer Name</label>
-                    <input asp-for="BuyerName" class="form-control" placeholder="Rahman Trading Co." />
+                    <label asp-for="BuyerName" class="caw-form-label">ক্রেতার নাম</label>
+                    <input asp-for="BuyerName" class="form-control" placeholder="রহমান ট্রেডিং কো." />
                 </div>
 
                 <div class="mb-3 form-check">
                     <input asp-for="IsEidSale" class="form-check-input" type="checkbox" />
                     <label asp-for="IsEidSale" class="form-check-label" style="color:var(--caw-text)">
-                        <i class="fas fa-moon text-gold me-1"></i>Eid Sale
+                        <i class="fas fa-moon text-gold me-1"></i>ঈদ বিক্রয়
                     </label>
                 </div>
 
                 <div class="mb-4">
-                    <label asp-for="Notes" class="caw-form-label">Notes</label>
-                    <textarea asp-for="Notes" class="form-control" rows="2" placeholder="Optional notes..."></textarea>
+                    <label asp-for="Notes" class="caw-form-label">মন্তব্য</label>
+                    <textarea asp-for="Notes" class="form-control" rows="2" placeholder="ঐচ্ছিক মন্তব্য..."></textarea>
                 </div>
 
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-caw-primary flex-fill">
-                        <i class="fas fa-save me-2"></i>Record Sale
+                        <i class="fas fa-save me-2"></i>বিক্রয় রেকর্ড করুন
                     </button>
                     <a asp-action="Index" class="btn btn-outline-secondary flex-fill">
-                        <i class="fas fa-times me-2"></i>Cancel
+                        <i class="fas fa-times me-2"></i>বাতিল
                     </a>
                 </div>
             </form>

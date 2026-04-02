@@ -1,7 +1,23 @@
 @model List<Firming_Solution.Domain.Entities.Investment>
 @{
-    ViewData["Title"] = "Investments";
+    ViewData["Title"] = "বিনিয়োগ";
     decimal totalInvestment = ViewBag.TotalInvestment ?? 0m;
+
+    string CategoryBn(string c) => c switch {
+        "LandPurchase"   => "জমি ক্রয়",
+        "Infrastructure" => "অবকাঠামো",
+        "Equipment"      => "সরঞ্জাম",
+        "WorkingCapital" => "কার্যকরী মূলধন",
+        "Other"          => "অন্যান্য",
+        _ => c
+    };
+    string SourceBn(string s) => s switch {
+        "OwnFunds" => "নিজস্ব তহবিল",
+        "BankLoan" => "ব্যাংক ঋণ",
+        "Investor" => "বিনিয়োগকারী",
+        "Other"    => "অন্যান্য",
+        _ => s
+    };
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -9,7 +25,7 @@
     @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager") || User.IsInRole("Accountant"))
     {
         <a asp-action="Create" class="btn btn-caw-primary btn-sm">
-            <i class="fas fa-plus me-1"></i>Log Investment
+            <i class="fas fa-plus me-1"></i>বিনিয়োগ লগ করুন
         </a>
     }
 </div>
@@ -17,26 +33,26 @@
 <div class="row g-3 mb-4">
     <div class="col-md-4">
         <div class="caw-card caw-stat-card text-center">
-            <div class="caw-card-title">Total Investment</div>
+            <div class="caw-card-title">মোট বিনিয়োগ</div>
             <div class="caw-card-value" style="font-size:1.5rem;">৳ @totalInvestment.ToString("N0")</div>
         </div>
     </div>
     <div class="col-md-4">
         <div class="caw-card caw-stat-card info text-center">
-            <div class="caw-card-title">Records</div>
+            <div class="caw-card-title">রেকর্ড সংখ্যা</div>
             <div class="caw-card-value">@Model.Count</div>
         </div>
     </div>
 </div>
 
 <div class="caw-card">
-    <div class="caw-section-title"><i class="fas fa-piggy-bank me-2"></i>Investment Records</div>
+    <div class="caw-section-title"><i class="fas fa-piggy-bank me-2"></i>বিনিয়োগের রেকর্ড</div>
     @if (Model.Any())
     {
         <div class="table-responsive">
             <table class="caw-table">
                 <thead>
-                    <tr><th>Date</th><th>Farm</th><th>Category</th><th>Source</th><th>Amount</th><th>Description</th><th>Recorded By</th><th></th></tr>
+                    <tr><th>তারিখ</th><th>খামার</th><th>বিভাগ</th><th>উৎস</th><th>পরিমাণ</th><th>বিবরণ</th><th>রেকর্ডকারী</th><th></th></tr>
                 </thead>
                 <tbody>
                     @foreach (var i in Model)
@@ -44,8 +60,8 @@
                         <tr>
                             <td style="color:var(--caw-text-muted)">@i.InvestDate.ToString("dd MMM yyyy")</td>
                             <td style="color:var(--caw-text)">@i.Farm?.FarmName</td>
-                            <td style="color:var(--caw-text-muted)">@i.Category</td>
-                            <td style="color:var(--caw-text-muted)">@i.Source</td>
+                            <td style="color:var(--caw-text-muted)">@CategoryBn(i.Category.ToString())</td>
+                            <td style="color:var(--caw-text-muted)">@SourceBn(i.Source.ToString())</td>
                             <td class="profit-positive fw-bold">৳ @i.Amount.ToString("N0")</td>
                             <td style="color:var(--caw-text-muted)">@(i.Description ?? "—")</td>
                             <td style="color:var(--caw-text-muted)">@(i.RecordedBy?.FullName ?? i.RecordedBy?.UserName ?? "—")</td>
@@ -53,7 +69,7 @@
                                 @if (User.IsInRole("SuperAdmin"))
                                 {
                                     <form asp-action="Delete" asp-route-id="@i.Id" method="post" class="d-inline"
-                                          onsubmit="return confirm('Delete this investment record?')">
+                                          onsubmit="return confirm('এই বিনিয়োগের রেকর্ড মুছে ফেলবেন?')">
                                         @Html.AntiForgeryToken()
                                         <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash"></i></button>
                                     </form>
@@ -67,6 +83,6 @@
     }
     else
     {
-        <p class="small text-center py-3" style="color:var(--caw-text-muted)">No investment records found.</p>
+        <p class="small text-center py-3" style="color:var(--caw-text-muted)">কোনো বিনিয়োগের রেকর্ড পাওয়া যায়নি।</p>
     }
 </div>

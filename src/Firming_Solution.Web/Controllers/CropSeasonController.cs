@@ -27,6 +27,7 @@ public class CropSeasonController(ApplicationDbContext db, UserManager<AppUser> 
         var seasons = await db.CropSeasons
             .Where(cs => farmIds.Contains(cs.Land!.FarmId))
             .Include(cs => cs.Land).ThenInclude(lp => lp!.Farm)
+            .Include(cs => cs.Costs)
             .OrderByDescending(cs => cs.SowDate)
             .ToListAsync();
         return View(seasons);
@@ -36,9 +37,17 @@ public class CropSeasonController(ApplicationDbContext db, UserManager<AppUser> 
     public async Task<IActionResult> Create(int? landId)
     {
         var farmIds = await GetFarmIdsAsync();
+        var lands = await db.LandParcels
+            .Where(lp => farmIds.Contains(lp.FarmId))
+            .Include(lp => lp.Farm)
+            .ToListAsync();
         ViewBag.Lands = new SelectList(
-            await db.LandParcels.Where(lp => farmIds.Contains(lp.FarmId)).ToListAsync(),
-            "Id", "LandName", landId);
+            lands.Select(lp => new {
+                lp.Id,
+                Display = $"{lp.Farm!.FarmName} — {lp.Area_Decimal:N2} শতাংশ" +
+                          (string.IsNullOrEmpty(lp.SoilType) ? "" : $" ({lp.SoilType})")
+            }),
+            "Id", "Display", landId);
         return View(new CropSeason { SowDate = DateTime.Today });
     }
 
@@ -50,9 +59,17 @@ public class CropSeasonController(ApplicationDbContext db, UserManager<AppUser> 
         if (!ModelState.IsValid)
         {
             var farmIds = await GetFarmIdsAsync();
+            var lands = await db.LandParcels
+                .Where(lp => farmIds.Contains(lp.FarmId))
+                .Include(lp => lp.Farm)
+                .ToListAsync();
             ViewBag.Lands = new SelectList(
-                await db.LandParcels.Where(lp => farmIds.Contains(lp.FarmId)).ToListAsync(),
-                "Id", "LandName");
+                lands.Select(lp => new {
+                    lp.Id,
+                    Display = $"{lp.Farm!.FarmName} — {lp.Area_Decimal:N2} শতাংশ" +
+                              (string.IsNullOrEmpty(lp.SoilType) ? "" : $" ({lp.SoilType})")
+                }),
+                "Id", "Display");
             return View(model);
         }
         db.CropSeasons.Add(model);
@@ -69,8 +86,25 @@ public class CropSeasonController(ApplicationDbContext db, UserManager<AppUser> 
         if (cs is null) return NotFound();
         cs.Status = status;
         if (status == CropStatus.Harvested) cs.ActualHarvestDate = DateTime.Today;
+        if (status == CropStatus.Growing) cs.ActualHarvestDate = null;
+        if (status == CropStatus.Planning) cs.ActualHarvestDate = null;
         await db.SaveChangesAsync();
-        TempData["Success"] = $"Crop status updated to {status}.";
+        TempData["Success"] = "ফসলের অবস্থা আপডেট হয়েছে।";
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    [Authorize(Roles = "SuperAdmin,Manager")]
+    public async Task<IActionResult> UpdateYield(int id, decimal? actualYield, string? yieldUnit, decimal? saleUnitPrice, decimal? seedCost)
+    {
+        var cs = await db.CropSeasons.FindAsync(id);
+        if (cs is null) return NotFound();
+        cs.ActualYield_kg = actualYield;
+        cs.YieldUnit = yieldUnit ?? "kg";
+        cs.SaleUnitPrice = saleUnitPrice;
+        if (seedCost.HasValue) cs.SeedCost = seedCost;
+        await db.SaveChangesAsync();
+        TempData["Success"] = "ফলন ও মূল্য সংরক্ষিত হয়েছে।";
         return RedirectToAction(nameof(Index));
     }
 }

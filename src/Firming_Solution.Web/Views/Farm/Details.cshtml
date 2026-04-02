@@ -2,93 +2,100 @@
 @using Firming_Solution.Domain.Enums
 @{
     ViewData["Title"] = Model.FarmName;
+
+    string BatchStatusBn(BatchStatus s) => s switch {
+        BatchStatus.Active   => "সক্রিয়",
+        BatchStatus.Planning => "পরিকল্পনা",
+        BatchStatus.Selling  => "বিক্রয়",
+        BatchStatus.Closed   => "বন্ধ",
+        _ => s.ToString()
+    };
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
-        <i class="fas fa-arrow-left me-1"></i>All Farms
+        <i class="fas fa-arrow-left me-1"></i>সব খামার
     </a>
     <div class="d-flex gap-2">
         @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
         {
             <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning btn-sm">
-                <i class="fas fa-edit me-1"></i>Edit
+                <i class="fas fa-edit me-1"></i>সম্পাদনা
             </a>
         }
         <a asp-controller="Batch" asp-action="Create" class="btn btn-caw-primary btn-sm">
-            <i class="fas fa-plus me-1"></i>New Batch
+            <i class="fas fa-plus me-1"></i>নতুন ব্যাচ
         </a>
     </div>
 </div>
 
 <div class="row g-4">
-    <!-- Farm Info -->
     <div class="col-lg-4">
         <div class="caw-card">
-            <div class="caw-section-title"><i class="fas fa-info-circle me-2"></i>Farm Details</div>
+            <div class="caw-section-title"><i class="fas fa-info-circle me-2"></i>খামারের বিবরণ</div>
             <dl class="row mb-0" style="font-size:0.88rem;">
-                <dt class="col-5" style="color:var(--caw-text-muted)">Name</dt>
+                <dt class="col-5" style="color:var(--caw-text-muted)">নাম</dt>
                 <dd class="col-7">@Model.FarmName</dd>
 
-                <dt class="col-5" style="color:var(--caw-text-muted)">Type</dt>
-                <dd class="col-7">@Model.FarmType</dd>
+                <dt class="col-5" style="color:var(--caw-text-muted)">ধরন</dt>
+                <dd class="col-7">
+                    @(Model.FarmType.ToString() switch { "Livestock" => "প্রাণিসম্পদ", "Agriculture" => "কৃষি", "Mixed" => "মিশ্র", _ => Model.FarmType.ToString() })
+                </dd>
 
-                <dt class="col-5" style="color:var(--caw-text-muted)">Location</dt>
+                <dt class="col-5" style="color:var(--caw-text-muted)">অবস্থান</dt>
                 <dd class="col-7">@(Model.Location ?? "—")</dd>
 
-                <dt class="col-5" style="color:var(--caw-text-muted)">Area</dt>
-                <dd class="col-7">@(Model.TotalArea.HasValue ? $"{Model.TotalArea:N2} Ha" : "—")</dd>
+                <dt class="col-5" style="color:var(--caw-text-muted)">আয়তন</dt>
+                <dd class="col-7">@(Model.TotalArea.HasValue ? $"{Model.TotalArea:N2} শতাংশ" : "—")</dd>
 
                 <dt class="col-5" style="color:var(--caw-text-muted)">GPS</dt>
                 <dd class="col-7" style="font-size:0.78rem;">
                     @(Model.Latitude.HasValue ? $"{Model.Latitude:N6}, {Model.Longitude:N6}" : "—")
                 </dd>
 
-                <dt class="col-5" style="color:var(--caw-text-muted)">Owner</dt>
+                <dt class="col-5" style="color:var(--caw-text-muted)">মালিক</dt>
                 <dd class="col-7">@(Model.Owner?.FullName ?? Model.Owner?.UserName ?? "—")</dd>
 
-                <dt class="col-5" style="color:var(--caw-text-muted)">Status</dt>
+                <dt class="col-5" style="color:var(--caw-text-muted)">অবস্থা</dt>
                 <dd class="col-7">
                     @if (Model.IsActive)
                     {
-                        <span class="caw-badge badge-active">Active</span>
+                        <span class="caw-badge badge-active">সক্রিয়</span>
                     }
                     else
                     {
-                        <span class="caw-badge badge-closed">Inactive</span>
+                        <span class="caw-badge badge-closed">নিষ্ক্রিয়</span>
                     }
                 </dd>
 
-                <dt class="col-5" style="color:var(--caw-text-muted)">Created</dt>
+                <dt class="col-5" style="color:var(--caw-text-muted)">তৈরির তারিখ</dt>
                 <dd class="col-7" style="color:var(--caw-text-muted)">@Model.CreatedAt.ToString("dd MMM yyyy")</dd>
             </dl>
         </div>
 
-        <!-- Investments Summary -->
         <div class="caw-card">
-            <div class="caw-section-title"><i class="fas fa-piggy-bank me-2"></i>Investments</div>
+            <div class="caw-section-title"><i class="fas fa-piggy-bank me-2"></i>বিনিয়োগ</div>
             @if (Model.Investments.Any())
             {
                 <div class="text-gold fw-bold fs-5">৳ @Model.Investments.Sum(i => i.Amount).ToString("N0")</div>
-                <div class="small mt-1" style="color:var(--caw-text-muted)">@Model.Investments.Count investment records</div>
+                <div class="small mt-1" style="color:var(--caw-text-muted)">@Model.Investments.Count টি বিনিয়োগ রেকর্ড</div>
             }
             else
             {
-                <p class="small" style="color:var(--caw-text-muted)">No investments recorded.</p>
+                <p class="small" style="color:var(--caw-text-muted)">কোনো বিনিয়োগ নেই।</p>
             }
             <a asp-controller="Investment" asp-action="Create" class="btn btn-outline-success btn-sm mt-2">
-                <i class="fas fa-plus me-1"></i>Log Investment
+                <i class="fas fa-plus me-1"></i>বিনিয়োগ লগ করুন
             </a>
         </div>
     </div>
 
-    <!-- Batches -->
     <div class="col-lg-8">
         <div class="caw-card">
             <div class="caw-section-title">
-                <i class="fas fa-layer-group me-2"></i>Batches (@Model.Batches.Count)
+                <i class="fas fa-layer-group me-2"></i>ব্যাচ (@Model.Batches.Count টি)
                 <a asp-controller="Batch" asp-action="Create" class="float-end btn btn-caw-primary btn-sm">
-                    <i class="fas fa-plus me-1"></i>New
+                    <i class="fas fa-plus me-1"></i>নতুন
                 </a>
             </div>
             @if (Model.Batches.Any())
@@ -96,16 +103,16 @@
                 <div class="table-responsive">
                     <table class="caw-table">
                         <thead>
-                            <tr><th>Batch</th><th>Species</th><th>Count</th><th>Start Date</th><th>Status</th><th></th></tr>
+                            <tr><th>ব্যাচ</th><th>প্রজাতি</th><th>সংখ্যা</th><th>শুরুর তারিখ</th><th>অবস্থা</th><th></th></tr>
                         </thead>
                         <tbody>
                             @foreach (var b in Model.Batches.OrderByDescending(b => b.CreatedAt))
                             {
                                 var bCls = b.Status switch {
-                                    BatchStatus.Active => "badge-active",
+                                    BatchStatus.Active   => "badge-active",
                                     BatchStatus.Planning => "badge-planning",
-                                    BatchStatus.Selling => "badge-selling",
-                                    BatchStatus.Closed => "badge-closed",
+                                    BatchStatus.Selling  => "badge-selling",
+                                    BatchStatus.Closed   => "badge-closed",
                                     _ => ""
                                 };
                                 <tr>
@@ -113,7 +120,7 @@
                                     <td style="color:var(--caw-text-muted)">@b.Species</td>
                                     <td style="color:var(--caw-text-muted)">@b.InitialCount</td>
                                     <td style="color:var(--caw-text-muted)">@b.StartDate.ToString("dd MMM yyyy")</td>
-                                    <td><span class="caw-badge @bCls">@b.Status</span></td>
+                                    <td><span class="caw-badge @bCls">@BatchStatusBn(b.Status)</span></td>
                                     <td>
                                         <a asp-controller="Batch" asp-action="Details" asp-route-id="@b.Id" class="btn btn-outline-secondary btn-sm">
                                             <i class="fas fa-eye"></i>
@@ -127,23 +134,22 @@
             }
             else
             {
-                <p class="small" style="color:var(--caw-text-muted)">No batches yet.</p>
+                <p class="small" style="color:var(--caw-text-muted)">এখনো কোনো ব্যাচ নেই।</p>
             }
         </div>
 
-        <!-- Land Parcels -->
         <div class="caw-card">
             <div class="caw-section-title">
-                <i class="fas fa-map me-2"></i>Land Parcels (@Model.LandParcels.Count)
+                <i class="fas fa-map me-2"></i>জমি (@Model.LandParcels.Count টি)
                 <a asp-controller="Land" asp-action="Create" class="float-end btn btn-outline-success btn-sm">
-                    <i class="fas fa-plus me-1"></i>New
+                    <i class="fas fa-plus me-1"></i>নতুন
                 </a>
             </div>
             @if (Model.LandParcels.Any())
             {
                 <div class="table-responsive">
                     <table class="caw-table">
-                        <thead><tr><th>Parcel Name</th><th>Area (Ha)</th><th>Soil Type</th><th></th></tr></thead>
+                        <thead><tr><th>জমির নাম</th><th>পরিমাণ (শতাংশ)</th><th>মাটির ধরন</th><th></th></tr></thead>
                         <tbody>
                             @foreach (var lp in Model.LandParcels)
                             {
@@ -164,7 +170,7 @@
             }
             else
             {
-                <p class="small" style="color:var(--caw-text-muted)">No land parcels recorded.</p>
+                <p class="small" style="color:var(--caw-text-muted)">কোনো জমি নথিভুক্ত নেই।</p>
             }
         </div>
     </div>

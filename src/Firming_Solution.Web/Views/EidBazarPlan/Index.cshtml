@@ -1,6 +1,12 @@
 @model List<Firming_Solution.Domain.Entities.EidBazarPlan>
 @{
-    ViewData["Title"] = "Eid Bazar Plans";
+    ViewData["Title"] = "ঈদ বাজার পরিকল্পনা";
+
+    string EidTypeBn(string t) => t switch {
+        "EidUlAdha"  => "ঈদুল আযহা",
+        "EidUlFitr"  => "ঈদুল ফিতর",
+        _ => t
+    };
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -8,19 +14,19 @@
     @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
     {
         <a asp-action="Create" class="btn btn-caw-primary btn-sm">
-            <i class="fas fa-plus me-1"></i>New Plan
+            <i class="fas fa-plus me-1"></i>নতুন পরিকল্পনা
         </a>
     }
 </div>
 
 <div class="caw-card">
-    <div class="caw-section-title"><i class="fas fa-moon me-2"></i>Eid Bazar Plans</div>
+    <div class="caw-section-title"><i class="fas fa-moon me-2"></i>ঈদ বাজার পরিকল্পনা</div>
     @if (Model.Any())
     {
         <div class="table-responsive">
             <table class="caw-table">
                 <thead>
-                    <tr><th>Eid Type</th><th>Eid Date</th><th>Days Left</th><th>Farm</th><th>Linked Batch</th><th>Target Animals</th><th>Exp. Price/kg</th><th>Exp. Revenue</th><th></th></tr>
+                    <tr><th>ঈদের ধরন</th><th>ঈদের তারিখ</th><th>বাকি দিন</th><th>খামার</th><th>সংযুক্ত ব্যাচ</th><th>টার্গেট প্রাণী</th><th>প্রত্যাশিত মূল্য/কেজি</th><th>প্রত্যাশিত আয়</th><th></th></tr>
                 </thead>
                 <tbody>
                     @foreach (var e in Model)
@@ -29,10 +35,10 @@
                         var daysClass = daysLeft <= 30 ? "profit-negative" : daysLeft <= 60 ? "text-gold" : "text-caw";
                         <tr>
                             <td style="color:var(--caw-text)">
-                                <i class="fas fa-moon text-gold me-1"></i>@e.EidType
+                                <i class="fas fa-moon text-gold me-1"></i>@EidTypeBn(e.EidType.ToString())
                             </td>
                             <td style="color:var(--caw-text-muted)">@e.EidDate.ToString("dd MMM yyyy")</td>
-                            <td class="@daysClass fw-bold">@daysLeft days</td>
+                            <td class="@daysClass fw-bold">@daysLeft দিন বাকি</td>
                             <td style="color:var(--caw-text-muted)">@e.Farm?.FarmName</td>
                             <td>
                                 @if (e.LinkedBatch != null)
@@ -50,7 +56,7 @@
                                 @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
                                 {
                                     <form asp-action="Delete" asp-route-id="@e.Id" method="post" class="d-inline"
-                                          onsubmit="return confirm('Delete this plan?')">
+                                          onsubmit="return confirm('এই পরিকল্পনা মুছে ফেলবেন?')">
                                         @Html.AntiForgeryToken()
                                         <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash"></i></button>
                                     </form>
@@ -66,7 +72,7 @@
     {
         <div class="text-center py-4">
             <i class="fas fa-moon fa-3x mb-3 text-gold"></i>
-            <p style="color:var(--caw-text-muted)">No Eid Bazar plans yet.</p>
+            <p style="color:var(--caw-text-muted)">এখনো কোনো ঈদ বাজার পরিকল্পনা নেই।</p>
         </div>
     }
 </div>

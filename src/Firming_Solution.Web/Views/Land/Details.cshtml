@@ -2,73 +2,142 @@
 @using Firming_Solution.Domain.Enums
 @{
     ViewData["Title"] = Model.LandName;
+
+    // Unit conversions (stored value is in শতাংশ)
+    decimal shotangsho = Model.Area_Decimal;
+    decimal katha      = shotangsho / 1.65289256m;
+    decimal bigha      = shotangsho / 33.0578512m;
+    decimal acre       = shotangsho / 100m;
+    decimal sqft       = shotangsho * 435.6m;
+
+    string OwnershipBn(OwnershipType t) => t switch {
+        OwnershipType.Own       => "নিজস্ব",
+        OwnershipType.Lease     => "ইজারা",
+        OwnershipType.Mortgaged => "বন্ধকী",
+        _ => t.ToString()
+    };
+
+    string CropStatusBn(CropStatus s) => s switch {
+        CropStatus.Planning  => "পরিকল্পনা",
+        CropStatus.Growing   => "চলমান",
+        CropStatus.Harvested => "ফসল কাটা হয়েছে",
+        CropStatus.Closed    => "বন্ধ",
+        _ => s.ToString()
+    };
+
+    string CropStatusCls(CropStatus s) => s switch {
+        CropStatus.Planning  => "badge-planning",
+        CropStatus.Growing   => "badge-active",
+        CropStatus.Harvested => "badge-selling",
+        CropStatus.Closed    => "badge-closed",
+        _ => ""
+    };
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
-        <i class="fas fa-arrow-left me-1"></i>All Land Parcels
+        <i class="fas fa-arrow-left me-1"></i>জমির তালিকা
     </a>
     <a asp-controller="CropSeason" asp-action="Create" asp-route-landId="@Model.Id" class="btn btn-caw-primary btn-sm">
-        <i class="fas fa-plus me-1"></i>New Crop Season
+        <i class="fas fa-plus me-1"></i>নতুন ফসলের মৌসুম
     </a>
 </div>
 
 <div class="row g-4">
     <div class="col-lg-4">
         <div class="caw-card">
-            <div class="caw-section-title"><i class="fas fa-info-circle me-2"></i>Parcel Details</div>
+            <div class="caw-section-title"><i class="fas fa-info-circle me-2"></i>জমির বিবরণ</div>
             <dl class="row mb-0" style="font-size:0.88rem;">
-                <dt class="col-5" style="color:var(--caw-text-muted)">Land Name</dt>
+                <dt class="col-5" style="color:var(--caw-text-muted)">জমির নাম</dt>
                 <dd class="col-7">@Model.LandName</dd>
-                <dt class="col-5" style="color:var(--caw-text-muted)">Farm</dt>
+
+                <dt class="col-5" style="color:var(--caw-text-muted)">খামার</dt>
                 <dd class="col-7">@Model.Farm?.FarmName</dd>
-                <dt class="col-5" style="color:var(--caw-text-muted)">Area</dt>
-                <dd class="col-7">@Model.Area_Decimal.ToString("N2") Decimal</dd>
-                <dt class="col-5" style="color:var(--caw-text-muted)">Ownership</dt>
-                <dd class="col-7">@Model.OwnershipType</dd>
+
+                <dt class="col-5" style="color:var(--caw-text-muted)">মালিকানা</dt>
+                <dd class="col-7">@OwnershipBn(Model.OwnershipType)</dd>
+
                 @if (Model.LeaseCostPerSeason.HasValue)
                 {
-                    <dt class="col-5" style="color:var(--caw-text-muted)">Lease Cost</dt>
-                    <dd class="col-7">৳ @Model.LeaseCostPerSeason.Value.ToString("N0")/season</dd>
+                    <dt class="col-5" style="color:var(--caw-text-muted)">ইজারা মূল্য</dt>
+                    <dd class="col-7">৳ @Model.LeaseCostPerSeason.Value.ToString("N0") / মৌসুম</dd>
                 }
-                <dt class="col-5" style="color:var(--caw-text-muted)">Soil Type</dt>
+
+                <dt class="col-5" style="color:var(--caw-text-muted)">মাটির ধরন</dt>
                 <dd class="col-7">@(Model.SoilType ?? "—")</dd>
-                <dt class="col-5" style="color:var(--caw-text-muted)">Last Tested</dt>
-                <dd class="col-7">@(Model.LastTestedDate.HasValue ? Model.LastTestedDate.Value.ToString("dd MMM yyyy") : "Not tested")</dd>
+
+                <dt class="col-5" style="color:var(--caw-text-muted)">সর্বশেষ পরীক্ষা</dt>
+                <dd class="col-7">@(Model.LastTestedDate.HasValue ? Model.LastTestedDate.Value.ToString("dd MMM yyyy") : "পরীক্ষা হয়নি")</dd>
             </dl>
+        </div>
+
+        @* জমির পরিমাণ বিভিন্ন এককে *@
+        <div class="caw-card mt-3">
+            <div class="caw-section-title"><i class="fas fa-ruler-combined me-2"></i>জমির পরিমাণ</div>
+            <table class="table table-sm mb-0" style="font-size:0.87rem;">
+                <tbody>
+                    <tr>
+                        <td style="color:var(--caw-text-muted)">শতাংশ / শতক</td>
+                        <td class="text-end fw-semibold">@shotangsho.ToString("N3")</td>
+                    </tr>
+                    <tr>
+                        <td style="color:var(--caw-text-muted)">কাঠা</td>
+                        <td class="text-end fw-semibold">@katha.ToString("N3")</td>
+                    </tr>
+                    <tr>
+                        <td style="color:var(--caw-text-muted)">বিঘা</td>
+                        <td class="text-end fw-semibold">@bigha.ToString("N3")</td>
+                    </tr>
+                    <tr>
+                        <td style="color:var(--caw-text-muted)">একর</td>
+                        <td class="text-end fw-semibold">@acre.ToString("N3")</td>
+                    </tr>
+                    <tr class="border-top">
+                        <td style="color:var(--caw-text-muted)">বর্গফুট</td>
+                        <td class="text-end fw-semibold">@sqft.ToString("N0")</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="mt-2 px-1" style="font-size:0.76rem; color:var(--caw-text-muted)">
+                <i class="fas fa-info-circle me-1"></i>
+                ১ শতাংশ = ৪৩৫.৬ বর্গফুট &nbsp;|&nbsp; ১ বিঘা = ২০ কাঠা = ৩৩.০৬ শতাংশ
+            </div>
         </div>
     </div>
 
     <div class="col-lg-8">
         <div class="caw-card">
             <div class="caw-section-title">
-                <i class="fas fa-seedling me-2"></i>Crop Seasons (@Model.CropSeasons.Count)
+                <i class="fas fa-seedling me-2"></i>ফসলের মৌসুম (@Model.CropSeasons.Count টি)
             </div>
             @if (Model.CropSeasons.Any())
             {
                 <div class="table-responsive">
                     <table class="caw-table">
-                        <thead><tr><th>Crop</th><th>Variety</th><th>Sow Date</th><th>Status</th><th>Actual Yield</th></tr></thead>
+                        <thead>
+                            <tr>
+                                <th>ফসলের নাম</th>
+                                <th>জাত</th>
+                                <th>বপনের তারিখ</th>
+                                <th>অবস্থা</th>
+                                <th>প্রকৃত ফলন</th>
+                            </tr>
+                        </thead>
                         <tbody>
                             @foreach (var cs in Model.CropSeasons.OrderByDescending(c => c.SowDate))
                             {
                                 <tr>
                                     <td style="color:var(--caw-text)">@cs.CropName</td>
                                     <td style="color:var(--caw-text-muted)">@(cs.Variety ?? "—")</td>
-                                    <td style="color:var(--caw-text-muted)">@(cs.SowDate.HasValue ? cs.SowDate.Value.ToString("dd MMM yyyy") : "—")</td>
-                                    <td>
-                                        @{
-                                            var sCls = cs.Status switch {
-                                                CropStatus.Planning => "badge-planning",
-                                                CropStatus.Growing => "badge-active",
-                                                CropStatus.Harvested => "badge-selling",
-                                                CropStatus.Closed => "badge-closed",
-                                                _ => ""
-                                            };
-                                        }
-                                        <span class="caw-badge @sCls">@cs.Status</span>
+                                    <td style="color:var(--caw-text-muted)">
+                                        @(cs.SowDate.HasValue ? cs.SowDate.Value.ToString("dd MMM yyyy") : "—")
                                     </td>
-                                    <td style="color:var(--caw-text-muted)">@(cs.ActualYield_kg.HasValue ? $"{cs.ActualYield_kg.Value:N1} kg" : "—")</td>
+                                    <td>
+                                        <span class="caw-badge @CropStatusCls(cs.Status)">@CropStatusBn(cs.Status)</span>
+                                    </td>
+                                    <td style="color:var(--caw-text-muted)">
+                                        @(cs.ActualYield_kg.HasValue ? $"{cs.ActualYield_kg.Value:N1} কেজি" : "—")
+                                    </td>
                                 </tr>
                             }
                         </tbody>
@@ -77,7 +146,7 @@
             }
             else
             {
-                <p class="small" style="color:var(--caw-text-muted)">No crop seasons recorded.</p>
+                <p class="small" style="color:var(--caw-text-muted)">এই জমিতে এখনো কোনো ফসলের মৌসুম নথিভুক্ত নেই।</p>
             }
         </div>
     </div>

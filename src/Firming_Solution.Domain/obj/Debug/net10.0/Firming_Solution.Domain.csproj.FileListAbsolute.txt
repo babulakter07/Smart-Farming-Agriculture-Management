@@ -10,3 +10,4 @@ D:\MyProject\Firming_Solution\src\Firming_Solution.Domain\obj\Debug\net10.0\Firm
 D:\MyProject\Firming_Solution\src\Firming_Solution.Domain\obj\Debug\net10.0\refint\Firming_Solution.Domain.dll
 D:\MyProject\Firming_Solution\src\Firming_Solution.Domain\obj\Debug\net10.0\Firming_Solution.Domain.pdb
 D:\MyProject\Firming_Solution\src\Firming_Solution.Domain\obj\Debug\net10.0\ref\Firming_Solution.Domain.dll
+D:\MyProject\Firming_Solution\src\Firming_Solution.Domain\obj\Debug\net10.0\Firming_Solution.Domain.sourcelink.json

@@ -1,6 +1,6 @@
 @model List<Firming_Solution.Domain.Entities.DailyFeedLog>
 @{
-    ViewData["Title"] = "Feed Logs";
+    ViewData["Title"] = "খাবারের রেকর্ড";
     var batches = ViewBag.Batches as List<Firming_Solution.Domain.Entities.Batch>;
     int? selectedBatchId = ViewBag.SelectedBatchId;
 }
@@ -8,7 +8,7 @@
 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
     <form method="get" class="d-flex gap-2">
         <select name="batchId" class="form-select form-select-sm" style="width:220px;" onchange="this.form.submit()">
-            <option value="">All Batches</option>
+            <option value="">সব ব্যাচ</option>
             @if (batches != null)
             {
                 foreach (var b in batches)
@@ -28,19 +28,19 @@
     @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager") || User.IsInRole("Worker"))
     {
         <a asp-action="Create" class="btn btn-caw-primary btn-sm">
-            <i class="fas fa-plus me-1"></i>Log Feed
+            <i class="fas fa-plus me-1"></i>খাবার লগ করুন
         </a>
     }
 </div>
 
 <div class="caw-card">
-    <div class="caw-section-title"><i class="fas fa-wheat-awn me-2"></i>Feed Logs — Last 100</div>
+    <div class="caw-section-title"><i class="fas fa-wheat-awn me-2"></i>খাবারের রেকর্ড — সর্বশেষ ১০০ টি</div>
     @if (Model.Any())
     {
         <div class="table-responsive">
             <table class="caw-table">
                 <thead>
-                    <tr><th>Date</th><th>Batch</th><th>Feed Type</th><th>Qty (kg)</th><th>Price/kg</th><th>Total Cost</th><th>Logged By</th><th></th></tr>
+                    <tr><th>তারিখ</th><th>ব্যাচ</th><th>খাবারের ধরন</th><th>পরিমাণ (কেজি)</th><th>মূল্য/কেজি</th><th>মোট খরচ</th><th>লগকারী</th><th></th></tr>
                 </thead>
                 <tbody>
                     @foreach (var fl in Model)
@@ -57,7 +57,7 @@
                                 @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
                                 {
                                     <form asp-action="Delete" asp-route-id="@fl.Id" method="post" class="d-inline"
-                                          onsubmit="return confirm('Delete this feed log?')">
+                                          onsubmit="return confirm('এই খাবার লগ মুছে ফেলবেন?')">
                                         @Html.AntiForgeryToken()
                                         <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash"></i></button>
                                     </form>
@@ -71,6 +71,6 @@
     }
     else
     {
-        <p class="small text-center py-3" style="color:var(--caw-text-muted)">No feed logs found.</p>
+        <p class="small text-center py-3" style="color:var(--caw-text-muted)">কোনো খাবার লগ পাওয়া যায়নি।</p>
     }
 </div>

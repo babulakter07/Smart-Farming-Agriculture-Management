@@ -33,12 +33,23 @@ public class CostController(ApplicationDbContext db, UserManager<AppUser> userMa
     }
 
     [Authorize(Roles = "SuperAdmin,Manager,Accountant")]
-    public async Task<IActionResult> Create(int? batchId)
+    public async Task<IActionResult> Create(int? batchId, int? cropSeasonId)
     {
         var farmIds = await GetFarmIdsAsync();
-        ViewBag.Farms = new SelectList(await db.Farms.Where(f => farmIds.Contains(f.Id)).ToListAsync(), "Id", "FarmName");
-        ViewBag.Batches = new SelectList(await db.Batches.Where(b => farmIds.Contains(b.FarmId)).ToListAsync(), "Id", "BatchName", batchId);
-        return View(new Cost { CostDate = DateTime.Today });
+        ViewBag.Farms = await db.Farms.Where(f => farmIds.Contains(f.Id)).ToListAsync();
+        ViewBag.Batches = await db.Batches.Where(b => farmIds.Contains(b.FarmId)).ToListAsync();
+        ViewBag.CropSeasons = await db.CropSeasons
+            .Where(cs => farmIds.Contains(cs.Land!.FarmId))
+            .Include(cs => cs.Land).ThenInclude(l => l!.Farm)
+            .ToListAsync();
+        // Pre-fill FarmId from the crop season so the JS shows the right dropdowns
+        int? preselectedFarmId = null;
+        if (cropSeasonId.HasValue)
+        {
+            var cs = await db.CropSeasons.Include(c => c.Land).FirstOrDefaultAsync(c => c.Id == cropSeasonId.Value);
+            preselectedFarmId = cs?.Land?.FarmId;
+        }
+        return View(new Cost { CostDate = DateTime.Today, BatchId = batchId, CropSeasonId = cropSeasonId, FarmId = preselectedFarmId ?? 0 });
     }
 
     [HttpPost, ValidateAntiForgeryToken]
@@ -53,8 +64,12 @@ public class CostController(ApplicationDbContext db, UserManager<AppUser> userMa
         if (!ModelState.IsValid)
         {
             var farmIds = await GetFarmIdsAsync();
-            ViewBag.Farms = new SelectList(await db.Farms.Where(f => farmIds.Contains(f.Id)).ToListAsync(), "Id", "FarmName");
-            ViewBag.Batches = new SelectList(await db.Batches.Where(b => farmIds.Contains(b.FarmId)).ToListAsync(), "Id", "BatchName");
+            ViewBag.Farms = await db.Farms.Where(f => farmIds.Contains(f.Id)).ToListAsync();
+            ViewBag.Batches = await db.Batches.Where(b => farmIds.Contains(b.FarmId)).ToListAsync();
+            ViewBag.CropSeasons = await db.CropSeasons
+                .Where(cs => farmIds.Contains(cs.Land!.FarmId))
+                .Include(cs => cs.Land).ThenInclude(l => l!.Farm)
+                .ToListAsync();
             return View(model);
         }
         var user = await userManager.GetUserAsync(User);

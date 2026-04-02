@@ -1,7 +1,19 @@
 @model List<Firming_Solution.Domain.Entities.Cost>
 @{
-    ViewData["Title"] = "Costs";
+    ViewData["Title"] = "খরচের রেকর্ড";
     decimal totalCosts = ViewBag.TotalCosts ?? 0m;
+
+    string CostCategoryBn(string cat) => cat switch {
+        "Feed"           => "খাবার",
+        "Medicine"       => "ওষুধ",
+        "Labour"         => "শ্রমিক",
+        "Utility"        => "ইউটিলিটি",
+        "Transport"      => "পরিবহন",
+        "Breeding"       => "প্রজনন",
+        "Infrastructure" => "অবকাঠামো",
+        "Other"          => "অন্যান্য",
+        _ => cat
+    };
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -9,7 +21,7 @@
     @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager") || User.IsInRole("Accountant"))
     {
         <a asp-action="Create" class="btn btn-caw-primary btn-sm">
-            <i class="fas fa-plus me-1"></i>Record Cost
+            <i class="fas fa-plus me-1"></i>খরচ রেকর্ড করুন
         </a>
     }
 </div>
@@ -17,26 +29,26 @@
 <div class="row g-3 mb-4">
     <div class="col-md-4">
         <div class="caw-card caw-stat-card danger text-center">
-            <div class="caw-card-title">Total Costs (Shown)</div>
+            <div class="caw-card-title">মোট খরচ</div>
             <div class="caw-card-value profit-negative" style="font-size:1.4rem;">৳ @totalCosts.ToString("N0")</div>
         </div>
     </div>
     <div class="col-md-4">
         <div class="caw-card caw-stat-card text-center">
-            <div class="caw-card-title">Records</div>
+            <div class="caw-card-title">রেকর্ড সংখ্যা</div>
             <div class="caw-card-value">@Model.Count</div>
         </div>
     </div>
 </div>
 
 <div class="caw-card">
-    <div class="caw-section-title"><i class="fas fa-receipt me-2"></i>Cost Records</div>
+    <div class="caw-section-title"><i class="fas fa-receipt me-2"></i>খরচের রেকর্ড</div>
     @if (Model.Any())
     {
         <div class="table-responsive">
             <table class="caw-table">
                 <thead>
-                    <tr><th>Date</th><th>Farm</th><th>Batch</th><th>Category</th><th>Amount</th><th>Description</th><th></th></tr>
+                    <tr><th>তারিখ</th><th>খামার</th><th>ব্যাচ</th><th>বিভাগ</th><th>পরিমাণ</th><th>বিবরণ</th><th></th></tr>
                 </thead>
                 <tbody>
                     @foreach (var c in Model)
@@ -51,14 +63,14 @@
                                 }
                                 else { <span style="color:var(--caw-text-muted)">—</span> }
                             </td>
-                            <td style="color:var(--caw-text-muted)">@c.CostCategory</td>
+                            <td style="color:var(--caw-text-muted)">@CostCategoryBn(c.CostCategory.ToString())</td>
                             <td class="profit-negative fw-bold">৳ @c.Amount.ToString("N0")</td>
                             <td style="color:var(--caw-text-muted)">@(c.Description ?? "—")</td>
                             <td>
                                 @if (User.IsInRole("SuperAdmin"))
                                 {
                                     <form asp-action="Delete" asp-route-id="@c.Id" method="post" class="d-inline"
-                                          onsubmit="return confirm('Delete this cost record?')">
+                                          onsubmit="return confirm('এই খরচের রেকর্ড মুছে ফেলবেন?')">
                                         @Html.AntiForgeryToken()
                                         <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash"></i></button>
                                     </form>
@@ -72,6 +84,6 @@
     }
     else
     {
-        <p class="small text-center py-3" style="color:var(--caw-text-muted)">No cost records found.</p>
+        <p class="small text-center py-3" style="color:var(--caw-text-muted)">কোনো খরচের রেকর্ড পাওয়া যায়নি।</p>
     }
 </div>

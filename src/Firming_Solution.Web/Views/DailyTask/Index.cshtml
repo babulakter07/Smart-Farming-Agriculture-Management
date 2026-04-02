@@ -2,10 +2,29 @@
 @using Firming_Solution.Domain.Enums
 @using TaskStatus = Firming_Solution.Domain.Enums.TaskStatus
 @{
-    ViewData["Title"] = "Daily Tasks";
+    ViewData["Title"] = "দৈনিক কাজ";
     DateTime selectedDate = ViewBag.SelectedDate ?? DateTime.Today;
     var prevDate = selectedDate.AddDays(-1);
     var nextDate = selectedDate.AddDays(1);
+
+    string TaskStatusBn(TaskStatus s) => s switch {
+        TaskStatus.Pending    => "অপেক্ষমাণ",
+        TaskStatus.Done       => "সম্পন্ন",
+        TaskStatus.InProgress => "চলমান",
+        TaskStatus.Skipped    => "এড়িয়ে যাওয়া",
+        _ => s.ToString()
+    };
+    string TaskTypeBn(TaskType t) => t switch {
+        TaskType.Feeding     => "খাওয়ানো",
+        TaskType.Medicine    => "ওষুধ প্রয়োগ",
+        TaskType.Weighing    => "ওজন করা",
+        TaskType.Cleaning    => "পরিষ্কার",
+        TaskType.Inspection  => "পরিদর্শন",
+        TaskType.Irrigation  => "সেচ",
+        TaskType.Fertilising => "সার প্রয়োগ",
+        TaskType.Other       => "অন্যান্য",
+        _ => t.ToString()
+    };
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
@@ -26,16 +45,16 @@
     @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
     {
         <a asp-action="Create" class="btn btn-caw-primary btn-sm">
-            <i class="fas fa-plus me-1"></i>Add Task
+            <i class="fas fa-plus me-1"></i>কাজ যোগ করুন
         </a>
     }
 </div>
 
 <div class="caw-card">
     <div class="caw-section-title">
-        <i class="fas fa-tasks me-2"></i>Tasks for @selectedDate.ToString("dd MMM yyyy")
+        <i class="fas fa-tasks me-2"></i>@selectedDate.ToString("dd MMM yyyy") তারিখের কাজ
         <span class="float-end small" style="color:var(--caw-text-muted)">
-            @Model.Count(t => t.Status == TaskStatus.Done)/@Model.Count done
+            @Model.Count(t => t.Status == TaskStatus.Done)/@Model.Count টি সম্পন্ন
         </span>
     </div>
     @if (Model.Any())
@@ -43,16 +62,16 @@
         <div class="table-responsive">
             <table class="caw-table">
                 <thead>
-                    <tr><th>Time</th><th>Task</th><th>Farm</th><th>Assigned To</th><th>Status</th><th>Actions</th></tr>
+                    <tr><th>সময়</th><th>কাজ</th><th>খামার</th><th>দায়িত্বপ্রাপ্ত</th><th>অবস্থা</th><th>কার্যক্রম</th></tr>
                 </thead>
                 <tbody>
                     @foreach (var t in Model)
                     {
                         var tCls = t.Status switch {
-                            TaskStatus.Pending => "badge-pending",
-                            TaskStatus.Done => "badge-done",
+                            TaskStatus.Pending    => "badge-pending",
+                            TaskStatus.Done       => "badge-done",
                             TaskStatus.InProgress => "badge-inprogress",
-                            TaskStatus.Skipped => "badge-skipped",
+                            TaskStatus.Skipped    => "badge-skipped",
                             _ => ""
                         };
                         <tr>
@@ -60,30 +79,30 @@
                                 @(t.StartTime.HasValue ? t.StartTime.Value.ToString(@"hh\:mm") : "—")
                             </td>
                             <td>
-                                <div style="color:var(--caw-text)">@t.TaskType</div>
+                                <div style="color:var(--caw-text)">@TaskTypeBn(t.TaskType)</div>
                                 @if (!string.IsNullOrEmpty(t.Description))
                                 {
                                     <div class="small" style="color:var(--caw-text-muted)">@t.Description</div>
                                 }
                             </td>
                             <td style="color:var(--caw-text-muted)">@t.Farm?.FarmName</td>
-                            <td style="color:var(--caw-text-muted)">@(t.AssignedTo?.FullName ?? "Unassigned")</td>
-                            <td><span class="caw-badge @tCls">@t.Status</span></td>
+                            <td style="color:var(--caw-text-muted)">@(t.AssignedTo?.FullName ?? "নির্ধারিত নয়")</td>
+                            <td><span class="caw-badge @tCls">@TaskStatusBn(t.Status)</span></td>
                             <td>
                                 @if (t.Status != TaskStatus.Done && t.Status != TaskStatus.Skipped)
                                 {
                                     <form asp-action="UpdateStatus" asp-route-id="@t.Id" method="post" class="d-inline">
                                         @Html.AntiForgeryToken()
                                         <button type="submit" name="status" value="@TaskStatus.Done"
-                                                class="btn btn-outline-success btn-sm" title="Mark Done">
+                                                class="btn btn-outline-success btn-sm" title="সম্পন্ন">
                                             <i class="fas fa-check"></i>
                                         </button>
                                         <button type="submit" name="status" value="@TaskStatus.InProgress"
-                                                class="btn btn-outline-info btn-sm ms-1" title="Mark In Progress">
+                                                class="btn btn-outline-info btn-sm ms-1" title="চলমান">
                                             <i class="fas fa-play"></i>
                                         </button>
                                         <button type="submit" name="status" value="@TaskStatus.Skipped"
-                                                class="btn btn-outline-secondary btn-sm ms-1" title="Skip">
+                                                class="btn btn-outline-secondary btn-sm ms-1" title="এড়িয়ে যান">
                                             <i class="fas fa-forward"></i>
                                         </button>
                                     </form>
@@ -91,7 +110,7 @@
                                 @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
                                 {
                                     <form asp-action="Delete" asp-route-id="@t.Id" method="post" class="d-inline ms-1"
-                                          onsubmit="return confirm('Delete this task?')">
+                                          onsubmit="return confirm('এই কাজ মুছে ফেলবেন?')">
                                         @Html.AntiForgeryToken()
                                         <button type="submit" class="btn btn-outline-danger btn-sm">
                                             <i class="fas fa-trash"></i>
@@ -109,11 +128,11 @@
     {
         <div class="text-center py-4">
             <i class="fas fa-check-circle fa-3x mb-3" style="color:var(--caw-green-light)"></i>
-            <p style="color:var(--caw-text-muted)">No tasks for this day.</p>
+            <p style="color:var(--caw-text-muted)">এই দিনের জন্য কোনো কাজ নেই।</p>
             @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
             {
                 <a asp-action="Create" class="btn btn-caw-primary btn-sm">
-                    <i class="fas fa-plus me-2"></i>Add Task
+                    <i class="fas fa-plus me-2"></i>কাজ যোগ করুন
                 </a>
             }
         </div>

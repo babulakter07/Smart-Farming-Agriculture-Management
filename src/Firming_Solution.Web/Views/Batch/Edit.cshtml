@@ -1,62 +1,72 @@
 @model Firming_Solution.Domain.Entities.Batch
 @{
-    ViewData["Title"] = "Edit Batch";
+    ViewData["Title"] = "ব্যাচ সম্পাদনা";
 }
 
 <div class="row justify-content-center">
     <div class="col-md-9 col-lg-8">
         <div class="caw-card">
-            <div class="caw-section-title"><i class="fas fa-edit me-2"></i>Edit Batch — @Model.BatchName</div>
+            <div class="caw-section-title"><i class="fas fa-edit me-2"></i>ব্যাচ সম্পাদনা — @Model.BatchName</div>
             <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
                 <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3"></div>
                 <input type="hidden" asp-for="FarmId" />
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label asp-for="BatchName" class="caw-form-label">Batch Name <span class="text-danger">*</span></label>
+                        <label asp-for="BatchName" class="caw-form-label">ব্যাচের নাম <span class="text-danger">*</span></label>
                         <input asp-for="BatchName" class="form-control" />
                         <span asp-validation-for="BatchName" class="text-danger small"></span>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label asp-for="Species" class="caw-form-label">Species</label>
-                        <select asp-for="Species" asp-items="Html.GetEnumSelectList<Firming_Solution.Domain.Enums.BatchSpecies>()" class="form-select"></select>
+                        <label asp-for="Species" class="caw-form-label">প্রজাতি</label>
+                        <select asp-for="Species" class="form-select">
+                            <option value="Cattle">গরু</option>
+                            <option value="Poultry">মুরগি</option>
+                            <option value="Fish">মাছ</option>
+                            <option value="Goat">ছাগল</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label asp-for="Breed" class="caw-form-label">Breed</label>
+                        <label asp-for="Breed" class="caw-form-label">জাত</label>
                         <input asp-for="Breed" class="form-control" />
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label asp-for="Status" class="caw-form-label">Status</label>
-                        <select asp-for="Status" asp-items="Html.GetEnumSelectList<Firming_Solution.Domain.Enums.BatchStatus>()" class="form-select"></select>
+                        <label asp-for="Status" class="caw-form-label">অবস্থা</label>
+                        <select asp-for="Status" class="form-select">
+                            <option value="Planning">পরিকল্পনা</option>
+                            <option value="Active">সক্রিয়</option>
+                            <option value="Selling">বিক্রয়</option>
+                            <option value="Closed">বন্ধ</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="PlannedEndDate" class="caw-form-label">Planned End Date</label>
+                    <label asp-for="PlannedEndDate" class="caw-form-label">পরিকল্পিত শেষ তারিখ</label>
                     <input asp-for="PlannedEndDate" class="form-control" type="date" />
                 </div>
 
                 <div class="mb-3 form-check">
                     <input asp-for="IsEidTarget" class="form-check-input" type="checkbox" />
                     <label asp-for="IsEidTarget" class="form-check-label" style="color:var(--caw-text)">
-                        <i class="fas fa-moon text-gold me-1"></i>Eid Bazar Target
+                        <i class="fas fa-moon text-gold me-1"></i>ঈদ বাজার টার্গেট
                     </label>
                 </div>
 
                 <div class="mb-4">
-                    <label asp-for="Notes" class="caw-form-label">Notes</label>
+                    <label asp-for="Notes" class="caw-form-label">মন্তব্য</label>
                     <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
                 </div>
 
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-caw-primary flex-fill">
-                        <i class="fas fa-save me-2"></i>Save Changes
+                        <i class="fas fa-save me-2"></i>পরিবর্তন সংরক্ষণ করুন
                     </button>
                     <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary flex-fill">
-                        <i class="fas fa-times me-2"></i>Cancel
+                        <i class="fas fa-times me-2"></i>বাতিল
                     </a>
                 </div>
             </form>

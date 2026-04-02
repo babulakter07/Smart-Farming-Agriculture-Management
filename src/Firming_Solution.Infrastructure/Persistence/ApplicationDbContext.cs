@@ -175,6 +175,19 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
         builder.Entity<CropSeason>().Property(c => c.ExpectedYield_kg).HasPrecision(12, 3);
         builder.Entity<CropSeason>().Property(c => c.ActualYield_kg).HasPrecision(12, 3);
         builder.Entity<CropSeason>().Property(c => c.SeedCost).HasPrecision(15, 2);
+        // FertiliserPlan relationships — restrict to avoid multiple cascade paths to LandParcel
+        builder.Entity<FertiliserPlan>()
+            .HasOne(f => f.Land)
+            .WithMany(l => l.FertiliserPlans)
+            .HasForeignKey(f => f.LandId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<FertiliserPlan>()
+            .HasOne(f => f.Season)
+            .WithMany(s => s.FertiliserPlans)
+            .HasForeignKey(f => f.SeasonId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         builder.Entity<FertiliserPlan>().Property(f => f.DoseKgPerDecimal).HasPrecision(8, 3);
         builder.Entity<FertiliserPlan>().Property(f => f.TotalQuantity_kg).HasPrecision(12, 3);
         builder.Entity<FertiliserPlan>().Property(f => f.PricePerKg).HasPrecision(10, 2);

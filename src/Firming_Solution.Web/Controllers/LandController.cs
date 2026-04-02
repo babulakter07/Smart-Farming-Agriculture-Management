@@ -1,5 +1,6 @@
 using Firming_Solution.Domain.Entities;
 using Firming_Solution.Infrastructure.Persistence;
+using Firming_Solution.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,14 @@ public class LandController(ApplicationDbContext db, UserManager<AppUser> userMa
         return await db.UserFarms.Where(uf => uf.UserId == user.Id).Select(uf => uf.FarmId).ToListAsync();
     }
 
+    private async Task PopulateFarmsAsync(int? selectedFarmId = null)
+    {
+        var farmIds = await GetFarmIdsAsync();
+        ViewBag.Farms = new SelectList(
+            await db.Farms.Where(f => farmIds.Contains(f.Id)).ToListAsync(),
+            "Id", "FarmName", selectedFarmId);
+    }
+
     public async Task<IActionResult> Index()
     {
         var farmIds = await GetFarmIdsAsync();
@@ -34,25 +43,34 @@ public class LandController(ApplicationDbContext db, UserManager<AppUser> userMa
     [Authorize(Roles = "SuperAdmin,Manager")]
     public async Task<IActionResult> Create()
     {
-        var farmIds = await GetFarmIdsAsync();
-        ViewBag.Farms = new SelectList(await db.Farms.Where(f => farmIds.Contains(f.Id)).ToListAsync(), "Id", "FarmName");
-        return View(new LandParcel());
+        await PopulateFarmsAsync();
+        return View(new LandParcelViewModel());
     }
 
     [HttpPost, ValidateAntiForgeryToken]
     [Authorize(Roles = "SuperAdmin,Manager")]
-    public async Task<IActionResult> Create(LandParcel model)
+    public async Task<IActionResult> Create(LandParcelViewModel model)
     {
-        ModelState.Remove("Farm");
         if (!ModelState.IsValid)
         {
-            var farmIds = await GetFarmIdsAsync();
-            ViewBag.Farms = new SelectList(await db.Farms.Where(f => farmIds.Contains(f.Id)).ToListAsync(), "Id", "FarmName");
+            await PopulateFarmsAsync(model.FarmId);
             return View(model);
         }
-        db.LandParcels.Add(model);
+
+        var parcel = new LandParcel
+        {
+            FarmId        = model.FarmId,
+            LandName      = model.LandName,
+            Area_Decimal  = model.ToShotangsho(),
+            OwnershipType = model.OwnershipType,
+            LeaseCostPerSeason = model.LeaseCostPerSeason,
+            SoilType      = model.SoilType,
+            LastTestedDate = model.LastTestedDate
+        };
+
+        db.LandParcels.Add(parcel);
         await db.SaveChangesAsync();
-        TempData["Success"] = "Land parcel created.";
+        TempData["Success"] = "জমির তথ্য সফলভাবে যোগ করা হয়েছে।";
         return RedirectToAction(nameof(Index));
     }
 
@@ -76,7 +94,7 @@ public class LandController(ApplicationDbContext db, UserManager<AppUser> userMa
         if (parcel is null) return NotFound();
         parcel.IsDeleted = true;
         await db.SaveChangesAsync();
-        TempData["Success"] = "Land parcel deleted.";
+        TempData["Success"] = "জমির তথ্য মুছে ফেলা হয়েছে।";
         return RedirectToAction(nameof(Index));
     }
 }

@@ -1,6 +1,6 @@
 @model List<Firming_Solution.Domain.Entities.MortalityLog>
 @{
-    ViewData["Title"] = "Mortality Logs";
+    ViewData["Title"] = "মৃত্যুর রেকর্ড";
     var batches = ViewBag.Batches as List<Firming_Solution.Domain.Entities.Batch>;
     int? selectedBatchId = ViewBag.SelectedBatchId;
 }
@@ -8,7 +8,7 @@
 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
     <form method="get" class="d-flex gap-2">
         <select name="batchId" class="form-select form-select-sm" style="width:220px;" onchange="this.form.submit()">
-            <option value="">All Batches</option>
+            <option value="">সব ব্যাচ</option>
             @if (batches != null)
             {
                 foreach (var b in batches)
@@ -28,19 +28,19 @@
     @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager") || User.IsInRole("Worker"))
     {
         <a asp-action="Create" class="btn btn-danger btn-sm">
-            <i class="fas fa-plus me-1"></i>Log Mortality
+            <i class="fas fa-plus me-1"></i>মৃত্যু লগ করুন
         </a>
     }
 </div>
 
 <div class="caw-card" style="border-left: 4px solid var(--caw-danger);">
-    <div class="caw-section-title"><i class="fas fa-skull-crossbones me-2 text-danger"></i>Mortality Logs — @Model.Sum(m => m.Count) total deaths</div>
+    <div class="caw-section-title"><i class="fas fa-skull-crossbones me-2 text-danger"></i>মৃত্যুর রেকর্ড — মোট @Model.Sum(m => m.Count) টি</div>
     @if (Model.Any())
     {
         <div class="table-responsive">
             <table class="caw-table">
                 <thead>
-                    <tr><th>Date</th><th>Batch</th><th>Count</th><th>Reason</th><th>Est. Loss (৳)</th><th></th></tr>
+                    <tr><th>তারিখ</th><th>ব্যাচ</th><th>সংখ্যা</th><th>কারণ</th><th>আনুমানিক ক্ষতি (৳)</th><th></th></tr>
                 </thead>
                 <tbody>
                     @foreach (var ml in Model)
@@ -59,7 +59,7 @@
                                 @if (User.IsInRole("SuperAdmin") || User.IsInRole("Manager"))
                                 {
                                     <form asp-action="Delete" asp-route-id="@ml.Id" method="post" class="d-inline"
-                                          onsubmit="return confirm('Delete this mortality log?')">
+                                          onsubmit="return confirm('এই মৃত্যু লগ মুছে ফেলবেন?')">
                                         @Html.AntiForgeryToken()
                                         <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash"></i></button>
                                     </form>
@@ -73,6 +73,6 @@
     }
     else
     {
-        <p class="small text-center py-3" style="color:var(--caw-text-muted)">No mortality logs found.</p>
+        <p class="small text-center py-3" style="color:var(--caw-text-muted)">কোনো মৃত্যুর রেকর্ড পাওয়া যায়নি।</p>
     }
 </div>

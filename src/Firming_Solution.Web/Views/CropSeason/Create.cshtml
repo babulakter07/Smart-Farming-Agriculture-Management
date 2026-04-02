@@ -1,69 +1,74 @@
 @model Firming_Solution.Domain.Entities.CropSeason
 @{
-    ViewData["Title"] = "New Crop Season";
+    ViewData["Title"] = "নতুন ফসলের মৌসুম";
 }
 
 <div class="row justify-content-center">
     <div class="col-md-9 col-lg-8">
         <div class="caw-card">
-            <div class="caw-section-title"><i class="fas fa-seedling me-2"></i>New Crop Season</div>
+            <div class="caw-section-title"><i class="fas fa-seedling me-2"></i>নতুন ফসলের মৌসুম</div>
             <form asp-action="Create" method="post">
                 <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3"></div>
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label asp-for="LandId" class="caw-form-label">Land Parcel <span class="text-danger">*</span></label>
+                        <label asp-for="LandId" class="caw-form-label">জমি <span class="text-danger">*</span></label>
                         <select asp-for="LandId" asp-items="ViewBag.Lands" class="form-select">
-                            <option value="">-- Select Land --</option>
+                            <option value="">-- জমি নির্বাচন করুন --</option>
                         </select>
                         <span asp-validation-for="LandId" class="text-danger small"></span>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label asp-for="CropName" class="caw-form-label">Crop Name <span class="text-danger">*</span></label>
-                        <input asp-for="CropName" class="form-control" placeholder="Rice, Wheat, Tomato..." />
+                        <label asp-for="CropName" class="caw-form-label">ফসলের নাম <span class="text-danger">*</span></label>
+                        <input asp-for="CropName" class="form-control" placeholder="ধান, গম, টমেটো..." />
                         <span asp-validation-for="CropName" class="text-danger small"></span>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label asp-for="Variety" class="caw-form-label">Variety</label>
-                        <input asp-for="Variety" class="form-control" placeholder="BRRI Dhan-28, High Yield 1..." />
+                        <label asp-for="Variety" class="caw-form-label">জাত</label>
+                        <input asp-for="Variety" class="form-control" placeholder="BRRI ধান-২৮, উচ্চ ফলনশীল-১..." />
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label asp-for="Status" class="caw-form-label">Status</label>
-                        <select asp-for="Status" asp-items="Html.GetEnumSelectList<Firming_Solution.Domain.Enums.CropStatus>()" class="form-select"></select>
+                        <label asp-for="Status" class="caw-form-label">অবস্থা</label>
+                        <select asp-for="Status" class="form-select">
+                            <option value="Planning">পরিকল্পনা</option>
+                            <option value="Growing">চলমান</option>
+                            <option value="Harvested">ফসল কাটা হয়েছে</option>
+                            <option value="Closed">বন্ধ</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <label asp-for="SowDate" class="caw-form-label">Sow Date</label>
+                        <label asp-for="SowDate" class="caw-form-label">বপনের তারিখ</label>
                         <input asp-for="SowDate" class="form-control" type="date" />
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label asp-for="ExpectedHarvestDate" class="caw-form-label">Expected Harvest</label>
+                        <label asp-for="ExpectedHarvestDate" class="caw-form-label">পরিকল্পিত ফসল কাটার তারিখ</label>
                         <input asp-for="ExpectedHarvestDate" class="form-control" type="date" />
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label asp-for="SeedCost" class="caw-form-label">Seed Cost (৳)</label>
-                        <input asp-for="SeedCost" class="form-control" type="number" step="0.01" placeholder="0.00" />
+                        <label asp-for="SeedCost" class="caw-form-label">বীজ খরচ (৳)</label>
+                        <input asp-for="SeedCost" class="form-control" type="number" step="0.01" placeholder="০.০০" />
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6 mb-4">
-                        <label asp-for="ExpectedYield_kg" class="caw-form-label">Expected Yield (kg)</label>
+                        <label asp-for="ExpectedYield_kg" class="caw-form-label">পরিকল্পিত ফলন (কেজি)</label>
                         <input asp-for="ExpectedYield_kg" class="form-control" type="number" step="0.1" />
                     </div>
                 </div>
 
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-caw-primary flex-fill">
-                        <i class="fas fa-save me-2"></i>Create Season
+                        <i class="fas fa-save me-2"></i>মৌসুম তৈরি করুন
                     </button>
                     <a asp-action="Index" class="btn btn-outline-secondary flex-fill">
-                        <i class="fas fa-times me-2"></i>Cancel
+                        <i class="fas fa-times me-2"></i>বাতিল
                     </a>
                 </div>
             </form>

@@ -39,7 +39,7 @@ public class MortalityLogController(ApplicationDbContext db, UserManager<AppUser
     {
         var farmIds = await GetFarmIdsAsync();
         ViewBag.Batches = new SelectList(
-            await db.Batches.Where(b => farmIds.Contains(b.FarmId) && b.Status == Domain.Enums.BatchStatus.Active).ToListAsync(),
+            await db.Batches.Where(b => farmIds.Contains(b.FarmId) && b.Status != Domain.Enums.BatchStatus.Closed).ToListAsync(),
             "Id", "BatchName", batchId);
         return View(new MortalityLog { LogDate = DateTime.Today, BatchId = batchId ?? 0 });
     }
@@ -53,7 +53,7 @@ public class MortalityLogController(ApplicationDbContext db, UserManager<AppUser
         {
             var farmIds = await GetFarmIdsAsync();
             ViewBag.Batches = new SelectList(
-                await db.Batches.Where(b => farmIds.Contains(b.FarmId)).ToListAsync(),
+                await db.Batches.Where(b => farmIds.Contains(b.FarmId) && b.Status != Domain.Enums.BatchStatus.Closed).ToListAsync(),
                 "Id", "BatchName");
             return View(model);
         }
