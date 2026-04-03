@@ -2,18 +2,8 @@
 @{
     ViewData["Title"] = "খরচের রেকর্ড";
     decimal totalCosts = ViewBag.TotalCosts ?? 0m;
-
-    string CostCategoryBn(string cat) => cat switch {
-        "Feed"           => "খাবার",
-        "Medicine"       => "ওষুধ",
-        "Labour"         => "শ্রমিক",
-        "Utility"        => "ইউটিলিটি",
-        "Transport"      => "পরিবহন",
-        "Breeding"       => "প্রজনন",
-        "Infrastructure" => "অবকাঠামো",
-        "Other"          => "অন্যান্য",
-        _ => cat
-    };
+    var categoryDisplayMap = (Dictionary<string, string>)(ViewBag.CategoryDisplayMap ?? new Dictionary<string, string>());
+    string CostCategoryBn(string cat) => categoryDisplayMap.TryGetValue(cat, out var display) ? display : cat;
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">

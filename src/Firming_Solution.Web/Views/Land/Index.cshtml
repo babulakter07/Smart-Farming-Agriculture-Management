@@ -41,6 +41,7 @@
             <table class="caw-table">
                 <thead>
                     <tr>
+                        <th>পরিচিতি নাম</th>
                         <th>খামার</th>
                         <th>পরিমাণ</th>
                         <th>মালিকানা</th>
@@ -54,8 +55,11 @@
                     {
                         <tr>
                             <td>
-                                <a asp-action="Details" asp-route-id="@lp.Id" class="text-gold">@lp.Farm?.FarmName</a>
+                                <a asp-action="Details" asp-route-id="@lp.Id" class="text-gold fw-bold">
+                                    @(string.IsNullOrWhiteSpace(lp.LandName) ? "—" : lp.LandName)
+                                </a>
                             </td>
+                            <td style="color:var(--caw-text-muted)">@lp.Farm?.FarmName</td>
                             <td style="color:var(--caw-text-muted)">@AreaDisplay(lp.Area_Decimal)</td>
                             <td style="color:var(--caw-text-muted)">@OwnershipBn(lp.OwnershipType)</td>
                             <td style="color:var(--caw-text-muted)">@(lp.SoilType ?? "—")</td>

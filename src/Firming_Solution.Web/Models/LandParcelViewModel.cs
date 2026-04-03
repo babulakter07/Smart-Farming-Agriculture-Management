@@ -10,7 +10,8 @@ public class LandParcelViewModel
     [Required(ErrorMessage = "খামার নির্বাচন করুন।")]
     public int FarmId { get; set; }
 
-    [Display(Name = "জমির নাম")]
+    [Required(ErrorMessage = "জমির পরিচিতি নাম দিন।")]
+    [Display(Name = "জমির পরিচিতি নাম")]
     public string LandName { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "পরিমাণ দিন।")]

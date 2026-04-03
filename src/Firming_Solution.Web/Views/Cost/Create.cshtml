@@ -1,11 +1,12 @@
 @model Firming_Solution.Domain.Entities.Cost
 @using Firming_Solution.Domain.Entities
-@using Firming_Solution.Domain.Enums
 @{
     ViewData["Title"] = "খরচ রেকর্ড করুন";
     var farms = (List<Farm>)ViewBag.Farms;
     var batches = (List<Batch>)ViewBag.Batches;
     var cropSeasons = (List<CropSeason>)ViewBag.CropSeasons;
+    var costCategories = (List<CostCategoryConfig>)ViewBag.CostCategories;
+    var costSubCategories = (List<CostCategoryConfig>)ViewBag.CostSubCategories;
 }
 
 <div class="row justify-content-center">
@@ -52,21 +53,25 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label asp-for="CostCategory" class="caw-form-label">বিভাগ <span class="text-danger">*</span></label>
-                        <select asp-for="CostCategory" class="form-select">
-                            <option value="Feed">খাবার</option>
-                            <option value="Medicine">ওষুধ</option>
-                            <option value="Labour">শ্রমিক</option>
-                            <option value="Utility">ইউটিলিটি</option>
-                            <option value="Transport">পরিবহন</option>
-                            <option value="Breeding">প্রজনন</option>
-                            <option value="Infrastructure">অবকাঠামো</option>
-                            <option value="Other">অন্যান্য</option>
+                        <select id="costCategorySelect" asp-for="CostCategory" class="form-select">
+                            <option value="">-- বিভাগ নির্বাচন করুন --</option>
+                            @foreach (var cat in costCategories)
+                            {
+                                <option value="@cat.CategoryKey">@cat.DisplayName</option>
+                            }
                         </select>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label asp-for="CostDate" class="caw-form-label">তারিখ <span class="text-danger">*</span></label>
                         <input asp-for="CostDate" class="form-control" type="date" />
                     </div>
+                </div>
+
+                <div id="subCategoryRow" class="mb-3" style="display:none">
+                    <label class="caw-form-label"><i class="fas fa-tag me-1"></i>উপ-বিভাগ</label>
+                    <select id="subCategorySelect" name="SubCategory" class="form-select">
+                        <option value="">-- উপ-বিভাগ নির্বাচন করুন --</option>
+                    </select>
                 </div>
 
                 <div class="mb-3">
@@ -132,6 +137,53 @@
 
             farmSel.addEventListener('change', onFarmChange);
             onFarmChange(); // run on page load to restore state after validation failure
+        })();
+
+        // ── Dynamic sub-category dropdown ──────────────────────────────
+        (function () {
+            // Build map: categoryKey → [{key, display}, ...]
+            const subMap = {};
+            @foreach (var sub in costSubCategories)
+            {
+                var parentKey = costCategories.FirstOrDefault(c => c.Id == sub.ParentId)?.CategoryKey ?? "";
+                <text>
+                if (!subMap['@Html.Raw(parentKey)']) subMap['@Html.Raw(parentKey)'] = [];
+                subMap['@Html.Raw(parentKey)'].push({ key: '@Html.Raw(sub.CategoryKey)', display: '@Html.Raw(sub.DisplayName)' });
+                </text>
+            }
+
+            const categorySelect = document.getElementById('costCategorySelect');
+            const subRow         = document.getElementById('subCategoryRow');
+            const subSelect      = document.getElementById('subCategorySelect');
+            const currentSub     = '@Html.Raw(Model.SubCategory ?? "")';
+
+            function onCategoryChange() {
+                const val  = categorySelect.value;
+                const subs = subMap[val] || [];
+
+                if (subs.length === 0) {
+                    subRow.style.display = 'none';
+                    subSelect.disabled   = true;
+                    subSelect.value      = '';
+                    return;
+                }
+
+                // Rebuild options
+                subSelect.innerHTML = '<option value="">-- উপ-বিভাগ নির্বাচন করুন --</option>';
+                subs.forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s.key;
+                    opt.textContent = s.display;
+                    if (s.key === currentSub) opt.selected = true;
+                    subSelect.appendChild(opt);
+                });
+
+                subSelect.disabled   = false;
+                subRow.style.display = '';
+            }
+
+            categorySelect.addEventListener('change', onCategoryChange);
+            onCategoryChange(); // restore state on validation failure
         })();
     </script>
 }

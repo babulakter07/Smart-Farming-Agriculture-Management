@@ -1,5 +1,4 @@
 using Firming_Solution.Application.Interfaces;
-using Firming_Solution.Domain.Enums;
 using Firming_Solution.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,9 +18,9 @@ public class ProfitLossService(ApplicationDbContext db) : IProfitLossService
         if (batch is null) return null;
 
         var totalFeedCost = batch.FeedLogs.Sum(f => f.Quantity_kg * f.PricePerKg);
-        var totalMedCost = batch.Costs.Where(c => c.CostCategory == CostCategory.Medicine).Sum(c => c.Amount);
-        var totalLabour = batch.Costs.Where(c => c.CostCategory == CostCategory.Labour).Sum(c => c.Amount);
-        var totalOther = batch.Costs.Where(c => c.CostCategory != CostCategory.Medicine && c.CostCategory != CostCategory.Labour && c.CostCategory != CostCategory.Feed).Sum(c => c.Amount);
+        var totalMedCost = batch.Costs.Where(c => c.CostCategory == "Medicine").Sum(c => c.Amount);
+        var totalLabour = batch.Costs.Where(c => c.CostCategory == "Labour").Sum(c => c.Amount);
+        var totalOther = batch.Costs.Where(c => c.CostCategory != "Medicine" && c.CostCategory != "Labour" && c.CostCategory != "Feed").Sum(c => c.Amount);
         var totalRevenue = batch.Sales.Sum(s => s.TotalRevenue);
         var totalDeaths = batch.MortalityLogs.Sum(m => m.Count);
         var liveCount = batch.InitialCount - totalDeaths;

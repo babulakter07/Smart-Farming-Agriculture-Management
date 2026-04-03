@@ -44,7 +44,8 @@ public class CropSeasonController(ApplicationDbContext db, UserManager<AppUser> 
         ViewBag.Lands = new SelectList(
             lands.Select(lp => new {
                 lp.Id,
-                Display = $"{lp.Farm!.FarmName} — {lp.Area_Decimal:N2} শতাংশ" +
+                Display = (string.IsNullOrWhiteSpace(lp.LandName) ? "" : $"{lp.LandName} — ") +
+                          $"{lp.Farm!.FarmName} — {lp.Area_Decimal:N2} শতাংশ" +
                           (string.IsNullOrEmpty(lp.SoilType) ? "" : $" ({lp.SoilType})")
             }),
             "Id", "Display", landId);

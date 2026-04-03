@@ -59,7 +59,7 @@ public class BatchController(ApplicationDbContext db, UserManager<AppUser> userM
         {
             BatchId = model.Id,
             FarmId = model.FarmId,
-            CostCategory = CostCategory.Other,
+            CostCategory = "Other",
             Description = "Animal Purchase Cost",
             CostDate = model.StartDate,
             Amount = model.PurchaseCost,

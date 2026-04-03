@@ -29,6 +29,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     public DbSet<FeedCostHistory> FeedCostHistories => Set<FeedCostHistory>();
     public DbSet<AnimalCostBreakdown> AnimalCostBreakdowns => Set<AnimalCostBreakdown>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+    public DbSet<CostCategoryConfig> CostCategoryConfigs => Set<CostCategoryConfig>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -53,6 +54,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
         builder.Entity<AIRecommendation>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<FeedCostHistory>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<AnimalCostBreakdown>().HasQueryFilter(e => !e.IsDeleted);
+        builder.Entity<CostCategoryConfig>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<UserFarm>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<AppUser>().HasQueryFilter(e => !e.IsDeleted);
 
@@ -209,7 +211,6 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
         builder.Entity<Batch>().Property(b => b.Status).HasConversion<string>();
         builder.Entity<FeedType>().Property(f => f.Category).HasConversion<string>();
         builder.Entity<DailyFeedLog>().Property(d => d.Session).HasConversion<string>();
-        builder.Entity<Cost>().Property(c => c.CostCategory).HasConversion<string>();
         builder.Entity<LandParcel>().Property(l => l.OwnershipType).HasConversion<string>();
         builder.Entity<CropSeason>().Property(c => c.Status).HasConversion<string>();
         builder.Entity<EidBazarPlan>().Property(e => e.EidType).HasConversion<string>();
@@ -220,6 +221,13 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
         builder.Entity<Investment>().Property(i => i.Category).HasConversion<string>();
         builder.Entity<Investment>().Property(i => i.Source).HasConversion<string>();
         builder.Entity<AppUser>().Property(u => u.Role).HasConversion<string>();
+
+        // CostCategoryConfig self-reference (no cascade to avoid circular paths)
+        builder.Entity<CostCategoryConfig>()
+            .HasOne(c => c.Parent)
+            .WithMany(c => c.SubCategories)
+            .HasForeignKey(c => c.ParentId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 
     public override int SaveChanges()

@@ -81,6 +81,76 @@ public static class DbSeeder
                 await userManager.AddToRoleAsync(worker, "Worker");
         }
 
+        // Seed default Cost Categories
+        if (!await db.CostCategoryConfigs.AnyAsync())
+        {
+            var categories = new[]
+            {
+                new { Key = "Feed",           Display = "খাবার",           Order = 1 },
+                new { Key = "Medicine",       Display = "ওষুধ",            Order = 2 },
+                new { Key = "Fertilizer",     Display = "সার / কীটনাশক",  Order = 3 },
+                new { Key = "Labour",         Display = "শ্রমিক",          Order = 4 },
+                new { Key = "Utility",        Display = "ইউটিলিটি",       Order = 5 },
+                new { Key = "Transport",      Display = "পরিবহন",          Order = 6 },
+                new { Key = "Breeding",       Display = "প্রজনন",          Order = 7 },
+                new { Key = "Infrastructure", Display = "অবকাঠামো",       Order = 8 },
+                new { Key = "Other",          Display = "অন্যান্য",       Order = 9 },
+            };
+
+            var parentMap = new Dictionary<string, CostCategoryConfig>();
+            foreach (var c in categories)
+            {
+                var cfg = new CostCategoryConfig { CategoryKey = c.Key, DisplayName = c.Display, SortOrder = c.Order };
+                db.CostCategoryConfigs.Add(cfg);
+                parentMap[c.Key] = cfg;
+            }
+            await db.SaveChangesAsync();
+
+            // Sub-categories for Medicine
+            var medParent = parentMap["Medicine"];
+            var medSubs = new[]
+            {
+                new { Key = "ভ্যাকসিন",          Display = "ভ্যাকসিন (Vaccine)",       Order = 1 },
+                new { Key = "অ্যান্টিবায়োটিক",    Display = "অ্যান্টিবায়োটিক",         Order = 2 },
+                new { Key = "ভিটামিন ও খনিজ",    Display = "ভিটামিন ও খনিজ",           Order = 3 },
+                new { Key = "কৃমিনাশক",           Display = "কৃমিনাশক (Dewormer)",      Order = 4 },
+                new { Key = "ধানের ওষুধ",         Display = "ধানের ওষুধ",               Order = 5 },
+                new { Key = "আলুর ওষুধ",          Display = "আলুর ওষুধ",                Order = 6 },
+                new { Key = "সবজির ওষুধ",         Display = "সবজির ওষুধ",               Order = 7 },
+                new { Key = "ফলের ওষুধ",          Display = "ফলের ওষুধ",                Order = 8 },
+                new { Key = "পাটের ওষুধ",         Display = "পাটের ওষুধ",               Order = 9 },
+                new { Key = "অন্যান্য ওষুধ",      Display = "অন্যান্য ওষুধ",            Order = 10 },
+            };
+            foreach (var s in medSubs)
+                db.CostCategoryConfigs.Add(new CostCategoryConfig { CategoryKey = s.Key, DisplayName = s.Display, ParentId = medParent.Id, SortOrder = s.Order });
+
+            // Sub-categories for Fertilizer
+            var fertParent = parentMap["Fertilizer"];
+            var fertSubs = new[]
+            {
+                new { Key = "ইউরিয়া",             Display = "ইউরিয়া (Urea)",           Order = 1 },
+                new { Key = "টিএসপি",             Display = "টিএসপি (TSP)",             Order = 2 },
+                new { Key = "ডিএপি",              Display = "ডিএপি (DAP)",              Order = 3 },
+                new { Key = "এমওপি",              Display = "এমওপি / পটাশ (MOP)",       Order = 4 },
+                new { Key = "জিপসাম",             Display = "জিপসাম (Gypsum)",          Order = 5 },
+                new { Key = "জিংক সালফেট",        Display = "জিংক সালফেট",             Order = 6 },
+                new { Key = "বোরন",               Display = "বোরন (Boron)",             Order = 7 },
+                new { Key = "চুন",                Display = "চুন (Lime)",               Order = 8 },
+                new { Key = "জৈব সার",            Display = "জৈব সার (Organic)",        Order = 9 },
+                new { Key = "কম্পোস্ট",           Display = "কম্পোস্ট (Compost)",       Order = 10 },
+                new { Key = "কীটনাশক ধান",        Display = "কীটনাশক — ধান",           Order = 11 },
+                new { Key = "কীটনাশক আলু",        Display = "কীটনাশক — আলু",           Order = 12 },
+                new { Key = "কীটনাশক সবজি",       Display = "কীটনাশক — সবজি",          Order = 13 },
+                new { Key = "আগাছানাশক",           Display = "আগাছানাশক (Herbicide)",   Order = 14 },
+                new { Key = "ছত্রাকনাশক",         Display = "ছত্রাকনাশক (Fungicide)",  Order = 15 },
+            };
+            foreach (var s in fertSubs)
+                db.CostCategoryConfigs.Add(new CostCategoryConfig { CategoryKey = s.Key, DisplayName = s.Display, ParentId = fertParent.Id, SortOrder = s.Order });
+
+            await db.SaveChangesAsync();
+            logger.LogInformation("Default cost categories seeded.");
+        }
+
         // Seed demo Feed Types
         if (!await db.FeedTypes.AnyAsync())
         {

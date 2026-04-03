@@ -3,8 +3,12 @@
   "WorkspaceRootPath": "D:\\MyProject\\Firming_Solution\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\MyProject\\Firming_Solution\\src\\Firming_Solution.Infrastructure\\Migrations\\20260402131820_update-land-entity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Firming_Solution.Infrastructure\\Migrations\\20260402131820_update-land-entity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\MyProject\\Firming_Solution\\src\\Firming_Solution.Infrastructure\\Migrations\\20260403095632_add-cost-category-and-subcategory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Firming_Solution.Infrastructure\\Migrations\\20260403095632_add-cost-category-and-subcategory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72A42FD3-3A88-13DA-0209-C033D90CD983}|src\\Firming_Solution.Domain\\Firming_Solution.Domain.csproj|d:\\myproject\\firming_solution\\src\\firming_solution.domain\\entities\\costcategoryconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72A42FD3-3A88-13DA-0209-C033D90CD983}|src\\Firming_Solution.Domain\\Firming_Solution.Domain.csproj|solutionrelative:src\\firming_solution.domain\\entities\\costcategoryconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{19A8331C-1A8A-AF3A-CB13-7000FF093824}|src\\Firming_Solution.Web\\Firming_Solution.Web.csproj|d:\\myproject\\firming_solution\\src\\firming_solution.web\\views\\cost\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -51,25 +55,38 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "20260402131820_update-land-entity.cs",
-              "DocumentMoniker": "D:\\MyProject\\Firming_Solution\\src\\Firming_Solution.Infrastructure\\Migrations\\20260402131820_update-land-entity.cs",
-              "RelativeDocumentMoniker": "src\\Firming_Solution.Infrastructure\\Migrations\\20260402131820_update-land-entity.cs",
-              "ToolTip": "D:\\MyProject\\Firming_Solution\\src\\Firming_Solution.Infrastructure\\Migrations\\20260402131820_update-land-entity.cs",
-              "RelativeToolTip": "src\\Firming_Solution.Infrastructure\\Migrations\\20260402131820_update-land-entity.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "20260403095632_add-cost-category-and-subcategory.cs",
+              "DocumentMoniker": "D:\\MyProject\\Firming_Solution\\src\\Firming_Solution.Infrastructure\\Migrations\\20260403095632_add-cost-category-and-subcategory.cs",
+              "RelativeDocumentMoniker": "src\\Firming_Solution.Infrastructure\\Migrations\\20260403095632_add-cost-category-and-subcategory.cs",
+              "ToolTip": "D:\\MyProject\\Firming_Solution\\src\\Firming_Solution.Infrastructure\\Migrations\\20260403095632_add-cost-category-and-subcategory.cs",
+              "RelativeToolTip": "src\\Firming_Solution.Infrastructure\\Migrations\\20260403095632_add-cost-category-and-subcategory.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-02T13:18:21.124Z",
+              "WhenOpened": "2026-04-03T09:56:32.865Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "CostCategoryConfig.cs",
+              "DocumentMoniker": "D:\\MyProject\\Firming_Solution\\src\\Firming_Solution.Domain\\Entities\\CostCategoryConfig.cs",
+              "RelativeDocumentMoniker": "src\\Firming_Solution.Domain\\Entities\\CostCategoryConfig.cs",
+              "ToolTip": "D:\\MyProject\\Firming_Solution\\src\\Firming_Solution.Domain\\Entities\\CostCategoryConfig.cs",
+              "RelativeToolTip": "src\\Firming_Solution.Domain\\Entities\\CostCategoryConfig.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-03T09:55:28.279Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Create.cshtml",
               "DocumentMoniker": "D:\\MyProject\\Firming_Solution\\src\\Firming_Solution.Web\\Views\\Cost\\Create.cshtml",
               "RelativeDocumentMoniker": "src\\Firming_Solution.Web\\Views\\Cost\\Create.cshtml",
               "ToolTip": "D:\\MyProject\\Firming_Solution\\src\\Firming_Solution.Web\\Views\\Cost\\Create.cshtml",
               "RelativeToolTip": "src\\Firming_Solution.Web\\Views\\Cost\\Create.cshtml",
-              "ViewState": "AgIAABAAAAAAAAAAAAAQwBcAAAAxAAAAAAAAAA==",
+              "ViewState": "AgIAACoAAAAAAAAAAAAwwDgAAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-04-02T12:42:19.715Z",
               "EditorCaption": ""

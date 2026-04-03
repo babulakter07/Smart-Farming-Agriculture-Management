@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Firming_Solution.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+45e2d2cb66a16d118c02e84e1889b361367c5f6a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d35e4ed0ce6d1d816fddfc8dca09590381b91f0e")]
 [assembly: System.Reflection.AssemblyProductAttribute("Firming_Solution.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Firming_Solution.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

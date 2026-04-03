@@ -29,7 +29,19 @@ public class CostController(ApplicationDbContext db, UserManager<AppUser> userMa
         var costs = await query.OrderByDescending(c => c.CostDate).Take(100).ToListAsync();
         ViewBag.TotalCosts = costs.Sum(c => c.Amount);
         ViewBag.Farms = await db.Farms.Where(f => farmIds.Contains(f.Id)).ToListAsync();
+        ViewBag.CategoryDisplayMap = (await db.CostCategoryConfigs.ToListAsync())
+            .ToDictionary(c => c.CategoryKey, c => c.DisplayName);
         return View(costs);
+    }
+
+    private async Task PopulateCostCategoriesAsync()
+    {
+        var all = await db.CostCategoryConfigs
+            .OrderBy(c => c.ParentId)
+            .ThenBy(c => c.SortOrder)
+            .ToListAsync();
+        ViewBag.CostCategories = all.Where(c => c.ParentId == null).ToList();
+        ViewBag.CostSubCategories = all.Where(c => c.ParentId != null).ToList();
     }
 
     [Authorize(Roles = "SuperAdmin,Manager,Accountant")]
@@ -42,6 +54,7 @@ public class CostController(ApplicationDbContext db, UserManager<AppUser> userMa
             .Where(cs => farmIds.Contains(cs.Land!.FarmId))
             .Include(cs => cs.Land).ThenInclude(l => l!.Farm)
             .ToListAsync();
+        await PopulateCostCategoriesAsync();
         // Pre-fill FarmId from the crop season so the JS shows the right dropdowns
         int? preselectedFarmId = null;
         if (cropSeasonId.HasValue)
@@ -70,6 +83,7 @@ public class CostController(ApplicationDbContext db, UserManager<AppUser> userMa
                 .Where(cs => farmIds.Contains(cs.Land!.FarmId))
                 .Include(cs => cs.Land).ThenInclude(l => l!.Farm)
                 .ToListAsync();
+            await PopulateCostCategoriesAsync();
             return View(model);
         }
         var user = await userManager.GetUserAsync(User);

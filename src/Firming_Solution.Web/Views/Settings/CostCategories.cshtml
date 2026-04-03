@@ -1,0 +1,155 @@
+@model List<Firming_Solution.Domain.Entities.CostCategoryConfig>
+@{
+    ViewData["Title"] = "খরচ বিভাগ কনফিগারেশন";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+
+
+        <div class="caw-card mb-4">
+            <div class="caw-section-title"><i class="fas fa-plus-circle me-2"></i>নতুন প্রধান বিভাগ যোগ করুন</div>
+            <form asp-action="AddCategory" method="post" class="row g-2 align-items-end">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="parentId" value="" />
+                <div class="col-md-4">
+                    <label class="caw-form-label">কী (ইংরেজি, অনন্য)</label>
+                    <input name="categoryKey" class="form-control" placeholder="যেমন: Pesticide" required />
+                </div>
+                <div class="col-md-5">
+                    <label class="caw-form-label">প্রদর্শন নাম (বাংলা)</label>
+                    <input name="displayName" class="form-control" placeholder="যেমন: কীটনাশক" required />
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-caw-primary w-100">
+                        <i class="fas fa-plus me-1"></i>যোগ করুন
+                    </button>
+                </div>
+            </form>
+        </div>
+
+
+        @foreach (var cat in Model)
+        {
+            <div class="caw-card mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div>
+                        <span class="fw-bold" style="color:var(--caw-gold);">@cat.DisplayName</span>
+                        <span class="ms-2 small" style="color:var(--caw-text-muted);">[@cat.CategoryKey]</span>
+                    </div>
+                    <div class="d-flex gap-2">
+
+                        <button class="btn btn-outline-secondary btn-sm"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#editCat-@cat.Id">
+                            <i class="fas fa-pen"></i>
+                        </button>
+
+                        <form asp-action="DeleteCategory" asp-route-id="@cat.Id" method="post" class="d-inline"
+                              onsubmit="return confirm('এই বিভাগ ও এর সব উপ-বিভাগ মুছে ফেলবেন?')">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+
+                <div class="collapse mb-3" id="editCat-@cat.Id">
+                    <form asp-action="EditCategory" method="post" class="row g-2 align-items-end p-2 rounded"
+                          style="background:rgba(255,255,255,0.04)">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@cat.Id" />
+                        <div class="col-md-7">
+                            <label class="caw-form-label">প্রদর্শন নাম</label>
+                            <input name="displayName" value="@cat.DisplayName" class="form-control" required />
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-caw-primary w-100">
+                                <i class="fas fa-save me-1"></i>সংরক্ষণ
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+
+                @if (cat.SubCategories.Any())
+                {
+                    <div class="ms-3 mb-2">
+                        <div class="small fw-bold mb-1" style="color:var(--caw-text-muted);">উপ-বিভাগ</div>
+                        @foreach (var sub in cat.SubCategories.OrderBy(s => s.SortOrder))
+                        {
+                            <div class="d-flex align-items-center justify-content-between mb-1 px-2 py-1 rounded"
+                                 style="background:rgba(255,255,255,0.04)">
+                                <div>
+                                    <span style="color:var(--caw-text);">@sub.DisplayName</span>
+                                    <span class="ms-2 small" style="color:var(--caw-text-muted);">[@sub.CategoryKey]</span>
+                                </div>
+                                <div class="d-flex gap-1">
+                                    <button class="btn btn-outline-secondary btn-sm py-0"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#editSub-@sub.Id">
+                                        <i class="fas fa-pen" style="font-size:.7rem;"></i>
+                                    </button>
+                                    <form asp-action="DeleteCategory" asp-route-id="@sub.Id" method="post" class="d-inline"
+                                          onsubmit="return confirm('এই উপ-বিভাগ মুছে ফেলবেন?')">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-outline-danger btn-sm py-0">
+                                            <i class="fas fa-trash" style="font-size:.7rem;"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="collapse ms-2 mb-1" id="editSub-@sub.Id">
+                                <form asp-action="EditCategory" method="post" class="row g-2 align-items-end p-2 rounded"
+                                      style="background:rgba(255,255,255,0.04)">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@sub.Id" />
+                                    <div class="col-md-7">
+                                        <input name="displayName" value="@sub.DisplayName" class="form-control form-control-sm" required />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="submit" class="btn btn-caw-primary btn-sm w-100">
+                                            <i class="fas fa-save me-1"></i>সংরক্ষণ
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                }
+
+
+                <div class="ms-3 mt-2">
+                    <button class="btn btn-outline-secondary btn-sm"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#addSub-@cat.Id">
+                        <i class="fas fa-plus me-1"></i>উপ-বিভাগ যোগ করুন
+                    </button>
+                    <div class="collapse mt-2" id="addSub-@cat.Id">
+                        <form asp-action="AddCategory" method="post" class="row g-2 align-items-end p-2 rounded"
+                              style="background:rgba(255,255,255,0.04)">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="parentId" value="@cat.Id" />
+                            <div class="col-md-4">
+                                <label class="caw-form-label small">কী (ইংরেজি)</label>
+                                <input name="categoryKey" class="form-control form-control-sm" required />
+                            </div>
+                            <div class="col-md-5">
+                                <label class="caw-form-label small">প্রদর্শন নাম (বাংলা)</label>
+                                <input name="displayName" class="form-control form-control-sm" required />
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-caw-primary btn-sm w-100">
+                                    <i class="fas fa-plus me-1"></i>যোগ
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

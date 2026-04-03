@@ -51,6 +51,7 @@ public enum CostCategory
 {
     Feed,
     Medicine,
+    Fertilizer,
     Labour,
     Utility,
     Transport,

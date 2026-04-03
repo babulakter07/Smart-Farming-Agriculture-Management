@@ -417,6 +417,9 @@ namespace Firming_Solution.Infrastructure.Migrations
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SubCategory")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BatchId");
@@ -428,6 +431,50 @@ namespace Firming_Solution.Infrastructure.Migrations
                     b.HasIndex("FarmId");
 
                     b.ToTable("Costs");
+                });
+
+            modelBuilder.Entity("Firming_Solution.Domain.Entities.CostCategoryConfig", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CategoryKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("CostCategoryConfigs");
                 });
 
             modelBuilder.Entity("Firming_Solution.Domain.Entities.CropSeason", b =>
@@ -1464,6 +1511,16 @@ namespace Firming_Solution.Infrastructure.Migrations
                     b.Navigation("Farm");
                 });
 
+            modelBuilder.Entity("Firming_Solution.Domain.Entities.CostCategoryConfig", b =>
+                {
+                    b.HasOne("Firming_Solution.Domain.Entities.CostCategoryConfig", "Parent")
+                        .WithMany("SubCategories")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Parent");
+                });
+
             modelBuilder.Entity("Firming_Solution.Domain.Entities.CropSeason", b =>
                 {
                     b.HasOne("Firming_Solution.Domain.Entities.LandParcel", "Land")
@@ -1751,6 +1808,11 @@ namespace Firming_Solution.Infrastructure.Migrations
                     b.Navigation("Sales");
 
                     b.Navigation("WeightLogs");
+                });
+
+            modelBuilder.Entity("Firming_Solution.Domain.Entities.CostCategoryConfig", b =>
+                {
+                    b.Navigation("SubCategories");
                 });
 
             modelBuilder.Entity("Firming_Solution.Domain.Entities.CropSeason", b =>

@@ -252,7 +252,6 @@ D:\MyProject\Firming_Solution\src\Firming_Solution.Web\obj\Debug\net10.0\staticw
 D:\MyProject\Firming_Solution\src\Firming_Solution.Web\obj\Debug\net10.0\staticwebassets.development.json
 D:\MyProject\Firming_Solution\src\Firming_Solution.Web\obj\Debug\net10.0\staticwebassets.build.endpoints.json
 D:\MyProject\Firming_Solution\src\Firming_Solution.Web\obj\Debug\net10.0\swae.build.ex.cache
-D:\MyProject\Firming_Solution\src\Firming_Solution.Web\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
 D:\MyProject\Firming_Solution\src\Firming_Solution.Web\obj\Debug\net10.0\Firming_.639F0BD0.Up2Date
 D:\MyProject\Firming_Solution\src\Firming_Solution.Web\obj\Debug\net10.0\Firming_Solution.Web.dll
 D:\MyProject\Firming_Solution\src\Firming_Solution.Web\obj\Debug\net10.0\refint\Firming_Solution.Web.dll
@@ -291,3 +290,4 @@ D:\MyProject\Firming_Solution\src\Firming_Solution.Web\obj\Debug\net10.0\compres
 D:\MyProject\Firming_Solution\src\Firming_Solution.Web\obj\Debug\net10.0\compressed\2a6bw825rg-{0}-m9qm4tazc0-m9qm4tazc0.gz
 D:\MyProject\Firming_Solution\src\Firming_Solution.Web\obj\Debug\net10.0\compressed\v6153vnoap-{0}-jjsuc0puko-jjsuc0puko.gz
 D:\MyProject\Firming_Solution\src\Firming_Solution.Web\obj\Debug\net10.0\compressed\cnmlj6zq17-{0}-9vr69e8ynj-9vr69e8ynj.gz
+D:\MyProject\Firming_Solution\src\Firming_Solution.Web\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
